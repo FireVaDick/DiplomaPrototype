@@ -37,7 +37,7 @@ namespace DiplomaProrotype
         {
             var ele = (FrameworkElement)AdornedElement;
             ele.Height = ele.Height - e.VerticalChange < 0 ? 0 : ele.Height - e.VerticalChange;
-            ele.Width = ele.Width - e.HorizontalChange < 0 ? 0 : ele.Width - e.HorizontalChange;
+            ele.Width = ele.Width + e.HorizontalChange < 0 ? 0 : ele.Width + e.HorizontalChange;
         }
 
         private void Thumb2_DragDelta(object sender, DragDeltaEventArgs e)
@@ -58,8 +58,8 @@ namespace DiplomaProrotype
         protected override Size ArrangeOverride(Size finalSize)
         {
             //Rec.Arrange(new Rect(-2.5, -2.5, AdornedElement.DesiredSize.Width + 5, AdornedElement.DesiredSize.Height + 5));
-            //thumb1.Arrange(new Rect(-5, -5, 10, 10));
-            thumb2.Arrange(new Rect(AdornedElement.DesiredSize.Width - 5, AdornedElement.DesiredSize.Height - 5 - 100, 10, 10));
+            thumb1.Arrange(new Rect(AdornedElement.DesiredSize.Width - 5, -5, 10, 10));
+            //thumb2.Arrange(new Rect(AdornedElement.DesiredSize.Width - 5, AdornedElement.DesiredSize.Height - 5 - 100, 10, 10));
 
             return base.ArrangeOverride(finalSize);
         }

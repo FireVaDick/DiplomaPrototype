@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "e7mFwXy5SnCDUjnX8fsL7DLWzjPBA/W4AsvOc6hiAmFjNgwQl5vA8etkRPwNsF80JnetDrwTOEQJj+YX8gdR2w==",
+  "dgSpecHash": "vpelBoVxpHHFzrul5nORmmxEgIqcID9egiRMvAmSYvKeX7VrygjITzTrTLMFhzNQgjpAkpHLxeeicQgaplNYxQ==",
   "success": true,
-  "projectFilePath": "D:\\@Git\\DiplomaProrotype\\DiplomaProrotype\\DiplomaProrotype.csproj",
+  "projectFilePath": "D:\\@Git\\DiplomaPrototype\\DiplomaProrotype\\DiplomaProrotype.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\firev\\.nuget\\packages\\haley.abstractions\\1.0.19\\haley.abstractions.1.0.19.nupkg.sha512",
     "C:\\Users\\firev\\.nuget\\packages\\haley.extensions\\2.1.15.2\\haley.extensions.2.1.15.2.nupkg.sha512",

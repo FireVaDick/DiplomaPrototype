@@ -121,3 +121,44 @@ D:\@Git\DiplomaProrotype (ResizeCanvas)\DiplomaProrotype\obj\Debug\net6.0-window
 D:\@Git\DiplomaProrotype (ResizeCanvas)\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype.pdb
 D:\@Git\DiplomaProrotype (ResizeCanvas)\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype.genruntimeconfig.cache
 D:\@Git\DiplomaProrotype (ResizeCanvas)\DiplomaProrotype\obj\Debug\net6.0-windows\ref\DiplomaProrotype.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\DiplomaProrotype.exe
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\DiplomaProrotype.deps.json
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\DiplomaProrotype.runtimeconfig.json
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\DiplomaProrotype.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\DiplomaProrotype.pdb
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\Haley.Abstractions.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\Haley.Extensions.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\Haley.Helpers.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\Haley.IOC.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\Haley.MVVM.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\Haley.WPF.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\Microsoft.Xaml.Behaviors.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\protobuf-net.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\protobuf-net.Core.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\System.Management.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\System.Text.Json.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.Management.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype.csproj.AssemblyReference.cache
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\MainWindow.g.cs
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\Tiles\ModeTile.g.cs
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\Tiles\ObjectTile.g.cs
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\App.g.cs
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype_Content.g.cs
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype_MarkupCompile.cache
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype_MarkupCompile.lref
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\App.baml
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\MainWindow.baml
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\Tiles\ModeTile.baml
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\Tiles\ObjectTile.baml
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype.g.resources
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype.GeneratedMSBuildEditorConfig.editorconfig
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype.AssemblyInfoInputs.cache
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype.AssemblyInfo.cs
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype.csproj.CoreCompileInputs.cache
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype.csproj.CopyComplete
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\refint\DiplomaProrotype.dll
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype.pdb
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\DiplomaProrotype.genruntimeconfig.cache
+D:\@Git\DiplomaPrototype\DiplomaProrotype\obj\Debug\net6.0-windows\ref\DiplomaProrotype.dll

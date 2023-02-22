@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\@Git\\DiplomaProrotype\\DiplomaProrotype\\DiplomaProrotype.csproj": {}
+    "D:\\@Git\\DiplomaPrototype\\DiplomaProrotype\\DiplomaProrotype.csproj": {}
   },
   "projects": {
-    "D:\\@Git\\DiplomaProrotype\\DiplomaProrotype\\DiplomaProrotype.csproj": {
+    "D:\\@Git\\DiplomaPrototype\\DiplomaProrotype\\DiplomaProrotype.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\@Git\\DiplomaProrotype\\DiplomaProrotype\\DiplomaProrotype.csproj",
+        "projectUniqueName": "D:\\@Git\\DiplomaPrototype\\DiplomaProrotype\\DiplomaProrotype.csproj",
         "projectName": "DiplomaProrotype",
-        "projectPath": "D:\\@Git\\DiplomaProrotype\\DiplomaProrotype\\DiplomaProrotype.csproj",
+        "projectPath": "D:\\@Git\\DiplomaPrototype\\DiplomaProrotype\\DiplomaProrotype.csproj",
         "packagesPath": "C:\\Users\\firev\\.nuget\\packages\\",
-        "outputPath": "D:\\@Git\\DiplomaProrotype\\DiplomaProrotype\\obj\\",
+        "outputPath": "D:\\@Git\\DiplomaPrototype\\DiplomaProrotype\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\firev\\AppData\\Roaming\\NuGet\\NuGet.Config",
