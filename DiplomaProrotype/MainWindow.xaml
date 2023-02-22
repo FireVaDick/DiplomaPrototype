@@ -1,0 +1,146 @@
+﻿<Window x:Class="DiplomaProrotype.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hw="http://schemas.hpod9.com/haley/wpf"
+        xmlns:hm="http://schemas.hpod9.com/haley/mvvm"
+        xmlns:local="clr-namespace:DiplomaProrotype"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="650" Width="1300">
+    <Window.Resources>
+        <Style TargetType="Border" x:Key="PaleBorder">
+            <Setter Property="Background" Value="#FFFBFDFF" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="BorderBrush" Value="#ced4da" />
+            <Setter Property="BorderThickness" Value="1" />
+            <!--<Setter Property="FontFamily" Value="laCartoonerie(RUS BY LYAJKA)"
+            <Setter Property="FontFamily" Value="laCartoonerie(RUS BY LYAJKA)" />
+            <Setter Property="FontSize" Value="13" /> />-->
+        </Style>
+
+        <Style TargetType="Panel" x:Key="SquarePanel">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Name="MyGrid"
+          AllowDrop="True" >
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.75,1" >
+                <GradientStop Color="#FFC6E6FF" Offset="0"/>
+                <GradientStop Color="#FFFF9C9C" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+
+        <!-- Целевой холст -->
+        <Border Name="TargetBorder"
+                Height="300"
+                Width="500"        
+                Margin="0,100,0,0" 
+                Style="{StaticResource ResourceKey=PaleBorder}">
+            <Canvas Name="TargetCanvas" 
+                    AllowDrop="True" 
+                    DragOver="TargetCanvas_DragOver" 
+                    Drop="TargetCanvas_Drop" 
+                    Background="Transparent" />
+        </Border>
+
+        <!-- Меню режимов слева -->
+        <Border Name="ModeBorder" 
+                Width="100" 
+                Height="330" 
+                Margin="10" 
+                HorizontalAlignment="Left" 
+                MouseWheel="ModeBorder_MouseWheel" 
+                Style="{StaticResource ResourceKey=PaleBorder}" >
+            <StackPanel Name="ModePanel" 
+                        Orientation="Vertical" 
+                        Background="Transparent">
+                <local:ModeTile Text="Перемещение" Image="Icons/BlackOutline/icons8-hand-64.png"/>
+                <local:ModeTile Text="Связи" Image="Icons/BlackOutline/icons8-advance-64.png"/>
+                <local:ModeTile Text="Маршруты" Image="Icons/BlackOutline/icons8-squiggly-arrow-64.png"/>
+                <local:ModeTile Text="Холсты" Image="Icons/BlackOutline/icons8-drag-64.png"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Меню объектов сверху -->
+        <Border Name="ObjectBorder" 
+                Width="700" 
+                Height="100" 
+                Margin="10" 
+                VerticalAlignment="Top"
+                MouseWheel="ObjectBorder_MouseWheel"
+                Style="{StaticResource ResourceKey=PaleBorder}" >
+            <StackPanel Name="ObjectPanel"
+                        Orientation="Horizontal" 
+                        AllowDrop="True" 
+                        Drop="ObjectPanel_Drop"
+                        Background="Transparent">
+                <local:ObjectTile Text="Сотрудник" Image="Icons/BlackOutline/icons8-worker-64.png"/>
+                <local:ObjectTile Text="Золото" Image="Icons/BlackOutline/icons8-gold-bars-64.png"/>
+                <local:ObjectTile Text="Алмаз" Image="Icons/BlackOutline/icons8-jewel-64.png"/>
+                <local:ObjectTile Text="Станок" Image="Icons/BlackOutline/icons8-hammer-and-anvil-64.png"/>
+                <local:ObjectTile Text="Механизм" Image="Icons/BlackOutline/icons8-gear-64.png"/>
+                <local:ObjectTile Text="Манипулятор" Image="Icons/BlackOutline/icons8-robot-64.png"/>
+                <local:ObjectTile Text="Тележка" Image="Icons/BlackOutline/icons8-mine-cart-64.png"/>
+                <local:ObjectTile Text="Погрузчик" Image="Icons/BlackOutline/icons8-fork-lift-64.png"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Меню очистки в углу -->
+        <Border Name="ClearBorder" 
+                Width="100" 
+                Height="100" 
+                Margin="10" 
+                VerticalAlignment="Bottom" 
+                HorizontalAlignment="Left"
+                Style="{StaticResource ResourceKey=PaleBorder}" >
+            <StackPanel Name="ClearPanel"          
+                        Style="{StaticResource ResourceKey=SquarePanel}" >
+                <local:ModeTile Text="Очистить" Image="Icons/BlackOutline/icons8-eraser-64.png" MouseLeftButtonDown="ModeTile_MouseLeftButtonDown"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Меню информации в углу -->
+        <Border Name="InfoBorder" 
+                Width="100" 
+                Height="100" 
+                Margin="10" 
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Right"
+                Style="{StaticResource ResourceKey=PaleBorder}" >
+            <StackPanel Name="InfoPanel"
+                        Style="{StaticResource ResourceKey=SquarePanel}">
+                <local:ModeTile Text="Документация" Image="Icons/BlackOutline/icons8-book-64.png"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Палитра цветов -->
+        <Border Name="ColorBorder"
+                Width="35.5"
+                Height="400" 
+                Margin="0,10,10,10"            
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom"
+                MouseWheel="ColorBorder_MouseWheel" 
+                Style="{StaticResource ResourceKey=PaleBorder}">
+            <StackPanel Name="ColorPanel" 
+                        Orientation="Vertical"
+                        Background="Transparent" 
+                        VerticalAlignment="Bottom">
+                <hw:ColorPicker Name="ColorPalette" 
+                                Margin="10"
+                                HideColorPalette="False" 
+                                HideRGBComponents="True"
+                                ShowMiniInfo="True" 
+                                MouseLeftButtonUp="ColorPicker_MouseLeftButtonUp"/>
+            </StackPanel>
+        </Border>
+
+
+    </Grid>
+</Window>
