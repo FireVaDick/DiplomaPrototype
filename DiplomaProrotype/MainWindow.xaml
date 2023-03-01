@@ -60,16 +60,16 @@
             <StackPanel Name="ModePanel" 
                         Orientation="Vertical" 
                         Background="Transparent">
-                <local:ModeTile Text="Перемещение" Image="Icons/BlackOutline/icons8-hand-64.png"/>
-                <local:ModeTile Text="Связи" Image="Icons/BlackOutline/icons8-advance-64.png"/>
-                <local:ModeTile Text="Маршруты" Image="Icons/BlackOutline/icons8-squiggly-arrow-64.png"/>
-                <local:ModeTile Text="Холсты" Image="Icons/BlackOutline/icons8-drag-64.png"/>
+                <local:ModeTile Text="Перемещение" Image="Icons/x128/Hand128.png"/>
+                <local:ModeTile Text="Связи" Image="Icons/x128/Arrow128.png"/>
+                <local:ModeTile Text="Маршруты" Image="Icons/x128/Route128.png"/>
+                <local:ModeTile Text="Холсты" Image="Icons/x128/Canvas128.png"/>
             </StackPanel>
         </Border>
 
         <!-- Меню объектов сверху -->
         <Border Name="ObjectBorder" 
-                Width="700" 
+                Width="610" 
                 Height="100" 
                 Margin="10" 
                 VerticalAlignment="Top"
@@ -80,14 +80,13 @@
                         AllowDrop="True" 
                         Drop="ObjectPanel_Drop"
                         Background="Transparent">
-                <local:ObjectTile Text="Сотрудник" Image="Icons/BlackOutline/icons8-worker-64.png"/>
-                <local:ObjectTile Text="Золото" Image="Icons/BlackOutline/icons8-gold-bars-64.png"/>
-                <local:ObjectTile Text="Алмаз" Image="Icons/BlackOutline/icons8-jewel-64.png"/>
-                <local:ObjectTile Text="Станок" Image="Icons/BlackOutline/icons8-hammer-and-anvil-64.png"/>
-                <local:ObjectTile Text="Механизм" Image="Icons/BlackOutline/icons8-gear-64.png"/>
-                <local:ObjectTile Text="Манипулятор" Image="Icons/BlackOutline/icons8-robot-64.png"/>
-                <local:ObjectTile Text="Тележка" Image="Icons/BlackOutline/icons8-mine-cart-64.png"/>
-                <local:ObjectTile Text="Погрузчик" Image="Icons/BlackOutline/icons8-fork-lift-64.png"/>
+                <local:ResourceTile Text="Задел"/>
+                <local:ObjectTile Text="Сотрудник" Image="Icons/x128/Worker128.png"/>
+                <local:ObjectTile Text="Токарный" Image="Icons/x128/Lathe128.png"/>
+                <local:ObjectTile Text="Сварочный" Image="Icons/x128/Welding128.png"/>
+                <local:ObjectTile Text="Фрезерный" Image="Icons/x128/Milling128.png"/>
+                <local:ObjectTile Text="Тележка" Image="Icons/x128/Trolley128.png"/>
+                <local:ObjectTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/>
             </StackPanel>
         </Border>
         
@@ -101,7 +100,7 @@
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="ClearPanel"          
                         Style="{StaticResource ResourceKey=SquarePanel}" >
-                <local:ModeTile Text="Очистить" Image="Icons/BlackOutline/icons8-eraser-64.png" MouseLeftButtonDown="ModeTile_MouseLeftButtonDown"/>
+                <local:ModeTile Text="Очистить" Image="Icons/x128/Eraser128.png" MouseLeftButtonDown="ModeTile_MouseLeftButtonDown"/>
             </StackPanel>
         </Border>
         
@@ -115,7 +114,7 @@
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="InfoPanel"
                         Style="{StaticResource ResourceKey=SquarePanel}">
-                <local:ModeTile Text="Документация" Image="Icons/BlackOutline/icons8-book-64.png"/>
+                <local:ModeTile Text="Документация" Image="Icons/x128/Book128.png"/>
             </StackPanel>
         </Border>
 

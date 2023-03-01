@@ -9,8 +9,10 @@
     <Border>
         <Grid>
             <Image Name="ObjectImage" Source="{Binding Image}" Height="50" Width="50" Stretch="Uniform" VerticalAlignment="Top"/>
+            <ProgressBar Name="ObjectProgress" Height="5" Minimum="0" Maximum="100" VerticalAlignment="Bottom" Visibility="Hidden"/>
             <TextBlock Name="ObjectText" Text="{Binding Text}" VerticalAlignment="Bottom" FontSize="11" TextAlignment="Center"/>
             <TextBlock Name="ObjectId" Text="{Binding Id}"  VerticalAlignment="Bottom" FontSize="11" TextAlignment="Center" Visibility="Hidden"/>
+
         </Grid>
     </Border>
 </UserControl>
