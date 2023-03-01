@@ -16,7 +16,7 @@
 
             <!-- The Button that is animated across the screen by animating
          the MatrixTransform applied to the button. -->
-            <Button MinWidth="100" Content="A Button">
+            <Button MinWidth="100" Content="A Button" Name ="button1">
                 <Button.RenderTransform>
                     <MatrixTransform x:Name="ButtonMatrixTransform" />
                 </Button.RenderTransform>
@@ -28,7 +28,7 @@
                                     Name="TargetAnimation"
                 Storyboard.TargetName="ButtonMatrixTransform"
                 Storyboard.TargetProperty="Matrix"
-                Duration="0:0:15" 
+                Duration="0:0:3" 
                 RepeatBehavior="Forever" >
                                     <MatrixAnimationUsingPath.PathGeometry>
                                         <PathGeometry x:Name="TargetPathGeometry"  

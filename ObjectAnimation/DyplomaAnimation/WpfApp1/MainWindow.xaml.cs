@@ -43,21 +43,44 @@ namespace WpfApp1
             PathFigure pFigure = new PathFigure(); //Создание фигуры,описывающей движение анимации
             pFigure.StartPoint = new Point(35, 0); //Стартовая точка анимации
 
-            for (int i = 0; i < points.Count; i++) 
-            {
+            //for (int i = 0; i < points.Count; i++) 
+            //{
 
-                int X = (int)points[i].X;
-                int Y = (int)points[i].Y;
-                LineSegment lineSegment = new() //Создание линии с координатами конечной точки
-                {
-                    Point = new Point(X, Y)
-                };
-                pFigure.Segments.Add(lineSegment); //Добавление линии к фигуре,описывающей движение
-            }
+            //    int X = (int)points[i].X;
+            //    int Y = (int)points[i].Y;
+            //    LineSegment lineSegment = new() //Создание линии с координатами конечной точки
+            //    {
+            //        Point = new Point(X, Y)
+            //    };
+            //    pFigure.Segments.Add(lineSegment); //Добавление линии к фигуре,описывающей движение
+            //}
+            LineSegment lineSegment = new LineSegment()
+            {
+                Point = new Point(points[0].X, points[0].Y)
+            };
+
+            pFigure.Segments.Add(lineSegment);
+
 
             TargetPathGeometry.Figures.Clear(); //Очистка массива фигур на случай предыдущих данных
 
             TargetPathGeometry.Figures.Add(pFigure); //Добавление фигуры в качестве пути движения
+
+           
+
+            lineSegment = new LineSegment()
+            {
+                Point = new Point(points[2].X, points[2].Y)
+            };
+
+            pFigure.Segments.Add(lineSegment);
+
+
+            TargetPathGeometry.Figures.Clear();
+
+            TargetPathGeometry.Figures.Add(pFigure);
+
+
 
         }
     }
