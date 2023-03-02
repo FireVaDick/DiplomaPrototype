@@ -8,9 +8,12 @@
              Height="70" Width="75" Margin="10,10,0,10" VerticalAlignment="Center" HorizontalAlignment="Center">
     <Border>
         <Grid>
+            <Ellipse Name="ObjectIndicator" Fill="White" StrokeThickness="2" Stroke="Black" Width="20" Height="20" VerticalAlignment="Top" Visibility="Hidden"/>
             <Image Name="ObjectImage" Source="{Binding Image}" Height="50" Width="50" Stretch="Uniform" VerticalAlignment="Top"/>
+            <ProgressBar Name="ObjectProgress" Height="5" Minimum="0" Maximum="100" VerticalAlignment="Bottom" Visibility="Hidden"/>
             <TextBlock Name="ObjectText" Text="{Binding Text}" VerticalAlignment="Bottom" FontSize="11" TextAlignment="Center"/>
             <TextBlock Name="ObjectId" Text="{Binding Id}"  VerticalAlignment="Bottom" FontSize="11" TextAlignment="Center" Visibility="Hidden"/>
+
         </Grid>
     </Border>
 </UserControl>
