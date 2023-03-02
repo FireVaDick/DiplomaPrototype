@@ -8,7 +8,7 @@
              Height="70" Width="75" Margin="10,10,0,10" VerticalAlignment="Center" HorizontalAlignment="Center">
     <Border>
         <Grid>
-            <Rectangle Name="ResourceFigure" Fill="White"  StrokeThickness="2" Stroke="Black" Width="30" Height="45" RadiusX="5" RadiusY="5" Margin="5" VerticalAlignment="Top"/>
+            <Rectangle Name="ResourceFigure" Fill="White" StrokeThickness="2" Stroke="Black" Width="30" Height="45" RadiusX="5" RadiusY="5" Margin="5" VerticalAlignment="Top"/>
             <TextBlock Name="ResourceText" Text="{Binding Text}" VerticalAlignment="Bottom" FontSize="11" TextAlignment="Center"/>
             <TextBlock Name="ResourceId" Text="{Binding Id}"  VerticalAlignment="Bottom" FontSize="11" TextAlignment="Center" Visibility="Hidden"/>
         </Grid>

@@ -7,7 +7,7 @@
         xmlns:hm="http://schemas.hpod9.com/haley/mvvm"
         xmlns:local="clr-namespace:DiplomaProrotype"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="1300">
+        Title="MainWindow" Height="735" Width="1100">
     <Window.Resources>
         <Style TargetType="Border" x:Key="PaleBorder">
             <Setter Property="Background" Value="#FFFBFDFF" />
@@ -38,8 +38,8 @@
 
         <!-- Целевой холст -->
         <Border Name="TargetBorder"
-                Height="300"
-                Width="500"        
+                Height="500"
+                Width="770"        
                 Margin="0,100,0,0" 
                 Style="{StaticResource ResourceKey=PaleBorder}">
             <Canvas Name="TargetCanvas" 
@@ -89,7 +89,7 @@
                 <local:ObjectTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/>
             </StackPanel>
         </Border>
-        
+
         <!-- Меню очистки в углу -->
         <Border Name="ClearBorder" 
                 Width="100" 
