@@ -16,23 +16,13 @@ using System.Windows.Shapes;
 namespace DiplomaProrotype
 {
     /// <summary>
-    /// Interaction logic for ObjectTile.xaml
+    /// Логика взаимодействия для ResourceTile.xaml
     /// </summary>
-    public partial class ObjectTile : UserControl
+    public partial class ResourceTile : UserControl
     {
         #region Свойства
-        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image",
-            typeof(ImageSource), typeof(ObjectTile), new PropertyMetadata(null));
-
-        public ImageSource Image
-        {
-            get { return (ImageSource)GetValue(ImageProperty); }
-            set { SetValue(ImageProperty, value); }
-        }
-
-
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text",
-            typeof(string), typeof(ObjectTile), new PropertyMetadata(null));
+            typeof(string), typeof(ResourceTile), new PropertyMetadata(null));
 
         public string Text
         {
@@ -42,7 +32,7 @@ namespace DiplomaProrotype
 
 
         public static readonly DependencyProperty IdProperty = DependencyProperty.Register("Id",
-            typeof(int), typeof(ObjectTile), new PropertyMetadata(null));
+            typeof(int), typeof(ResourceTile), new PropertyMetadata(null));
 
         public int Id
         {
@@ -52,12 +42,11 @@ namespace DiplomaProrotype
         #endregion
 
 
-        public ObjectTile()
+        public ResourceTile()
         {
             InitializeComponent();
             DataContext = this;
         }
-
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -67,5 +56,6 @@ namespace DiplomaProrotype
                 DragDrop.DoDragDrop(this, this, DragDropEffects.Move);
             }
         }
+
     }
 }

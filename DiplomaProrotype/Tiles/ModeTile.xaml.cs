@@ -21,7 +21,6 @@ namespace DiplomaProrotype
     public partial class ModeTile : UserControl
     {
         #region Свойства
-
         public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image",
             typeof(ImageSource), typeof(ModeTile), new PropertyMetadata(null));
 
@@ -40,7 +39,6 @@ namespace DiplomaProrotype
             get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
         }
-
         #endregion
 
 

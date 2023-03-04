@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Icons\Default\**" />
+    <EmbeddedResource Remove="Icons\Default\**" />
+    <None Remove="Icons\Default\**" />
+    <Page Remove="Icons\Default\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Icons\BlackMaterial\icons8-advance-48.png" />
     <None Remove="Icons\BlackMaterial\icons8-automation-48.png" />
     <None Remove="Icons\BlackMaterial\icons8-cancel-48.png" />
@@ -51,6 +58,7 @@
     <None Remove="Icons\BlackOutline\icons8-book-64.png" />
     <None Remove="Icons\BlackOutline\icons8-bookmark-64.png" />
     <None Remove="Icons\BlackOutline\icons8-checklist-64.png" />
+    <None Remove="Icons\BlackOutline\icons8-circle-64.png" />
     <None Remove="Icons\BlackOutline\icons8-circular-arrows-64.png" />
     <None Remove="Icons\BlackOutline\icons8-clock-64.png" />
     <None Remove="Icons\BlackOutline\icons8-color-dropper-64.png" />
@@ -92,10 +100,36 @@
     <None Remove="Icons\BlackOutline\icons8-return-64.png" />
     <None Remove="Icons\BlackOutline\icons8-robot-64.png" />
     <None Remove="Icons\BlackOutline\icons8-search-64.png" />
+    <None Remove="Icons\BlackOutline\icons8-square-64.png" />
     <None Remove="Icons\BlackOutline\icons8-squiggly-arrow-64.png" />
     <None Remove="Icons\BlackOutline\icons8-swap-64.png" />
     <None Remove="Icons\BlackOutline\icons8-trash-can-64.png" />
     <None Remove="Icons\BlackOutline\icons8-worker-64.png" />
+    <None Remove="Icons\x128\Animate128.png" />
+    <None Remove="Icons\x128\Animate32.png" />
+    <None Remove="Icons\x128\Arrow128.png" />
+    <None Remove="Icons\x128\Book128.png" />
+    <None Remove="Icons\x128\Brush128.png" />
+    <None Remove="Icons\x128\Brush32.png" />
+    <None Remove="Icons\x128\Canvas128.png" />
+    <None Remove="Icons\x128\Circle128.png" />
+    <None Remove="Icons\x128\Clock128.png" />
+    <None Remove="Icons\x128\Delete128.png" />
+    <None Remove="Icons\x128\Delete32.png" />
+    <None Remove="Icons\x128\Drilling128.png" />
+    <None Remove="Icons\x128\Eraser128.png" />
+    <None Remove="Icons\x128\Forklift128.png" />
+    <None Remove="Icons\x128\Hand128.png" />
+    <None Remove="Icons\x128\Lathe128.png" />
+    <None Remove="Icons\x128\Milling128.png" />
+    <None Remove="Icons\x128\Pencil128.png" />
+    <None Remove="Icons\x128\Pencil32.png" />
+    <None Remove="Icons\x128\Press128.png" />
+    <None Remove="Icons\x128\Route128.png" />
+    <None Remove="Icons\x128\Square128.png" />
+    <None Remove="Icons\x128\Trolley128.png" />
+    <None Remove="Icons\x128\Welding128.png" />
+    <None Remove="Icons\x128\Worker128.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -151,6 +185,7 @@
     <Resource Include="Icons\BlackOutline\icons8-book-64.png" />
     <Resource Include="Icons\BlackOutline\icons8-bookmark-64.png" />
     <Resource Include="Icons\BlackOutline\icons8-checklist-64.png" />
+    <Resource Include="Icons\BlackOutline\icons8-circle-64.png" />
     <Resource Include="Icons\BlackOutline\icons8-circular-arrows-64.png" />
     <Resource Include="Icons\BlackOutline\icons8-clock-64.png" />
     <Resource Include="Icons\BlackOutline\icons8-color-dropper-64.png" />
@@ -192,10 +227,36 @@
     <Resource Include="Icons\BlackOutline\icons8-return-64.png" />
     <Resource Include="Icons\BlackOutline\icons8-robot-64.png" />
     <Resource Include="Icons\BlackOutline\icons8-search-64.png" />
+    <Resource Include="Icons\BlackOutline\icons8-square-64.png" />
     <Resource Include="Icons\BlackOutline\icons8-squiggly-arrow-64.png" />
     <Resource Include="Icons\BlackOutline\icons8-swap-64.png" />
     <Resource Include="Icons\BlackOutline\icons8-trash-can-64.png" />
     <Resource Include="Icons\BlackOutline\icons8-worker-64.png" />
+    <Resource Include="Icons\x128\Animate128.png" />
+    <Resource Include="Icons\x128\Animate32.png" />
+    <Resource Include="Icons\x128\Arrow128.png" />
+    <Resource Include="Icons\x128\Book128.png" />
+    <Resource Include="Icons\x128\Brush128.png" />
+    <Resource Include="Icons\x128\Brush32.png" />
+    <Resource Include="Icons\x128\Canvas128.png" />
+    <Resource Include="Icons\x128\Circle128.png" />
+    <Resource Include="Icons\x128\Clock128.png" />
+    <Resource Include="Icons\x128\Delete128.png" />
+    <Resource Include="Icons\x128\Delete32.png" />
+    <Resource Include="Icons\x128\Drilling128.png" />
+    <Resource Include="Icons\x128\Eraser128.png" />
+    <Resource Include="Icons\x128\Forklift128.png" />
+    <Resource Include="Icons\x128\Hand128.png" />
+    <Resource Include="Icons\x128\Lathe128.png" />
+    <Resource Include="Icons\x128\Milling128.png" />
+    <Resource Include="Icons\x128\Pencil128.png" />
+    <Resource Include="Icons\x128\Pencil32.png" />
+    <Resource Include="Icons\x128\Press128.png" />
+    <Resource Include="Icons\x128\Route128.png" />
+    <Resource Include="Icons\x128\Square128.png" />
+    <Resource Include="Icons\x128\Trolley128.png" />
+    <Resource Include="Icons\x128\Welding128.png" />
+    <Resource Include="Icons\x128\Worker128.png" />
   </ItemGroup>
 
 </Project>
