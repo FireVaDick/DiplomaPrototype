@@ -16,13 +16,13 @@ using System.Windows.Shapes;
 namespace DiplomaProrotype
 {
     /// <summary>
-    /// Interaction logic for ObjectTile.xaml
+    /// Interaction logic for MachineTile.xaml
     /// </summary>
-    public partial class ObjectTile : UserControl
+    public partial class MachineTile : UserControl
     {
         #region Свойства
         public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image",
-            typeof(ImageSource), typeof(ObjectTile), new PropertyMetadata(null));
+            typeof(ImageSource), typeof(MachineTile), new PropertyMetadata(null));
 
         public ImageSource Image
         {
@@ -32,7 +32,7 @@ namespace DiplomaProrotype
 
 
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text",
-            typeof(string), typeof(ObjectTile), new PropertyMetadata(null));
+            typeof(string), typeof(MachineTile), new PropertyMetadata(null));
 
         public string Text
         {
@@ -42,7 +42,7 @@ namespace DiplomaProrotype
 
 
         public static readonly DependencyProperty IdProperty = DependencyProperty.Register("Id",
-            typeof(int), typeof(ObjectTile), new PropertyMetadata(null));
+            typeof(int), typeof(MachineTile), new PropertyMetadata(null));
 
         public int Id
         {
@@ -52,7 +52,7 @@ namespace DiplomaProrotype
         #endregion
 
 
-        public ObjectTile()
+        public MachineTile()
         {
             InitializeComponent();
             DataContext = this;

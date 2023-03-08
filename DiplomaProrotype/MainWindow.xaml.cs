@@ -31,22 +31,21 @@ namespace DiplomaProrotype
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
-        List<ObjectTile> objectTiles = new List<ObjectTile>();
+    {        
         List<ResourceTile> resourceTiles = new List<ResourceTile>();
-        ModeTile[] modeTileArray = new ModeTile[4];
-        ObjectTile[] objectTileArray = new ObjectTile[6];
+        List<MachineTile> machineTiles = new List<MachineTile>();
+        List<MovableTile> movableTiles = new List<MovableTile>();
+      
+        private ResourceTile resourceTileContextMenu;
+        private MachineTile machineTileContextMenu;
+        private MovableTile movableTileContextMenu;
 
-        private bool materialIconStyle = true;
         private int tilesCounter = 0;
         private string lastTileType = "";
-
         private bool modeBorderOpen = true;
         private bool objectBorderOpen = true;
         private bool colorBorderOpen = false;
 
-        private ObjectTile objectTileContextMenu;
-        private ResourceTile resourceTileContextMenu;
 
         public MainWindow()
         {
@@ -71,31 +70,14 @@ namespace DiplomaProrotype
         #region Перемещение объекта
         private void TargetCanvas_Drop(object sender, DragEventArgs e)
         {
-            var objectData = e.Data.GetData(typeof(ObjectTile)) as ObjectTile;
             var resourceData = e.Data.GetData(typeof(ResourceTile)) as ResourceTile;
+            var machineData = e.Data.GetData(typeof(MachineTile)) as MachineTile;
+            var movableData = e.Data.GetData(typeof(MovableTile)) as MovableTile;
 
             Point dropPosition = e.GetPosition(TargetCanvas);
 
-            // Манипуляции с objectData
-            if (resourceData is null) 
-            {
-                if (objectData.Parent is StackPanel)
-                {
-                    CreateObjectTile(objectData, dropPosition);
-                }
-
-                if (objectData.Parent is Canvas)
-                {
-                    if (objectTiles.Contains(objectData))
-                    {
-                        Canvas.SetLeft(objectData, dropPosition.X - objectData.Width / 2 - 7.5);
-                        Canvas.SetTop(objectData, dropPosition.Y - objectData.Height / 2 - 2.5);
-                    }
-                }
-            }
-
             // Манипуляции с resourceData
-            else if (objectData is null)
+            if (machineData is null && movableData is null)
             {
                 if (resourceData.Parent is StackPanel)
                 {
@@ -111,6 +93,42 @@ namespace DiplomaProrotype
                     }
                 }
             }
+
+            // Манипуляции с machineData
+            if (resourceData is null && movableData is null)
+            {
+                if (machineData.Parent is StackPanel)
+                {
+                    CreateMachineTile(machineData, dropPosition);
+                }
+
+                if (machineData.Parent is Canvas)
+                {
+                    if (machineTiles.Contains(machineData))
+                    {
+                        Canvas.SetLeft(machineData, dropPosition.X - machineData.Width / 2 - 7.5);
+                        Canvas.SetTop(machineData, dropPosition.Y - machineData.Height / 2 - 2.5);
+                    }
+                }
+            }
+
+            // Манипуляции с movableData
+            if (resourceData is null && machineData is null)
+            {
+                if (movableData.Parent is StackPanel)
+                {
+                    CreateMovableTile(movableData, dropPosition);
+                }
+
+                if (movableData.Parent is Canvas)
+                {
+                    if (movableTiles.Contains(movableData))
+                    {
+                        Canvas.SetLeft(movableData, dropPosition.X - movableData.Width / 2 - 10);
+                        Canvas.SetTop(movableData, dropPosition.Y - movableData.Height / 2 - 2.5);
+                    }
+                }
+            }
         }
 
         private void TargetCanvas_DragOver(object sender, DragEventArgs e)
@@ -118,75 +136,29 @@ namespace DiplomaProrotype
 
         private void ObjectPanel_Drop(object sender, DragEventArgs e)
         {
-            var objectData = e.Data.GetData(typeof(ObjectTile)) as ObjectTile;
             var resourceData = e.Data.GetData(typeof(ResourceTile)) as ResourceTile;
-
-            if (!(objectData is null) && objectData.Parent is StackPanel == false)
-            {
-                ((Canvas)(objectData.Parent)).Children.Remove(objectData);
-            }
+            var machineData = e.Data.GetData(typeof(MachineTile)) as MachineTile;
+            var movableData = e.Data.GetData(typeof(MovableTile)) as MovableTile;
 
             if (!(resourceData is null) && resourceData.Parent is StackPanel == false)
             {
                 ((Canvas)(resourceData.Parent)).Children.Remove(resourceData);
             }
-        }
 
-        /* private void MyGrid_DragOver(object sender, DragEventArgs e) // Перемещение холста
-        {
-            Point dropPosition = e.GetPosition(MyGrid);
-
-            TargetBorder.Margin = new Thickness(dropPosition.X - TargetBorder.Width, 
-                dropPosition.Y - TargetBorder.Height, 0, 0);
-        }
-
-        private void TargetCanvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (!(machineData is null) && machineData.Parent is StackPanel == false)
             {
-                DragDrop.DoDragDrop(this, this, DragDropEffects.Move);
+                ((Canvas)(machineData.Parent)).Children.Remove(machineData);
             }
-        } */
 
+            if (!(movableData is null) && movableData.Parent is StackPanel == false)
+            {
+                ((Canvas)(movableData.Parent)).Children.Remove(movableData);
+            }
+        }
         #endregion
 
 
         #region Создание экземпляров
-        private void CreateObjectTile(ObjectTile objectData, Point dropPosition)
-        {
-            var objectTile = new ObjectTile();
-            tilesCounter++;
-
-            objectTile.Image = objectData.Image;
-            objectTile.Text = objectData.Text;
-            objectTile.Id = tilesCounter;
-
-            CreateObjectContextMenu(objectTile);
-            objectTiles.Add(objectTile);
-
-            Canvas.SetLeft(objectTile, dropPosition.X - objectTile.Width / 2 - 7.5);
-            Canvas.SetTop(objectTile, dropPosition.Y - objectTile.Height / 2 - 25);
-        
-            objectTile.ObjectImage.Margin = new Thickness(0, 25, 0, 0);          
-            objectTile.ObjectProgress.Margin = new Thickness(10, 0, 10, 30);
-            objectTile.ObjectText.Margin = new Thickness(0, 0, 0, 15);
-
-            objectTile.ObjectIndicator.Visibility = Visibility.Visible;
-            objectTile.ObjectProgress.Visibility = Visibility.Visible;
-            objectTile.ObjectId.Visibility = Visibility.Visible;
-            objectTile.Height = 115;
-
-            lastTileType = "object";
-            TargetCanvas.Children.Add(objectTile);
-            
-            if (objectTile.Text != "Сотрудник" && objectTile.Text != "Тележка" && objectTile.Text != "Погрузчик") // Добавление задела после каждого станка
-            {
-                dropPosition.X += 70;
-                CreateResourceTile(dropPosition);
-            }
-        }
-
         private void CreateResourceTile(Point dropPosition)
         {
             var resourceTile = new ResourceTile();
@@ -208,20 +180,321 @@ namespace DiplomaProrotype
             lastTileType = "resource";
             TargetCanvas.Children.Add(resourceTile);
         }
+
+        private void CreateMachineTile(MachineTile machineData, Point dropPosition)
+        {
+            var machineTile = new MachineTile();
+            tilesCounter++;
+
+            machineTile.Image = machineData.Image;
+            machineTile.Text = machineData.Text;
+            machineTile.Id = tilesCounter;
+
+            CreateMachineContextMenu(machineTile);
+            machineTiles.Add(machineTile);
+
+            Canvas.SetLeft(machineTile, dropPosition.X - machineTile.Width / 2 - 7.5);
+            Canvas.SetTop(machineTile, dropPosition.Y - machineTile.Height / 2 - 25);
+
+            machineTile.MachineImage.Margin = new Thickness(0, 25, 0, 0);
+            machineTile.MachineProgress.Margin = new Thickness(10, 0, 10, 30);
+            machineTile.MachineText.Margin = new Thickness(0, 0, 0, 15);
+
+            machineTile.MachineIndicator.Visibility = Visibility.Visible;
+            machineTile.MachineProgress.Visibility = Visibility.Visible;
+            machineTile.MachineId.Visibility = Visibility.Visible;
+            machineTile.Height = 115;
+
+            lastTileType = "machine";
+            TargetCanvas.Children.Add(machineTile);
+
+            if (machineTile.Text != "Сотрудник" && machineTile.Text != "Тележка" && machineTile.Text != "Погрузчик") // Добавление задела после каждого станка
+            {
+                dropPosition.X += 70;
+                CreateResourceTile(dropPosition);
+            }
+        }
+
+        private void CreateMovableTile(MovableTile movableData, Point dropPosition)
+        {
+            var movableTile = new MovableTile();
+            tilesCounter++;
+
+            movableTile.Image = movableData.Image;
+            movableTile.Text = movableData.Text;
+            movableTile.Id = tilesCounter;
+
+            CreateMovableContextMenu(movableTile);
+            movableTiles.Add(movableTile);
+
+            Canvas.SetLeft(movableTile, dropPosition.X - movableTile.Width / 2 - 10);
+            Canvas.SetTop(movableTile, dropPosition.Y - movableTile.Height / 2 - 22.5);
+
+            movableTile.MovableImage.Margin = new Thickness(0, 25, 0, 0);
+            movableTile.MovableText.Margin = new Thickness(0, 0, 0, 15);
+
+            movableTile.MovableIndicator.Visibility = Visibility.Visible;
+            movableTile.MovableId.Visibility = Visibility.Visible;
+            movableTile.Height = 110;
+
+            lastTileType = "movable";
+            TargetCanvas.Children.Add(movableTile);
+        }
         #endregion 
 
 
         #region Динамическая передача цвета последнему размещённому элементу
         private void ColorPicker_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            /*if (lastTileType == "object")
-            {
-                objectTiles[objectTiles.Count - 1].Background = ColorPalette.SelectedBrush;
-            }*/
-
             if (lastTileType == "resource")
             {
                 resourceTiles[resourceTiles.Count - 1].ResourceFigure.Fill = ColorPalette.SelectedBrush;
+            }
+
+            /*if (lastTileType == "machine")
+            {
+                machineTiles[machineTiles.Count - 1].Background = ColorPalette.SelectedBrush;
+            }*/
+
+            /*if (lastTileType == "movable")
+            {
+                movableTiles[movableTiles.Count - 1].Background = ColorPalette.SelectedBrush;
+            }*/
+        }
+        #endregion
+
+
+        #region Контекстное меню
+        private void CreateResourceContextMenu(ResourceTile resourceTile)
+        {
+            var contextMenu = new ContextMenu();
+            var sep = new Separator(); // Разделитель
+
+            resourceTile.ContextMenu = contextMenu;
+            DefaultContextMenu(contextMenu);
+        }
+
+        private void CreateMachineContextMenu(MachineTile machineTile)
+        {
+            var contextMenu = new ContextMenu();
+            var sep = new Separator(); // Разделитель
+
+            machineTile.ContextMenu = contextMenu;
+            DefaultContextMenu(contextMenu);
+        }
+
+        private void CreateMovableContextMenu(MovableTile movableTile)
+        {
+            var contextMenu = new ContextMenu();
+            var sep = new Separator(); // Разделитель
+
+            movableTile.ContextMenu = contextMenu;
+            DefaultContextMenu(contextMenu);
+        }
+
+        private void DefaultContextMenu(ContextMenu contextMenu)
+        {
+            var menuItemAnima = new MenuItem();
+            Image imageAnima = new Image();
+            imageAnima.Source = new BitmapImage(new Uri("/Icons/x128/Animate32.png", UriKind.Relative));
+            menuItemAnima.Icon = imageAnima;
+            menuItemAnima.Click += new RoutedEventHandler(CMAnimate_Click);
+            menuItemAnima.Header = "Анимировать";
+
+            var menuItemEdit = new MenuItem();
+            Image imageEdit = new Image();
+            imageEdit.Source = new BitmapImage(new Uri("/Icons/x128/Pencil32.png", UriKind.Relative));
+            menuItemEdit.Icon = imageEdit;
+            menuItemEdit.Header = "Редактировать";
+
+            var menuItemColor = new MenuItem();
+            Image imageColor = new Image();
+            imageColor.Source = new BitmapImage(new Uri("/Icons/x128/Brush32.png", UriKind.Relative));
+            menuItemColor.Icon = imageColor;
+            menuItemColor.Click += new RoutedEventHandler(CMChangeColor_Click);
+            menuItemColor.Header = "Выбрать цвет";
+
+            var menuItemDelete = new MenuItem();
+            Image imageDelete = new Image();
+            imageDelete.Source = new BitmapImage(new Uri("/Icons/x128/Delete32.png", UriKind.Relative));
+            menuItemDelete.Icon = imageDelete;
+            menuItemDelete.Click += new RoutedEventHandler(CMDelete_Click);
+            menuItemDelete.Header = "Удалить";
+
+            /*var menuItemEditSomething = new MenuItem();
+            menuItemEditSomething.Header = "Настроить что-то";
+            menuItemEdit.Items.Add(menuItemEditSomething);*/
+
+            contextMenu.Items.Add(menuItemAnima);
+            contextMenu.Items.Add(menuItemEdit);
+            contextMenu.Items.Add(menuItemColor);
+            contextMenu.Items.Add(menuItemDelete);
+        }
+        #endregion
+
+
+        #region Методы контекстного меню
+        private void GetTileFromContextMenu(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            while (menuItem.Parent is MenuItem)
+            {
+                menuItem = (MenuItem)menuItem.Parent;
+            }
+            var contextMenu = menuItem.Parent as ContextMenu;
+            
+            resourceTileContextMenu = contextMenu.PlacementTarget as ResourceTile;
+            machineTileContextMenu = contextMenu.PlacementTarget as MachineTile;
+            movableTileContextMenu = contextMenu.PlacementTarget as MovableTile;
+        }
+
+        private void CMAnimate_Click(object sender, RoutedEventArgs e)
+        {
+            GetTileFromContextMenu(sender, e);
+
+            if (machineTileContextMenu is null && movableTileContextMenu is null)
+            {
+                if (resourceTileContextMenu.ResourceFigure.Height == 45)
+                {
+                    ResourceHeightAnimation(45, 10, 3, new(0, 5, 0, 0), new(0, 40, 0, 0));
+                }
+                else
+                {
+                    ResourceHeightAnimation(10, 45, 3, new (0, 40, 0, 0), new (0, 5, 0, 0));
+                }
+            }
+
+            if (resourceTileContextMenu is null && movableTileContextMenu is null)
+            {
+                machineTileContextMenu.MachineIndicator.Fill = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
+
+                BackgroundWorker worker = new BackgroundWorker();
+                worker.WorkerReportsProgress = true;
+                worker.DoWork += worker_DoWork;
+                worker.ProgressChanged += worker_ProgressChanged;
+                worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+
+                worker.RunWorkerAsync();
+            }
+
+            /*if (resourceTileContextMenu is null && machineTileContextMenu is null)
+            {
+                movableTileContextMenu сделать анимацию движения
+            }*/
+        }
+
+        private void ResourceHeightAnimation(int from, int to, int time, Thickness inputMargin, Thickness outputMargin)
+        {
+            DoubleAnimation doubleAnimation = new DoubleAnimation();
+            ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
+
+            doubleAnimation.From = from;
+            doubleAnimation.To = to;
+            doubleAnimation.Duration = TimeSpan.FromSeconds(time);
+            resourceTileContextMenu.ResourceFigure.BeginAnimation(Button.HeightProperty, doubleAnimation);
+
+            thicknessAnimation.From = inputMargin;
+            thicknessAnimation.To = outputMargin;
+            thicknessAnimation.Duration = TimeSpan.FromSeconds(time);
+            resourceTileContextMenu.ResourceFigure.BeginAnimation(Button.MarginProperty, thicknessAnimation);
+        }
+
+        private void CMCopy_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CMChangeColor_Click(object sender, RoutedEventArgs e)
+        {
+            GetTileFromContextMenu(sender, e);
+
+            var dialog = new ColorPickerDialog();
+            dialog.ShowDialog();
+
+            if (resourceTiles.Contains(resourceTileContextMenu))
+            {
+                resourceTileContextMenu.ResourceFigure.Fill = dialog.SelectedBrush;
+            }
+
+            /*if (machineTiles.Contains(machineTileContextMenu))
+            {
+                machineTileContextMenu.Background = dialog.SelectedBrush;
+            }*/
+
+            /*if (mmovableTiles.Contains(movableTileContextMenu))
+            {
+                mmovableTileContextMenu.Background = dialog.SelectedBrush;
+            }*/
+        }
+
+        private void CMDelete_Click(object sender, RoutedEventArgs e)
+        {
+            GetTileFromContextMenu(sender, e);
+
+            if (resourceTiles.Contains(resourceTileContextMenu))
+            {
+                TargetCanvas.Children.Remove(resourceTileContextMenu);
+                resourceTiles.Remove(resourceTileContextMenu);
+            }
+
+            if (machineTiles.Contains(machineTileContextMenu))
+            {
+                TargetCanvas.Children.Remove(machineTileContextMenu);
+                machineTiles.Remove(machineTileContextMenu);
+            }
+
+            if (movableTiles.Contains(movableTileContextMenu))
+            {
+                TargetCanvas.Children.Remove(movableTileContextMenu);
+                movableTiles.Remove(movableTileContextMenu);
+            }
+        }
+        #endregion
+
+
+        #region Создание дополнительного потока BackgroundWorker
+        void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            for (int i = 0; i <= 100; ++i)
+            {
+                (sender as BackgroundWorker).ReportProgress(i);
+                Thread.Sleep(10);
+            }
+        }
+
+        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            machineTileContextMenu.MachineProgress.Value = e.ProgressPercentage;
+        }
+
+        void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            machineTileContextMenu.MachineIndicator.Fill = (SolidColorBrush)new BrushConverter().ConvertFromString("#DC143C");
+        }
+        #endregion
+
+
+        #region Очистка всего холста
+        private void ModeTile_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            tilesCounter = 0;
+
+            for (int i = 0; i < resourceTiles.Count;)
+            {
+                TargetCanvas.Children.Remove(resourceTiles[i]);
+                resourceTiles.Remove(resourceTiles[i]);
+            }
+
+            for (int i = 0; i < machineTiles.Count;)
+            {
+                TargetCanvas.Children.Remove(machineTiles[i]);
+                machineTiles.Remove(machineTiles[i]);
+            }
+
+            for (int i = 0; i < movableTiles.Count;)
+            {
+                TargetCanvas.Children.Remove(movableTiles[i]);
+                movableTiles.Remove(movableTiles[i]);
             }
         }
         #endregion
@@ -291,255 +564,9 @@ namespace DiplomaProrotype
         #endregion
 
 
-        #region Очистка всего холста
-        private void ModeTile_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            tilesCounter = 0;
-
-            for(int i = 0; i < objectTiles.Count;)
-            {           
-                TargetCanvas.Children.Remove(objectTiles[i]);
-                objectTiles.Remove(objectTiles[i]);
-            }
-
-            for (int i = 0; i < resourceTiles.Count;)
-            {
-                TargetCanvas.Children.Remove(resourceTiles[i]);
-                resourceTiles.Remove(resourceTiles[i]);
-            }
-        }
-        #endregion
-
-
-        #region Контекстное меню
-        private void CreateObjectContextMenu(ObjectTile objectTile)
-        {
-            var contextmenu = new ContextMenu();
-            var sep = new Separator(); // Разделитель
-
-            objectTile.ContextMenu = contextmenu;
-
-            var menuItemAnima = new MenuItem();
-            Image imageAnima = new Image();
-            imageAnima.Source = new BitmapImage(new Uri("/Icons/x128/Animate32.png", UriKind.Relative));
-            menuItemAnima.Icon = imageAnima;
-            menuItemAnima.Click += new RoutedEventHandler(CMAnimate_Click);
-            menuItemAnima.Header = "Анимировать";
-
-            var menuItemEdit = new MenuItem();
-            Image imageEdit = new Image();
-            imageEdit.Source = new BitmapImage(new Uri("/Icons/x128/Pencil32.png", UriKind.Relative));
-            menuItemEdit.Icon = imageEdit;
-            menuItemEdit.Header = "Редактировать";
-
-            var menuItemColor = new MenuItem();
-            Image imageColor = new Image();
-            imageColor.Source = new BitmapImage(new Uri("/Icons/x128/Brush32.png", UriKind.Relative));
-            menuItemColor.Icon = imageColor;
-            menuItemColor.Click += new RoutedEventHandler(CMChangeColor_Click);
-            menuItemColor.Header = "Выбрать цвет";
-
-            var menuItemDelete = new MenuItem();
-            Image imageDelete = new Image();
-            imageDelete.Source = new BitmapImage(new Uri("/Icons/x128/Delete32.png", UriKind.Relative));
-            menuItemDelete.Icon = imageDelete;
-            menuItemDelete.Click += new RoutedEventHandler(CMDelete_Click);
-            menuItemDelete.Header = "Удалить";
-
-            var menuItemEditSomething = new MenuItem();
-            menuItemEditSomething.Header = "Настроить что-то";
-            menuItemEdit.Items.Add(menuItemEditSomething);
-
-            contextmenu.Items.Add(menuItemAnima);
-            contextmenu.Items.Add(menuItemEdit);
-            contextmenu.Items.Add(menuItemColor);
-            contextmenu.Items.Add(menuItemDelete);
-        }
-
-        private void CreateResourceContextMenu(ResourceTile resourceTile)
-        {
-            var contextmenu = new ContextMenu();
-            var sep = new Separator(); // Разделитель
-
-            resourceTile.ContextMenu = contextmenu;
-
-            var menuItemAnima = new MenuItem();
-            Image imageAnima = new Image();
-            imageAnima.Source = new BitmapImage(new Uri("/Icons/x128/Animate32.png", UriKind.Relative));
-            menuItemAnima.Icon = imageAnima;
-            menuItemAnima.Click += new RoutedEventHandler(CMAnimate_Click);
-            menuItemAnima.Header = "Анимировать";
-
-            var menuItemEdit = new MenuItem();
-            Image imageEdit = new Image();
-            imageEdit.Source = new BitmapImage(new Uri("/Icons/x128/Pencil32.png", UriKind.Relative));
-            menuItemEdit.Icon = imageEdit;
-            menuItemEdit.Header = "Редактировать";
-
-            var menuItemColor = new MenuItem();
-            Image imageColor = new Image();
-            imageColor.Source = new BitmapImage(new Uri("/Icons/x128/Brush32.png", UriKind.Relative));
-            menuItemColor.Icon = imageColor;
-            menuItemColor.Click += new RoutedEventHandler(CMChangeColor_Click);
-            menuItemColor.Header = "Выбрать цвет";
-
-            var menuItemDelete = new MenuItem();
-            Image imageDelete = new Image();
-            imageDelete.Source = new BitmapImage(new Uri("/Icons/x128/Delete32.png", UriKind.Relative));
-            menuItemDelete.Icon = imageDelete;
-            menuItemDelete.Click += new RoutedEventHandler(CMDelete_Click);
-            menuItemDelete.Header = "Удалить";
-
-            var menuItemEditSomething = new MenuItem();
-            menuItemEditSomething.Header = "Настроить что-то";
-            menuItemEdit.Items.Add(menuItemEditSomething);
-
-            contextmenu.Items.Add(menuItemAnima);
-            contextmenu.Items.Add(menuItemEdit);
-            contextmenu.Items.Add(menuItemColor);
-            contextmenu.Items.Add(menuItemDelete);
-        }
-        #endregion
-
-
-        #region Методы контекстного меню
-
-
-        void worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            for (int i = 0; i <= 100; ++i)
-            {
-                (sender as BackgroundWorker).ReportProgress(i);
-                Thread.Sleep(10);
-            }
-        }
-
-        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            objectTileContextMenu.ObjectProgress.Value = e.ProgressPercentage;
-        }
-
-        void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            objectTileContextMenu.ObjectIndicator.Fill = (SolidColorBrush)new BrushConverter().ConvertFromString("#DC143C");
-        }
-
-        private void CMAnimate_Click(object sender, RoutedEventArgs e)
-        {
-            var menuItem = sender as MenuItem;
-            while (menuItem.Parent is MenuItem)
-            {
-                menuItem = (MenuItem)menuItem.Parent;
-            }
-            var contextMenu = menuItem.Parent as ContextMenu;
-            objectTileContextMenu = contextMenu.PlacementTarget as ObjectTile;
-            resourceTileContextMenu = contextMenu.PlacementTarget as ResourceTile;
-
-            if (resourceTileContextMenu is null)
-            {
-                objectTileContextMenu.ObjectIndicator.Fill = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
-
-                BackgroundWorker worker = new BackgroundWorker();
-                worker.WorkerReportsProgress = true;
-                worker.DoWork += worker_DoWork;
-                worker.ProgressChanged += worker_ProgressChanged;
-                worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-
-                worker.RunWorkerAsync();
-            }
-
-            if (objectTileContextMenu is null)
-            {
-                DoubleAnimation doubleAnimation = new DoubleAnimation();
-                ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
-
-                if (resourceTileContextMenu.ResourceFigure.Height == 45)
-                {
-                    
-                    doubleAnimation.From = 45;
-                    doubleAnimation.To = 10;
-                    doubleAnimation.Duration = TimeSpan.FromSeconds(3);
-                    resourceTileContextMenu.ResourceFigure.BeginAnimation(Button.HeightProperty, doubleAnimation);
-
-                    thicknessAnimation.From = new Thickness(0, 5, 0, 0);
-                    thicknessAnimation.To = new Thickness(0, 40, 0, 0);
-                    thicknessAnimation.Duration = TimeSpan.FromSeconds(3);
-                    resourceTileContextMenu.ResourceFigure.BeginAnimation(Button.MarginProperty, thicknessAnimation);
-                }
-                else
-                {
-                    doubleAnimation.From = 10;
-                    doubleAnimation.To = 45;
-                    doubleAnimation.Duration = TimeSpan.FromSeconds(3);
-                    resourceTileContextMenu.ResourceFigure.BeginAnimation(Button.HeightProperty, doubleAnimation);
-                   
-                    thicknessAnimation.From = new Thickness(0, 40, 0, 0);
-                    thicknessAnimation.To = new Thickness(0, 5, 0, 0);
-                    thicknessAnimation.Duration = TimeSpan.FromSeconds(3);
-                    resourceTileContextMenu.ResourceFigure.BeginAnimation(Button.MarginProperty, thicknessAnimation);
-                }
-            }
-        }
-
-        private void CMCopy_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CMChangeColor_Click(object sender, RoutedEventArgs e)
-        {
-            var menuItem = sender as MenuItem;
-            while (menuItem.Parent is MenuItem)
-            {
-                menuItem = (MenuItem)menuItem.Parent;
-            }
-            var contextMenu = menuItem.Parent as ContextMenu;
-            objectTileContextMenu = contextMenu.PlacementTarget as ObjectTile;
-            resourceTileContextMenu = contextMenu.PlacementTarget as ResourceTile;
-
-            var dialog = new ColorPickerDialog();
-            dialog.ShowDialog();
-
-            /*if (objectTiles.Contains(objectTileContextMenu))
-            {
-                objectTileContextMenu.Background = dialog.SelectedBrush;
-            }*/
-
-            if (resourceTiles.Contains(resourceTileContextMenu))
-            {
-                resourceTileContextMenu.ResourceFigure.Fill = dialog.SelectedBrush;
-            }
-        }
-
-        private void CMDelete_Click(object sender, RoutedEventArgs e)
-        {
-            var menuItem = sender as MenuItem;
-            while (menuItem.Parent is MenuItem)
-            {
-                menuItem = (MenuItem)menuItem.Parent;
-            }
-            var contextMenu = menuItem.Parent as ContextMenu;
-            objectTileContextMenu = contextMenu.PlacementTarget as ObjectTile;
-            resourceTileContextMenu = contextMenu.PlacementTarget as ResourceTile;
-
-            if (objectTiles.Contains(objectTileContextMenu))
-            {
-                TargetCanvas.Children.Remove(objectTileContextMenu);
-                objectTiles.Remove(objectTileContextMenu);
-            }
-
-            if (resourceTiles.Contains(resourceTileContextMenu))
-            {
-                TargetCanvas.Children.Remove(resourceTileContextMenu);
-                resourceTiles.Remove(resourceTileContextMenu);
-            }
-        }
-        #endregion
-
-
         // Не реализовано
         #region Динамическое создание инструментов панелей
-        private void AddModetPanelTools()
+        /*private void AddModetPanelTools()
         {
             modeTileArray[0].Text = "Перемещение";
             modeTileArray[1].Text = "Связи";
@@ -567,7 +594,7 @@ namespace DiplomaProrotype
             {
                 ObjectPanel.Children.Add(tile);
             }
-        }
+        }*/
         #endregion 
 
     }
@@ -582,7 +609,22 @@ namespace DiplomaProrotype
 
 
 
+/* private void MyGrid_DragOver(object sender, DragEventArgs e) // Перемещение холста
+{
+    Point dropPosition = e.GetPosition(MyGrid);
 
+    TargetBorder.Margin = new Thickness(dropPosition.X - TargetBorder.Width, 
+        dropPosition.Y - TargetBorder.Height, 0, 0);
+}
+
+private void TargetCanvas_MouseMove(object sender, MouseEventArgs e)
+{
+    base.OnMouseMove(e);
+    if (e.LeftButton == MouseButtonState.Pressed)
+    {
+        DragDrop.DoDragDrop(this, this, DragDropEffects.Move);
+    }
+} */
 
 
 /*private void ChooseIconsStyle()

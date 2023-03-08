@@ -69,7 +69,7 @@
 
         <!-- Меню объектов сверху -->
         <Border Name="ObjectBorder" 
-                Width="610" 
+                Width="530" 
                 Height="100" 
                 Margin="10" 
                 VerticalAlignment="Top"
@@ -81,12 +81,11 @@
                         Drop="ObjectPanel_Drop"
                         Background="Transparent">
                 <local:ResourceTile Text="Задел"/>
-                <local:ObjectTile Text="Сотрудник" Image="Icons/x128/Worker128.png"/>
-                <local:ObjectTile Text="Токарный" Image="Icons/x128/Lathe128.png"/>
-                <local:ObjectTile Text="Сварочный" Image="Icons/x128/Welding128.png"/>
-                <local:ObjectTile Text="Фрезерный" Image="Icons/x128/Milling128.png"/>
-                <local:ObjectTile Text="Тележка" Image="Icons/x128/Trolley128.png"/>
-                <local:ObjectTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/>
+                <local:MachineTile Text="Токарный" Image="Icons/x128/Lathe128.png"/>
+                <local:MachineTile Text="Сварочный" Image="Icons/x128/Welding128.png"/>
+                <local:MachineTile Text="Фрезерный" Image="Icons/x128/Milling128.png"/>
+                <local:MovableTile Text="Тележка" Image="Icons/x128/Trolley128.png"/>
+                <local:MovableTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/>
             </StackPanel>
         </Border>
 
