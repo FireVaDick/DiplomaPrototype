@@ -1,5 +1,6 @@
 ﻿using Haley.Models;
 using Haley.Services;
+using Haley.Utils;
 using ProtoBuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
@@ -35,16 +36,20 @@ namespace DiplomaProrotype
         List<ResourceTile> resourceTiles = new List<ResourceTile>();
         List<MachineTile> machineTiles = new List<MachineTile>();
         List<MovableTile> movableTiles = new List<MovableTile>();
-      
+        List<Rectangle> rectangles = new List<Rectangle>(); // Под вопросом?
+
         private ResourceTile resourceTileContextMenu;
         private MachineTile machineTileContextMenu;
         private MovableTile movableTileContextMenu;
 
         private int tilesCounter = 0;
         private string lastTileType = "";
+        private string currentMode = "path";
+
         private bool modeBorderOpen = true;
         private bool objectBorderOpen = true;
         private bool colorBorderOpen = false;
+
 
 
         public MainWindow()
@@ -67,6 +72,47 @@ namespace DiplomaProrotype
         }
 
 
+
+        #region Выбор режимов
+        private void ModeTile_Move_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            currentMode = "move";
+
+            ModeMove.Foreground = Brushes.Crimson;
+            ModeLink.Foreground = Brushes.Black;
+            ModeRoute.Foreground = Brushes.Black;
+            ModePath.Foreground = Brushes.Black;
+        }
+        private void ModeTile_Link_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            currentMode = "link";
+
+            ModeMove.Foreground = Brushes.Black;
+            ModeLink.Foreground = Brushes.Crimson;
+            ModeRoute.Foreground = Brushes.Black;
+            ModePath.Foreground = Brushes.Black;
+        }
+        private void ModeTile_Route_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            currentMode = "route";
+
+            ModeMove.Foreground = Brushes.Black;
+            ModeLink.Foreground = Brushes.Black;
+            ModeRoute.Foreground = Brushes.Crimson;
+            ModePath.Foreground = Brushes.Black;
+        }
+        private void ModeTile_Path_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            currentMode = "path";
+
+            ModeMove.Foreground = Brushes.Black;
+            ModeLink.Foreground = Brushes.Black;
+            ModeRoute.Foreground = Brushes.Black;
+            ModePath.Foreground = Brushes.Crimson;
+        }
+        #endregion
+
+
         #region Перемещение объекта
         private void TargetCanvas_Drop(object sender, DragEventArgs e)
         {
@@ -84,7 +130,7 @@ namespace DiplomaProrotype
                     CreateResourceTile(dropPosition);
                 }
 
-                if (resourceData.Parent is Canvas)
+                if (resourceData.Parent is Canvas && currentMode == "move")
                 {
                     if (resourceTiles.Contains(resourceData))
                     {
@@ -102,7 +148,7 @@ namespace DiplomaProrotype
                     CreateMachineTile(machineData, dropPosition);
                 }
 
-                if (machineData.Parent is Canvas)
+                if (machineData.Parent is Canvas && currentMode == "move")
                 {
                     if (machineTiles.Contains(machineData))
                     {
@@ -120,7 +166,7 @@ namespace DiplomaProrotype
                     CreateMovableTile(movableData, dropPosition);
                 }
 
-                if (movableData.Parent is Canvas)
+                if (movableData.Parent is Canvas && currentMode == "move")
                 {
                     if (movableTiles.Contains(movableData))
                     {
@@ -240,7 +286,90 @@ namespace DiplomaProrotype
             lastTileType = "movable";
             TargetCanvas.Children.Add(movableTile);
         }
-        #endregion 
+        #endregion
+
+
+        #region Рисование линий связи и путей-прямоугольников
+        private Point startPoint;
+        private Line line;
+        private Rectangle rect;
+
+        private void TargetCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            startPoint = e.GetPosition(TargetCanvas);
+
+            if (currentMode == "route")
+            {
+                line = new Line
+                {
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 3
+                };
+                line.X1 = startPoint.X;
+                line.Y1 = startPoint.Y;
+                TargetCanvas.Children.Add(line);
+            }
+
+            if (currentMode == "path")
+            {
+                rect = new Rectangle
+                {
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 3
+                };
+                Canvas.SetLeft(rect, startPoint.X);
+                Canvas.SetTop(rect, startPoint.Y);
+                TargetCanvas.Children.Add(rect);
+            }
+        }
+
+        private void TargetCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (currentMode == "route")
+            {
+                if (e.LeftButton == MouseButtonState.Released || line == null)
+                    return;
+
+                var pos = e.GetPosition(TargetCanvas);
+
+                line.X2 = pos.X;
+                line.Y2 = pos.Y;
+            }
+
+            if (currentMode == "path")
+            {
+                if (e.LeftButton == MouseButtonState.Released || rect == null)
+                    return;
+
+                var pos = e.GetPosition(TargetCanvas);
+
+                var x = Math.Min(pos.X, startPoint.X);
+                var y = Math.Min(pos.Y, startPoint.Y);
+
+                var w = Math.Max(pos.X, startPoint.X) - x;
+                var h = Math.Max(pos.Y, startPoint.Y) - y;
+
+                rect.Width = w;
+                rect.Height = h;
+
+                Canvas.SetLeft(rect, x);
+                Canvas.SetTop(rect, y);
+            }
+        }
+
+        private void TargetCanvas_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (currentMode == "route")
+            {
+                line = null;
+            }
+
+            if (currentMode == "path")
+            {
+                rect = null;
+            }
+        }
+        #endregion
 
 
         #region Динамическая передача цвета последнему размещённому элементу
@@ -348,6 +477,24 @@ namespace DiplomaProrotype
             movableTileContextMenu = contextMenu.PlacementTarget as MovableTile;
         }
 
+        private void ResourceHeightAnimation(int from, int to, int time, Thickness inputMargin, Thickness outputMargin)
+        {
+            DoubleAnimation doubleAnimation = new DoubleAnimation();
+            ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
+
+            doubleAnimation.From = from;
+            doubleAnimation.To = to;
+            doubleAnimation.Duration = TimeSpan.FromSeconds(time);
+            resourceTileContextMenu.ResourceFigure.BeginAnimation(Button.HeightProperty, doubleAnimation);
+
+            thicknessAnimation.From = inputMargin;
+            thicknessAnimation.To = outputMargin;
+            thicknessAnimation.Duration = TimeSpan.FromSeconds(time);
+            resourceTileContextMenu.ResourceFigure.BeginAnimation(Button.MarginProperty, thicknessAnimation);
+        }
+
+
+
         private void CMAnimate_Click(object sender, RoutedEventArgs e)
         {
             GetTileFromContextMenu(sender, e);
@@ -381,22 +528,6 @@ namespace DiplomaProrotype
             {
                 movableTileContextMenu сделать анимацию движения
             }*/
-        }
-
-        private void ResourceHeightAnimation(int from, int to, int time, Thickness inputMargin, Thickness outputMargin)
-        {
-            DoubleAnimation doubleAnimation = new DoubleAnimation();
-            ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
-
-            doubleAnimation.From = from;
-            doubleAnimation.To = to;
-            doubleAnimation.Duration = TimeSpan.FromSeconds(time);
-            resourceTileContextMenu.ResourceFigure.BeginAnimation(Button.HeightProperty, doubleAnimation);
-
-            thicknessAnimation.From = inputMargin;
-            thicknessAnimation.To = outputMargin;
-            thicknessAnimation.Duration = TimeSpan.FromSeconds(time);
-            resourceTileContextMenu.ResourceFigure.BeginAnimation(Button.MarginProperty, thicknessAnimation);
         }
 
         private void CMCopy_Click(object sender, RoutedEventArgs e)
@@ -595,7 +726,7 @@ namespace DiplomaProrotype
                 ObjectPanel.Children.Add(tile);
             }
         }*/
-        #endregion 
+        #endregion
 
     }
 }

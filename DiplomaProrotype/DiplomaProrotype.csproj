@@ -122,12 +122,14 @@
     <None Remove="Icons\x128\Hand128.png" />
     <None Remove="Icons\x128\Lathe128.png" />
     <None Remove="Icons\x128\Milling128.png" />
+    <None Remove="Icons\x128\Path128.png" />
     <None Remove="Icons\x128\Pencil128.png" />
     <None Remove="Icons\x128\Pencil32.png" />
     <None Remove="Icons\x128\Press128.png" />
     <None Remove="Icons\x128\Route128.png" />
     <None Remove="Icons\x128\Square128.png" />
     <None Remove="Icons\x128\Trolley128.png" />
+    <None Remove="Icons\x128\Way128.png" />
     <None Remove="Icons\x128\Welding128.png" />
     <None Remove="Icons\x128\Worker128.png" />
   </ItemGroup>
@@ -248,12 +250,14 @@
     <Resource Include="Icons\x128\Hand128.png" />
     <Resource Include="Icons\x128\Lathe128.png" />
     <Resource Include="Icons\x128\Milling128.png" />
+    <Resource Include="Icons\x128\Path128.png" />
     <Resource Include="Icons\x128\Pencil128.png" />
     <Resource Include="Icons\x128\Pencil32.png" />
     <Resource Include="Icons\x128\Press128.png" />
     <Resource Include="Icons\x128\Route128.png" />
     <Resource Include="Icons\x128\Square128.png" />
     <Resource Include="Icons\x128\Trolley128.png" />
+    <Resource Include="Icons\x128\Way128.png" />
     <Resource Include="Icons\x128\Welding128.png" />
     <Resource Include="Icons\x128\Worker128.png" />
   </ItemGroup>

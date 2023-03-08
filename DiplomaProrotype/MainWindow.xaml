@@ -14,9 +14,6 @@
             <Setter Property="CornerRadius" Value="10" />
             <Setter Property="BorderBrush" Value="#ced4da" />
             <Setter Property="BorderThickness" Value="1" />
-            <!--<Setter Property="FontFamily" Value="laCartoonerie(RUS BY LYAJKA)"
-            <Setter Property="FontFamily" Value="laCartoonerie(RUS BY LYAJKA)" />
-            <Setter Property="FontSize" Value="13" /> />-->
         </Style>
 
         <Style TargetType="Panel" x:Key="SquarePanel">
@@ -46,6 +43,9 @@
                     AllowDrop="True" 
                     DragOver="TargetCanvas_DragOver" 
                     Drop="TargetCanvas_Drop" 
+                    MouseDown="TargetCanvas_MouseDown"
+                    MouseMove="TargetCanvas_MouseMove"
+                    MouseUp="TargetCanvas_MouseUp"
                     Background="Transparent" />
         </Border>
 
@@ -60,10 +60,10 @@
             <StackPanel Name="ModePanel" 
                         Orientation="Vertical" 
                         Background="Transparent">
-                <local:ModeTile Text="Перемещение" Image="Icons/x128/Hand128.png"/>
-                <local:ModeTile Text="Связи" Image="Icons/x128/Arrow128.png"/>
-                <local:ModeTile Text="Маршруты" Image="Icons/x128/Route128.png"/>
-                <local:ModeTile Text="Холсты" Image="Icons/x128/Canvas128.png"/>
+                <local:ModeTile x:Name="ModeMove" Text="Перемещение" Image="Icons/x128/Hand128.png" MouseLeftButtonDown="ModeTile_Move_MouseLeftButtonDown"/>
+                <local:ModeTile x:Name="ModeLink" Text="Связи" Image="Icons/x128/Arrow128.png" MouseLeftButtonDown="ModeTile_Link_MouseLeftButtonDown"/>
+                <local:ModeTile x:Name="ModeRoute" Text="Маршруты" Image="Icons/x128/Route128.png" MouseLeftButtonDown="ModeTile_Route_MouseLeftButtonDown"/>
+                <local:ModeTile x:Name="ModePath" Text="Пути" Image="Icons/x128/Path128.png" MouseLeftButtonDown="ModeTile_Path_MouseLeftButtonDown" Foreground="Crimson"/>
             </StackPanel>
         </Border>
 
