@@ -36,7 +36,7 @@ namespace DiplomaProrotype
         List<ResourceTile> resourceTiles = new List<ResourceTile>();
         List<MachineTile> machineTiles = new List<MachineTile>();
         List<MovableTile> movableTiles = new List<MovableTile>();
-        List<Rectangle> rectangles = new List<Rectangle>(); // Под вопросом?
+        //List<Rectangle> rectangles = new List<Rectangle>(); // Под вопросом?
 
         private ResourceTile resourceTileContextMenu;
         private MachineTile machineTileContextMenu;
@@ -46,6 +46,7 @@ namespace DiplomaProrotype
         private string lastTileType = "";
         private string currentMode = "path";
 
+        private bool resourceIsEmpty = false;
         private bool modeBorderOpen = true;
         private bool objectBorderOpen = true;
         private bool colorBorderOpen = false;
@@ -127,7 +128,7 @@ namespace DiplomaProrotype
             {
                 if (resourceData.Parent is StackPanel)
                 {
-                    CreateResourceTile(dropPosition);
+                    CreateResourceTile(dropPosition, resourceIsEmpty);
                 }
 
                 if (resourceData.Parent is Canvas && currentMode == "move")
@@ -205,7 +206,7 @@ namespace DiplomaProrotype
 
 
         #region Создание экземпляров
-        private void CreateResourceTile(Point dropPosition)
+        private void CreateResourceTile(Point dropPosition, bool resourceIsEmpty)
         {
             var resourceTile = new ResourceTile();
             tilesCounter++;
@@ -222,6 +223,12 @@ namespace DiplomaProrotype
             resourceTile.ResourceText.Margin = new Thickness(0, 0, 0, 15);
             resourceTile.ResourceId.Visibility = Visibility.Visible;
             resourceTile.Height = 85;
+
+            if (resourceIsEmpty)
+            {
+                resourceTile.ResourceFigure.Height = 10;
+                resourceTile.ResourceFigure.Margin = new Thickness(0, 40, 0, 0);
+            }
 
             lastTileType = "resource";
             TargetCanvas.Children.Add(resourceTile);
@@ -254,11 +261,12 @@ namespace DiplomaProrotype
             lastTileType = "machine";
             TargetCanvas.Children.Add(machineTile);
 
-            if (machineTile.Text != "Сотрудник" && machineTile.Text != "Тележка" && machineTile.Text != "Погрузчик") // Добавление задела после каждого станка
-            {
-                dropPosition.X += 70;
-                CreateResourceTile(dropPosition);
-            }
+            resourceIsEmpty = true;
+
+            dropPosition.X += 70;
+            CreateResourceTile(dropPosition, resourceIsEmpty);
+
+            resourceIsEmpty = false;
         }
 
         private void CreateMovableTile(MovableTile movableData, Point dropPosition)
@@ -291,23 +299,64 @@ namespace DiplomaProrotype
 
         #region Рисование линий связи и путей-прямоугольников
         private Point startPoint;
-        private Line line;
+        private Line link;
+        private Line route;
         private Rectangle rect;
+        double lastX2 = 0, lastY2 = 0;
 
-        private void TargetCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+        private void TargetCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             startPoint = e.GetPosition(TargetCanvas);
 
-            if (currentMode == "route")
+            if (currentMode == "link")
             {
-                line = new Line
+                link = new Line
                 {
                     Stroke = Brushes.Black,
                     StrokeThickness = 3
                 };
-                line.X1 = startPoint.X;
-                line.Y1 = startPoint.Y;
-                TargetCanvas.Children.Add(line);
+
+                Ellipse ellipse = new Ellipse
+                {
+                    Fill = Brushes.White,
+                    StrokeThickness = 2,
+                    Stroke = Brushes.Black,
+                    Width = 10,
+                    Height = 10,
+                    Margin = new Thickness(startPoint.X - 5, startPoint.Y - 5, 0, 0)
+                };
+
+                link.X1 = startPoint.X;
+                link.Y1 = startPoint.Y;
+
+                TargetCanvas.Children.Add(link);
+                TargetCanvas.Children.Add(ellipse);
+            }
+
+            if (currentMode == "route")
+            {
+                if (!(route is null))
+                {
+                    lastX2 = route.X2;
+                    lastY2 = route.Y2;
+                }
+
+                route = new Line
+                {
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 3
+                };
+
+                route.X1 = lastX2;
+                route.Y1 = lastY2;
+
+                if (lastX2 == 0 && lastY2 == 0)
+                {
+                    route.X1 = startPoint.X;
+                    route.Y1 = startPoint.Y;
+                }
+
+                TargetCanvas.Children.Add(route);
             }
 
             if (currentMode == "path")
@@ -317,23 +366,36 @@ namespace DiplomaProrotype
                     Stroke = Brushes.Black,
                     StrokeThickness = 3
                 };
+
                 Canvas.SetLeft(rect, startPoint.X);
                 Canvas.SetTop(rect, startPoint.Y);
+
                 TargetCanvas.Children.Add(rect);
             }
         }
 
         private void TargetCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (currentMode == "route")
+            if (currentMode == "link")
             {
-                if (e.LeftButton == MouseButtonState.Released || line == null)
+                if (e.LeftButton == MouseButtonState.Released || link == null)
                     return;
 
                 var pos = e.GetPosition(TargetCanvas);
 
-                line.X2 = pos.X;
-                line.Y2 = pos.Y;
+                link.X2 = pos.X;
+                link.Y2 = pos.Y;
+            }
+
+            if (currentMode == "route")
+            {
+                if (e.LeftButton == MouseButtonState.Released || route == null)
+                    return;
+
+                var pos = e.GetPosition(TargetCanvas);
+
+                route.X2 = pos.X;
+                route.Y2 = pos.Y;
             }
 
             if (currentMode == "path")
@@ -357,16 +419,24 @@ namespace DiplomaProrotype
             }
         }
 
-        private void TargetCanvas_MouseUp(object sender, MouseButtonEventArgs e)
+        private void TargetCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (currentMode == "route")
+            if (currentMode == "link")
             {
-                line = null;
+                link = null;
             }
 
             if (currentMode == "path")
             {
                 rect = null;
+            }
+        }
+
+        private void TargetCanvas_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (currentMode == "route")
+            {
+                route = null;
             }
         }
         #endregion
@@ -455,7 +525,7 @@ namespace DiplomaProrotype
             menuItemEdit.Items.Add(menuItemEditSomething);*/
 
             contextMenu.Items.Add(menuItemAnima);
-            contextMenu.Items.Add(menuItemEdit);
+            //contextMenu.Items.Add(menuItemEdit);
             contextMenu.Items.Add(menuItemColor);
             contextMenu.Items.Add(menuItemDelete);
         }
@@ -605,8 +675,41 @@ namespace DiplomaProrotype
         #endregion
 
 
-        #region Очистка всего холста
+        #region Очистка холста
         private void ModeTile_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Type type = TargetCanvas.Children[^1].GetType();
+
+            if (TargetCanvas.Children.Count!= 0)
+            {
+                if (type == typeof(Ellipse))
+                {
+                    TargetCanvas.Children.RemoveAt(TargetCanvas.Children.Count - 1);
+                }
+
+                TargetCanvas.Children.RemoveAt(TargetCanvas.Children.Count - 1);
+            }
+        }
+
+        private void ModeTile_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var contextMenu = new ContextMenu();
+
+            Eraser.ContextMenu = contextMenu;
+
+            var menuItemDeleteObjects = new MenuItem();
+            menuItemDeleteObjects.Click += new RoutedEventHandler(CMDeleteObjects_Click);
+            menuItemDeleteObjects.Header = "Удалить только объекты";
+
+            var menuItemDeleteAll = new MenuItem();
+            menuItemDeleteAll.Click += new RoutedEventHandler(CMDeleteAll_Click);
+            menuItemDeleteAll.Header = "Удалить всё";
+
+            contextMenu.Items.Add(menuItemDeleteObjects);
+            contextMenu.Items.Add(menuItemDeleteAll);
+        }
+
+        private void CMDeleteObjects_Click(object sender, RoutedEventArgs e)
         {
             tilesCounter = 0;
 
@@ -627,6 +730,28 @@ namespace DiplomaProrotype
                 TargetCanvas.Children.Remove(movableTiles[i]);
                 movableTiles.Remove(movableTiles[i]);
             }
+        }
+
+        private void CMDeleteAll_Click(object sender, RoutedEventArgs e)
+        {
+            tilesCounter = 0;
+
+            for (int i = 0; i < resourceTiles.Count;)
+            {
+                resourceTiles.Remove(resourceTiles[i]);
+            }
+
+            for (int i = 0; i < machineTiles.Count;)
+            {
+                machineTiles.Remove(machineTiles[i]);
+            }
+
+            for (int i = 0; i < movableTiles.Count;)
+            {
+                movableTiles.Remove(movableTiles[i]);
+            }
+
+            TargetCanvas.Children.Clear();
         }
         #endregion
 
@@ -678,6 +803,7 @@ namespace DiplomaProrotype
                 objectBorderOpen = true;
             }
         }
+
 
         private void ColorBorder_MouseWheel(object sender, MouseWheelEventArgs e)
         {

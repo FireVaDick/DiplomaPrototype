@@ -43,9 +43,10 @@
                     AllowDrop="True" 
                     DragOver="TargetCanvas_DragOver" 
                     Drop="TargetCanvas_Drop" 
-                    MouseDown="TargetCanvas_MouseDown"
+                    MouseLeftButtonDown="TargetCanvas_MouseLeftButtonDown"
                     MouseMove="TargetCanvas_MouseMove"
-                    MouseUp="TargetCanvas_MouseUp"
+                    MouseLeftButtonUp="TargetCanvas_MouseLeftButtonUp"
+                    MouseRightButtonDown="TargetCanvas_MouseRightButtonUp"
                     Background="Transparent" />
         </Border>
 
@@ -99,7 +100,7 @@
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="ClearPanel"          
                         Style="{StaticResource ResourceKey=SquarePanel}" >
-                <local:ModeTile Text="Очистить" Image="Icons/x128/Eraser128.png" MouseLeftButtonDown="ModeTile_MouseLeftButtonDown"/>
+                <local:ModeTile x:Name="Eraser" Text="Очистить" Image="Icons/x128/Eraser128.png" MouseDown="ModeTile_MouseDown"/>
             </StackPanel>
         </Border>
         
@@ -113,7 +114,7 @@
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="InfoPanel"
                         Style="{StaticResource ResourceKey=SquarePanel}">
-                <local:ModeTile Text="Документация" Image="Icons/x128/Book128.png"/>
+                <local:ModeTile Text="Документация" Image="Icons/x128/Book128.png" MouseLeftButtonDown="ModeTile_MouseLeftButtonDown"/>
             </StackPanel>
         </Border>
 
