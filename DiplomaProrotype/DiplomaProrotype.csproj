@@ -108,6 +108,7 @@
     <None Remove="Icons\x128\Animate128.png" />
     <None Remove="Icons\x128\Animate32.png" />
     <None Remove="Icons\x128\Arrow128.png" />
+    <None Remove="Icons\x128\Back128.png" />
     <None Remove="Icons\x128\Book128.png" />
     <None Remove="Icons\x128\Brush128.png" />
     <None Remove="Icons\x128\Brush32.png" />
@@ -236,6 +237,7 @@
     <Resource Include="Icons\x128\Animate128.png" />
     <Resource Include="Icons\x128\Animate32.png" />
     <Resource Include="Icons\x128\Arrow128.png" />
+    <Resource Include="Icons\x128\Back128.png" />
     <Resource Include="Icons\x128\Book128.png" />
     <Resource Include="Icons\x128\Brush128.png" />
     <Resource Include="Icons\x128\Brush32.png" />

@@ -61,16 +61,43 @@
             <StackPanel Name="ModePanel" 
                         Orientation="Vertical" 
                         Background="Transparent">
-                <local:ModeTile x:Name="ModeMove" Text="Перемещение" Image="Icons/x128/Hand128.png" MouseLeftButtonDown="ModeTile_Move_MouseLeftButtonDown"/>
-                <local:ModeTile x:Name="ModeLink" Text="Связи" Image="Icons/x128/Arrow128.png" MouseLeftButtonDown="ModeTile_Link_MouseLeftButtonDown"/>
-                <local:ModeTile x:Name="ModeRoute" Text="Маршруты" Image="Icons/x128/Route128.png" MouseLeftButtonDown="ModeTile_Route_MouseLeftButtonDown"/>
-                <local:ModeTile x:Name="ModePath" Text="Пути" Image="Icons/x128/Path128.png" MouseLeftButtonDown="ModeTile_Path_MouseLeftButtonDown" Foreground="Crimson"/>
+                <local:ModeTile x:Name="ModeMove" Text="Перемещение" Image="Icons/x128/Hand128.png" MouseLeftButtonDown="ModeTile_Move_MouseLeftButtonDown">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Режим, позволяющий перемещать заделы, станки и транспортные средства по холсту. Перещать можно зажав ЛКМ.
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
+                <local:ModeTile x:Name="ModeLink" Text="Связи" Image="Icons/x128/Arrow128.png" MouseLeftButtonDown="ModeTile_Link_MouseLeftButtonDown">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Режим, позволяющий создавать связи между размещёнными объектами. Для этого нужно зажать ЛКМ на первом нужно объекте, переместить 
+                            мышь и отпустить на втором объекте, с которым нужно создать связь.
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
+                <local:ModeTile x:Name="ModeRoute" Text="Маршруты" Image="Icons/x128/Route128.png" MouseLeftButtonDown="ModeTile_Route_MouseLeftButtonDown">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Режим, позволяющий рисовать маршруты транспортных средств. Для этого нужно зажать ЛКМ на холсте, переместить мышь и отпустить, появится 
+                            линия. В следующий раз будет создана линия из той точки, где закончилась предыдущая. Для завершения маршрута, нажмите ПКМ.                         
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
+                <local:ModeTile x:Name="ModePath" Text="Пути" Image="Icons/x128/Path128.png" MouseLeftButtonDown="ModeTile_Path_MouseLeftButtonDown" Foreground="Crimson">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Режим, позволяющий рисовать траспортные пути/места размещения станков и заделов. Для этого нужно зажать ЛКМ на холсте, переместить 
+                            мышь и отпустить, появится прямоугольник.
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
             </StackPanel>
         </Border>
 
         <!-- Меню объектов сверху -->
         <Border Name="ObjectBorder" 
-                Width="530" 
+                Width="525" 
                 Height="100" 
                 Margin="10" 
                 VerticalAlignment="Top"
@@ -100,11 +127,17 @@
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="ClearPanel"          
                         Style="{StaticResource ResourceKey=SquarePanel}" >
-                <local:ModeTile x:Name="Eraser" Text="Очистить" Image="Icons/x128/Eraser128.png" MouseDown="ModeTile_MouseDown"/>
+                <local:ModeTile Margin="0,0,0,0" x:Name="Eraser" Text="Очистить" Image="Icons/x128/Eraser128.png" MouseDown="ModeTile_MouseDown">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Нажав правую кнопку, появится контекстное меню, которое позволит очистить разные элементы холста или его целиком.
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
             </StackPanel>
         </Border>
         
-        <!-- Меню информации в углу -->
+        <!-- Меню отмены размещения последнего элемента в углу -->
         <Border Name="InfoBorder" 
                 Width="100" 
                 Height="100" 
@@ -114,7 +147,13 @@
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="InfoPanel"
                         Style="{StaticResource ResourceKey=SquarePanel}">
-                <local:ModeTile Text="Документация" Image="Icons/x128/Book128.png" MouseLeftButtonDown="ModeTile_MouseLeftButtonDown"/>
+                <local:ModeTile Margin="0,0,0,0" Text="Отменить" Image="Icons/x128/Back128.png" MouseLeftButtonDown="ModeTile_MouseLeftButtonDown">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Позволяет отменить размещение последнего элемента, удаляя его из холста.
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
             </StackPanel>
         </Border>
 

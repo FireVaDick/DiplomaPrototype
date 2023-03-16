@@ -23,6 +23,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
 
@@ -36,7 +37,7 @@ namespace DiplomaProrotype
         List<ResourceTile> resourceTiles = new List<ResourceTile>();
         List<MachineTile> machineTiles = new List<MachineTile>();
         List<MovableTile> movableTiles = new List<MovableTile>();
-        //List<Rectangle> rectangles = new List<Rectangle>(); // Под вопросом?
+        List<Link> links = new List<Link>();
 
         private ResourceTile resourceTileContextMenu;
         private MachineTile machineTileContextMenu;
@@ -62,10 +63,6 @@ namespace DiplomaProrotype
             this.Top = 0;
 
             Loaded += Window_Loaded;  
-
-            //AddModePanelTools();
-            //AddObjectPanelTools();
-            //ChooseIconsStyle();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -298,79 +295,118 @@ namespace DiplomaProrotype
 
 
         #region Рисование линий связи и путей-прямоугольников
-        private Point startPoint;
-        private Line link;
-        private Line route;
-        private Rectangle rect;
+        private Link link;
+
+        private Line linkLine;
+        private Line routeLine;
+        private Rectangle pathRectangle;
+
+        private bool routeIsDone = false;
+
+        private Point startPos;
         double lastX2 = 0, lastY2 = 0;
 
         private void TargetCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            startPoint = e.GetPosition(TargetCanvas);
+            startPos = e.GetPosition(TargetCanvas);
 
             if (currentMode == "link")
             {
-                link = new Line
+                if (e.Source is ResourceTile || e.Source is MachineTile)
                 {
-                    Stroke = Brushes.Black,
-                    StrokeThickness = 3
-                };
+                    link = new Link();
 
-                Ellipse ellipse = new Ellipse
-                {
-                    Fill = Brushes.White,
-                    StrokeThickness = 2,
-                    Stroke = Brushes.Black,
-                    Width = 10,
-                    Height = 10,
-                    Margin = new Thickness(startPoint.X - 5, startPoint.Y - 5, 0, 0)
-                };
+                    //var so1 = e.Source.GetType().GetProperty("VisualOffset", BindingFlags.NonPublic | BindingFlags.Instance)
 
-                link.X1 = startPoint.X;
-                link.Y1 = startPoint.Y;
+                    ResourceTile target = e.Source as ResourceTile;
 
-                TargetCanvas.Children.Add(link);
-                TargetCanvas.Children.Add(ellipse);
+                    //var s = PointFromScreen(target);
+                    
+
+                    /*for (int i = 0; i < resourceTiles.Count; i++)
+                    {
+                        if (target.PointFromScreen == resourceTiles[i].Margin)
+                        {
+                            link.FirstTargetType = "resource";
+                            link.FirstTargetListId = i;
+                        }
+                    }*/
+
+
+
+
+                    linkLine = new Line
+                    {
+                        Stroke = Brushes.Black,
+                        StrokeThickness = 3
+                    };
+
+                    Ellipse ellipse = new Ellipse
+                    {
+                        Fill = Brushes.White,
+                        StrokeThickness = 2,
+                        Stroke = Brushes.Black,
+                        Width = 10,
+                        Height = 10,
+                        Margin = new Thickness(startPos.X - 5, startPos.Y - 5, 0, 0)
+                    };
+
+                    linkLine.X1 = startPos.X;
+                    linkLine.Y1 = startPos.Y;
+
+                    linkLine.X2 = linkLine.X1;
+                    linkLine.Y2 = linkLine.Y1;
+
+                    TargetCanvas.Children.Add(linkLine);
+                    TargetCanvas.Children.Add(ellipse);
+                }            
             }
 
             if (currentMode == "route")
             {
-                if (!(route is null))
+                if (!(routeLine is null))
                 {
-                    lastX2 = route.X2;
-                    lastY2 = route.Y2;
+                    lastX2 = routeLine.X2;
+                    lastY2 = routeLine.Y2;
                 }
 
-                route = new Line
+                routeLine = new Line
                 {
                     Stroke = Brushes.Black,
                     StrokeThickness = 3
                 };
 
-                route.X1 = lastX2;
-                route.Y1 = lastY2;
-
                 if (lastX2 == 0 && lastY2 == 0)
                 {
-                    route.X1 = startPoint.X;
-                    route.Y1 = startPoint.Y;
+                    lastX2 = startPos.X;
+                    lastY2 = startPos.Y;
                 }
 
-                TargetCanvas.Children.Add(route);
+                if (routeIsDone == false)
+                {
+                    routeLine.X1 = lastX2;
+                    routeLine.Y1 = lastY2;
+                }
+
+                routeLine.X2 = routeLine.X1;
+                routeLine.Y2 = routeLine.Y1;
+
+                routeIsDone = false;
+                TargetCanvas.Children.Add(routeLine);
             }
 
             if (currentMode == "path")
             {
-                rect = new Rectangle
+                pathRectangle = new Rectangle
                 {
                     Stroke = Brushes.Black,
                     StrokeThickness = 3
                 };
 
-                Canvas.SetLeft(rect, startPoint.X);
-                Canvas.SetTop(rect, startPoint.Y);
+                Canvas.SetLeft(pathRectangle, startPos.X);
+                Canvas.SetTop(pathRectangle, startPos.Y);
 
-                TargetCanvas.Children.Add(rect);
+                TargetCanvas.Children.Add(pathRectangle);
             }
         }
 
@@ -383,39 +419,39 @@ namespace DiplomaProrotype
 
                 var pos = e.GetPosition(TargetCanvas);
 
-                link.X2 = pos.X;
-                link.Y2 = pos.Y;
+                linkLine.X2 = pos.X;
+                linkLine.Y2 = pos.Y;
             }
 
             if (currentMode == "route")
             {
-                if (e.LeftButton == MouseButtonState.Released || route == null)
+                if (e.LeftButton == MouseButtonState.Released || routeLine == null)
                     return;
 
                 var pos = e.GetPosition(TargetCanvas);
 
-                route.X2 = pos.X;
-                route.Y2 = pos.Y;
+                routeLine.X2 = pos.X;
+                routeLine.Y2 = pos.Y;
             }
 
             if (currentMode == "path")
             {
-                if (e.LeftButton == MouseButtonState.Released || rect == null)
+                if (e.LeftButton == MouseButtonState.Released || pathRectangle == null)
                     return;
 
                 var pos = e.GetPosition(TargetCanvas);
 
-                var x = Math.Min(pos.X, startPoint.X);
-                var y = Math.Min(pos.Y, startPoint.Y);
+                var x = Math.Min(pos.X, startPos.X);
+                var y = Math.Min(pos.Y, startPos.Y);
 
-                var w = Math.Max(pos.X, startPoint.X) - x;
-                var h = Math.Max(pos.Y, startPoint.Y) - y;
+                var w = Math.Max(pos.X, startPos.X) - x;
+                var h = Math.Max(pos.Y, startPos.Y) - y;
 
-                rect.Width = w;
-                rect.Height = h;
+                pathRectangle.Width = w;
+                pathRectangle.Height = h;
 
-                Canvas.SetLeft(rect, x);
-                Canvas.SetTop(rect, y);
+                Canvas.SetLeft(pathRectangle, x);
+                Canvas.SetTop(pathRectangle, y);
             }
         }
 
@@ -423,12 +459,12 @@ namespace DiplomaProrotype
         {
             if (currentMode == "link")
             {
-                link = null;
+                linkLine = null;
             }
 
             if (currentMode == "path")
             {
-                rect = null;
+                pathRectangle = null;
             }
         }
 
@@ -436,7 +472,8 @@ namespace DiplomaProrotype
         {
             if (currentMode == "route")
             {
-                route = null;
+                routeIsDone = true;
+                routeLine = null;
             }
         }
         #endregion
@@ -856,58 +893,4 @@ namespace DiplomaProrotype
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-/* private void MyGrid_DragOver(object sender, DragEventArgs e) // Перемещение холста
-{
-    Point dropPosition = e.GetPosition(MyGrid);
-
-    TargetBorder.Margin = new Thickness(dropPosition.X - TargetBorder.Width, 
-        dropPosition.Y - TargetBorder.Height, 0, 0);
-}
-
-private void TargetCanvas_MouseMove(object sender, MouseEventArgs e)
-{
-    base.OnMouseMove(e);
-    if (e.LeftButton == MouseButtonState.Pressed)
-    {
-        DragDrop.DoDragDrop(this, this, DragDropEffects.Move);
-    }
-} */
-
-
-/*private void ChooseIconsStyle()
-{
-    if (materialIconStyle)
-    {
-
-        materialIconStyle = false;
-    }
-    else
-    {
-        modeTileArray[0].Image = new BitmapImage(new Uri("/Icons/BlackOutline/icons8-hand-64.png", UriKind.Relative));
-        modeTileArray[1].Image = new BitmapImage(new Uri("/Icons/BlackOutline/icons8-advance-64.png", UriKind.Relative));
-        modeTileArray[2].Image = new BitmapImage(new Uri("/Icons/BlackOutline/icons8-squiggly-arrow-64.png", UriKind.Relative));
-        modeTileArray[3].Image = new BitmapImage(new Uri("/Icons/BlackOutline/icons8-drag-64.png", UriKind.Relative));
-
-        objectTileArray[0].Image = new BitmapImage(new Uri("/Icons/BlackOutline/icons8-worker-64.png", UriKind.Relative));
-        objectTileArray[1].Image = new BitmapImage(new Uri("/Icons/BlackOutline/icons8-gold-bars-64.png", UriKind.Relative));
-        objectTileArray[2].Image = new BitmapImage(new Uri("/Icons/BlackOutline/icons8-jewel64.png", UriKind.Relative));
-        objectTileArray[3].Image = new BitmapImage(new Uri("/Icons/BlackOutline/icons8-hammer-and-anvil-64.png", UriKind.Relative));
-        objectTileArray[4].Image = new BitmapImage(new Uri("/Icons/BlackOutline/icons8-gear-64.png", UriKind.Relative));
-        objectTileArray[5].Image = new BitmapImage(new Uri("/Icons/BlackOutline/icons8-robot-64.png", UriKind.Relative));
-        objectTileArray[6].Image = new BitmapImage(new Uri("/Icons/BlackOutline/icons8-mine-cart-64.png", UriKind.Relative));
-        objectTileArray[7].Image = new BitmapImage(new Uri("/Icons/BlackOutline/icons8-forl-lift-64.png", UriKind.Relative));
-
-        materialIconStyle = true;
-    }
-}*/
 
