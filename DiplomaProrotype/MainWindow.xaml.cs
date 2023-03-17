@@ -316,30 +316,26 @@ namespace DiplomaProrotype
                 {
                     link = new Link();
 
-                    //var so1 = e.Source.GetType().GetProperty("VisualOffset", BindingFlags.NonPublic | BindingFlags.Instance)
-
                     ResourceTile target = e.Source as ResourceTile;
+                    Vector targetVector = VisualTreeHelper.GetOffset(target); //targetVector - положение объекта на холсте
 
-                    //var s = PointFromScreen(target);
-                    
-
-                    /*for (int i = 0; i < resourceTiles.Count; i++)
+                    for (int i = 0; i < resourceTiles.Count; i++)
                     {
-                        if (target.PointFromScreen == resourceTiles[i].Margin)
+                        if (targetVector == VisualTreeHelper.GetOffset(resourceTiles[i]))
                         {
                             link.FirstTargetType = "resource";
                             link.FirstTargetListId = i;
                         }
-                    }*/
-
-
-
+                    }
 
                     linkLine = new Line
                     {
                         Stroke = Brushes.Black,
                         StrokeThickness = 3
                     };
+
+                    double marginLeftFromObject = targetVector.X + target.Width / 2 - target.Margin.Left / 2 + 30;
+                    double marginTopFromObject = targetVector.Y + target.Height / 2 - target.Margin.Top - 5;
 
                     Ellipse ellipse = new Ellipse
                     {
@@ -348,11 +344,11 @@ namespace DiplomaProrotype
                         Stroke = Brushes.Black,
                         Width = 10,
                         Height = 10,
-                        Margin = new Thickness(startPos.X - 5, startPos.Y - 5, 0, 0)
+                        Margin = new Thickness(marginLeftFromObject - 5,  marginTopFromObject - 5, 0, 0)
                     };
 
-                    linkLine.X1 = startPos.X;
-                    linkLine.Y1 = startPos.Y;
+                    linkLine.X1 = marginLeftFromObject;
+                    linkLine.Y1 = marginTopFromObject;
 
                     linkLine.X2 = linkLine.X1;
                     linkLine.Y2 = linkLine.Y1;
@@ -459,7 +455,7 @@ namespace DiplomaProrotype
         {
             if (currentMode == "link")
             {
-                linkLine = null;
+                //linkLine = null;
             }
 
             if (currentMode == "path")
