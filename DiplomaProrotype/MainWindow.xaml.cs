@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,11 +40,12 @@ namespace DiplomaProrotype
         List<MovableTile> movableTiles = new List<MovableTile>();
         List<Link> links = new List<Link>();
 
-        private ResourceTile resourceTileContextMenu;
-        private MachineTile machineTileContextMenu;
-        private MovableTile movableTileContextMenu;
+        private ResourceTile resourceTileFromContextMenu;
+        private MachineTile machineTileFromContextMenu;
+        private MovableTile movableTileFromContextMenu;
 
         private int tilesCounter = 0;
+        private int linkCounter = 0;
         private string lastTileType = "";
         private string currentMode = "path";
 
@@ -121,7 +123,7 @@ namespace DiplomaProrotype
             Point dropPosition = e.GetPosition(TargetCanvas);
 
             // Манипуляции с resourceData
-            if (machineData is null && movableData is null)
+            if (!(resourceData is null))
             {
                 if (resourceData.Parent is StackPanel)
                 {
@@ -139,7 +141,7 @@ namespace DiplomaProrotype
             }
 
             // Манипуляции с machineData
-            if (resourceData is null && movableData is null)
+            if (!(machineData is null))
             {
                 if (machineData.Parent is StackPanel)
                 {
@@ -157,7 +159,7 @@ namespace DiplomaProrotype
             }
 
             // Манипуляции с movableData
-            if (resourceData is null && machineData is null)
+            if (!(movableData is null))
             {
                 if (movableData.Parent is StackPanel)
                 {
@@ -202,14 +204,12 @@ namespace DiplomaProrotype
         #endregion
 
 
-        #region Создание экземпляров
+        #region Создание экземпляров объектов
         private void CreateResourceTile(Point dropPosition, bool resourceIsEmpty)
         {
             var resourceTile = new ResourceTile();
-            tilesCounter++;
-
             resourceTile.Text = "Задел";
-            resourceTile.Id = tilesCounter;
+            resourceTile.Id = ++tilesCounter;
 
             CreateResourceContextMenu(resourceTile);
             resourceTiles.Add(resourceTile);
@@ -234,11 +234,9 @@ namespace DiplomaProrotype
         private void CreateMachineTile(MachineTile machineData, Point dropPosition)
         {
             var machineTile = new MachineTile();
-            tilesCounter++;
-
             machineTile.Image = machineData.Image;
             machineTile.Text = machineData.Text;
-            machineTile.Id = tilesCounter;
+            machineTile.Id = ++tilesCounter;
 
             CreateMachineContextMenu(machineTile);
             machineTiles.Add(machineTile);
@@ -269,11 +267,9 @@ namespace DiplomaProrotype
         private void CreateMovableTile(MovableTile movableData, Point dropPosition)
         {
             var movableTile = new MovableTile();
-            tilesCounter++;
-
             movableTile.Image = movableData.Image;
             movableTile.Text = movableData.Text;
-            movableTile.Id = tilesCounter;
+            movableTile.Id = ++tilesCounter;
 
             CreateMovableContextMenu(movableTile);
             movableTiles.Add(movableTile);
@@ -306,6 +302,31 @@ namespace DiplomaProrotype
         private Point startPos;
         double lastX2 = 0, lastY2 = 0;
 
+        private void SetAllObjectsToUnenabled()
+        {
+            for (int i = 0; i < resourceTiles.Count; i++)
+            {
+                resourceTiles[i].IsEnabled = false;
+            }
+
+            for (int i = 0; i < machineTiles.Count; i++)
+            {
+                machineTiles[i].IsEnabled = false;
+            }
+        }
+        private void SetAllObjectsToEnabled()
+        {
+            for (int i = 0; i < resourceTiles.Count; i++)
+            {
+                resourceTiles[i].IsEnabled = true;
+            }
+
+            for (int i = 0; i < machineTiles.Count; i++)
+            {
+                machineTiles[i].IsEnabled = true;
+            }
+        }
+
         private void TargetCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             startPos = e.GetPosition(TargetCanvas);
@@ -314,19 +335,22 @@ namespace DiplomaProrotype
             {
                 if (e.Source is ResourceTile || e.Source is MachineTile)
                 {
-                    link = new Link();
-
                     ResourceTile target = e.Source as ResourceTile;
-                    Vector targetVector = VisualTreeHelper.GetOffset(target); //targetVector - положение объекта на холсте
+                    Vector targetMargin = VisualTreeHelper.GetOffset(target);                  
 
                     for (int i = 0; i < resourceTiles.Count; i++)
-                    {
-                        if (targetVector == VisualTreeHelper.GetOffset(resourceTiles[i]))
+                    {                       
+                        if (targetMargin == VisualTreeHelper.GetOffset(resourceTiles[i]))
                         {
-                            link.FirstTargetType = "resource";
-                            link.FirstTargetListId = i;
+                            link = new Link()
+                            {
+                                FirstTargetType = "resource",
+                                FirstTargetListId = i
+                            };
                         }
                     }
+
+                    SetAllObjectsToUnenabled(); // Для прохождения связи сквозь объект
 
                     linkLine = new Line
                     {
@@ -334,8 +358,8 @@ namespace DiplomaProrotype
                         StrokeThickness = 3
                     };
 
-                    double marginLeftFromObject = targetVector.X + target.Width / 2 - target.Margin.Left / 2 + 30;
-                    double marginTopFromObject = targetVector.Y + target.Height / 2 - target.Margin.Top - 5;
+                    double marginLeftFromObject = targetMargin.X + target.Width / 2 - target.Margin.Left / 2 + 20; // 20 и 5 - отступы от центра
+                    double marginTopFromObject = targetMargin.Y + target.Height / 2 - target.Margin.Top - 5;
 
                     Ellipse ellipse = new Ellipse
                     {
@@ -347,11 +371,8 @@ namespace DiplomaProrotype
                         Margin = new Thickness(marginLeftFromObject - 5,  marginTopFromObject - 5, 0, 0)
                     };
 
-                    linkLine.X1 = marginLeftFromObject;
-                    linkLine.Y1 = marginTopFromObject;
-
-                    linkLine.X2 = linkLine.X1;
-                    linkLine.Y2 = linkLine.Y1;
+                    linkLine.X2 = linkLine.X1 = marginLeftFromObject; // Точки конца там же, где и начала
+                    linkLine.Y2 = linkLine.Y1 = marginTopFromObject;
 
                     TargetCanvas.Children.Add(linkLine);
                     TargetCanvas.Children.Add(ellipse);
@@ -408,7 +429,7 @@ namespace DiplomaProrotype
 
         private void TargetCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (currentMode == "link")
+            if (currentMode == "link" && !(linkLine is null))
             {
                 if (e.LeftButton == MouseButtonState.Released || link == null)
                     return;
@@ -455,7 +476,45 @@ namespace DiplomaProrotype
         {
             if (currentMode == "link")
             {
-                //linkLine = null;
+                Point mousePos = e.MouseDevice.GetPosition(TargetCanvas);
+                Vector targetMargin; //targetVector - положение объекта на холсте
+
+                if (machineTiles.Count != 0)
+                {
+                    for (int i = 0; i < machineTiles.Count; i++)
+                    {
+                        targetMargin = VisualTreeHelper.GetOffset(machineTiles[i]);
+
+                        if (mousePos.X > targetMargin.X &&
+                            mousePos.X < targetMargin.X + machineTiles[i].Width && 
+                            mousePos.Y > targetMargin.Y &&                     
+                            mousePos.Y < targetMargin.Y + machineTiles[i].Height)
+                        {
+                            link.LastTargetType = "machine";
+                            link.LastTargetListId = i;
+                            link.LinkId = ++linkCounter;
+
+                            links.Add(link);
+
+                            double marginLeftFromObject = targetMargin.X + machineTiles[i].Width / 2 - machineTiles[i].Margin.Left / 2;
+                            double marginTopFromObject = targetMargin.Y + machineTiles[i].Height / 2 - machineTiles[i].Margin.Top + 5; // 5 - отступ от центра
+
+                            switch (machineTiles[i].MachineText.Text) // Отступы в зависимости от картинки, чтобы было красиво и касалось
+                            {
+                                case "Токарный": marginLeftFromObject -= 15; break;
+                                case "Сварочный": marginLeftFromObject -= 20; break;
+                                case "Фрезерный": marginLeftFromObject -= 17.5; break;
+                            }
+
+                            linkLine.X2 = marginLeftFromObject;
+                            linkLine.Y2 = marginTopFromObject;
+
+                            linkLine = null;
+
+                            SetAllObjectsToEnabled();
+                        }
+                    }
+                }
             }
 
             if (currentMode == "path")
@@ -500,8 +559,6 @@ namespace DiplomaProrotype
         private void CreateResourceContextMenu(ResourceTile resourceTile)
         {
             var contextMenu = new ContextMenu();
-            var sep = new Separator(); // Разделитель
-
             resourceTile.ContextMenu = contextMenu;
             DefaultContextMenu(contextMenu);
         }
@@ -509,8 +566,6 @@ namespace DiplomaProrotype
         private void CreateMachineContextMenu(MachineTile machineTile)
         {
             var contextMenu = new ContextMenu();
-            var sep = new Separator(); // Разделитель
-
             machineTile.ContextMenu = contextMenu;
             DefaultContextMenu(contextMenu);
         }
@@ -518,14 +573,19 @@ namespace DiplomaProrotype
         private void CreateMovableContextMenu(MovableTile movableTile)
         {
             var contextMenu = new ContextMenu();
-            var sep = new Separator(); // Разделитель
-
             movableTile.ContextMenu = contextMenu;
             DefaultContextMenu(contextMenu);
         }
 
         private void DefaultContextMenu(ContextMenu contextMenu)
         {
+            var menuItemCheckLinks = new MenuItem();
+            Image imageCheckLinks = new Image();
+            imageCheckLinks.Source = new BitmapImage(new Uri("/Icons/x128/Molecular32.png", UriKind.Relative));
+            menuItemCheckLinks.Icon = imageCheckLinks;
+            menuItemCheckLinks.Click += new RoutedEventHandler(CMCheckLinks_Click);
+            menuItemCheckLinks.Header = "Просмотреть связи";
+
             var menuItemAnima = new MenuItem();
             Image imageAnima = new Image();
             imageAnima.Source = new BitmapImage(new Uri("/Icons/x128/Animate32.png", UriKind.Relative));
@@ -557,6 +617,7 @@ namespace DiplomaProrotype
             menuItemEditSomething.Header = "Настроить что-то";
             menuItemEdit.Items.Add(menuItemEditSomething);*/
 
+            contextMenu.Items.Add(menuItemCheckLinks);
             contextMenu.Items.Add(menuItemAnima);
             //contextMenu.Items.Add(menuItemEdit);
             contextMenu.Items.Add(menuItemColor);
@@ -566,7 +627,7 @@ namespace DiplomaProrotype
 
 
         #region Методы контекстного меню
-        private void GetTileFromContextMenu(object sender, RoutedEventArgs e)
+        private void GetTileFromContextMenu(object sender, RoutedEventArgs e) // Для считывания
         {
             var menuItem = sender as MenuItem;
             while (menuItem.Parent is MenuItem)
@@ -575,9 +636,9 @@ namespace DiplomaProrotype
             }
             var contextMenu = menuItem.Parent as ContextMenu;
             
-            resourceTileContextMenu = contextMenu.PlacementTarget as ResourceTile;
-            machineTileContextMenu = contextMenu.PlacementTarget as MachineTile;
-            movableTileContextMenu = contextMenu.PlacementTarget as MovableTile;
+            resourceTileFromContextMenu = contextMenu.PlacementTarget as ResourceTile;
+            machineTileFromContextMenu = contextMenu.PlacementTarget as MachineTile;
+            movableTileFromContextMenu = contextMenu.PlacementTarget as MovableTile;
         }
 
         private void ResourceHeightAnimation(int from, int to, int time, Thickness inputMargin, Thickness outputMargin)
@@ -588,23 +649,54 @@ namespace DiplomaProrotype
             doubleAnimation.From = from;
             doubleAnimation.To = to;
             doubleAnimation.Duration = TimeSpan.FromSeconds(time);
-            resourceTileContextMenu.ResourceFigure.BeginAnimation(Button.HeightProperty, doubleAnimation);
+            resourceTileFromContextMenu.ResourceFigure.BeginAnimation(Button.HeightProperty, doubleAnimation);
 
             thicknessAnimation.From = inputMargin;
             thicknessAnimation.To = outputMargin;
             thicknessAnimation.Duration = TimeSpan.FromSeconds(time);
-            resourceTileContextMenu.ResourceFigure.BeginAnimation(Button.MarginProperty, thicknessAnimation);
+            resourceTileFromContextMenu.ResourceFigure.BeginAnimation(Button.MarginProperty, thicknessAnimation);
         }
 
+        private void CMCheckLinks_Click(object sender, RoutedEventArgs e)
+        {
+            GetTileFromContextMenu(sender, e);
+            int tileLinkAmount = 0;
+            int row = 0;
 
+            string[] tableRows = new string[links.Count + 3];
+            tableRows[row++] = $"Выбранный (1-ый) объект: задел";
+            tableRows[row++] = $"";
+            tableRows[row++] = $"{"Номер связи"}\t | " +
+                $"{"Номер 1-го"}\t | " +
+                $"{"Тип 2-го"}\t | " +
+                $"{"Номер 2-го"} ";
+
+            if(resourceTiles.Contains(resourceTileFromContextMenu))
+            {
+                for (int i = 0; i < links.Count; i++)
+                {
+                    if (links[i].FirstTargetListId == resourceTiles.IndexOf(resourceTileFromContextMenu))
+                    {
+                        tableRows[row++] = $"{++tileLinkAmount}\t\t | " +
+                            $"{resourceTiles[links[i].FirstTargetListId].ResourceId.Text}\t\t | " +
+                            //$"{links[i].LastTargetType,-25} | " +
+                            $"{"Станок"}\t\t | " +
+                            $"{machineTiles[links[i].LastTargetListId].MachineId.Text}";
+                    }
+                }
+                string table = string.Join('\n', tableRows);
+
+                MessageBox.Show(table);
+            }    
+        }
 
         private void CMAnimate_Click(object sender, RoutedEventArgs e)
         {
             GetTileFromContextMenu(sender, e);
 
-            if (machineTileContextMenu is null && movableTileContextMenu is null)
+            if (machineTileFromContextMenu is null && movableTileFromContextMenu is null)
             {
-                if (resourceTileContextMenu.ResourceFigure.Height == 45)
+                if (resourceTileFromContextMenu.ResourceFigure.Height == 45)
                 {
                     ResourceHeightAnimation(45, 10, 3, new(0, 5, 0, 0), new(0, 40, 0, 0));
                 }
@@ -614,9 +706,9 @@ namespace DiplomaProrotype
                 }
             }
 
-            if (resourceTileContextMenu is null && movableTileContextMenu is null)
+            if (resourceTileFromContextMenu is null && movableTileFromContextMenu is null)
             {
-                machineTileContextMenu.MachineIndicator.Fill = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
+                machineTileFromContextMenu.MachineIndicator.Fill = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
 
                 BackgroundWorker worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
@@ -645,9 +737,9 @@ namespace DiplomaProrotype
             var dialog = new ColorPickerDialog();
             dialog.ShowDialog();
 
-            if (resourceTiles.Contains(resourceTileContextMenu))
+            if (resourceTiles.Contains(resourceTileFromContextMenu))
             {
-                resourceTileContextMenu.ResourceFigure.Fill = dialog.SelectedBrush;
+                resourceTileFromContextMenu.ResourceFigure.Fill = dialog.SelectedBrush;
             }
 
             /*if (machineTiles.Contains(machineTileContextMenu))
@@ -665,22 +757,22 @@ namespace DiplomaProrotype
         {
             GetTileFromContextMenu(sender, e);
 
-            if (resourceTiles.Contains(resourceTileContextMenu))
+            if (resourceTiles.Contains(resourceTileFromContextMenu))
             {
-                TargetCanvas.Children.Remove(resourceTileContextMenu);
-                resourceTiles.Remove(resourceTileContextMenu);
+                TargetCanvas.Children.Remove(resourceTileFromContextMenu);
+                resourceTiles.Remove(resourceTileFromContextMenu);
             }
 
-            if (machineTiles.Contains(machineTileContextMenu))
+            if (machineTiles.Contains(machineTileFromContextMenu))
             {
-                TargetCanvas.Children.Remove(machineTileContextMenu);
-                machineTiles.Remove(machineTileContextMenu);
+                TargetCanvas.Children.Remove(machineTileFromContextMenu);
+                machineTiles.Remove(machineTileFromContextMenu);
             }
 
-            if (movableTiles.Contains(movableTileContextMenu))
+            if (movableTiles.Contains(movableTileFromContextMenu))
             {
-                TargetCanvas.Children.Remove(movableTileContextMenu);
-                movableTiles.Remove(movableTileContextMenu);
+                TargetCanvas.Children.Remove(movableTileFromContextMenu);
+                movableTiles.Remove(movableTileFromContextMenu);
             }
         }
         #endregion
@@ -698,12 +790,12 @@ namespace DiplomaProrotype
 
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            machineTileContextMenu.MachineProgress.Value = e.ProgressPercentage;
+            machineTileFromContextMenu.MachineProgress.Value = e.ProgressPercentage;
         }
 
         void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            machineTileContextMenu.MachineIndicator.Fill = (SolidColorBrush)new BrushConverter().ConvertFromString("#DC143C");
+            machineTileFromContextMenu.MachineIndicator.Fill = (SolidColorBrush)new BrushConverter().ConvertFromString("#DC143C");
         }
         #endregion
 
@@ -745,6 +837,7 @@ namespace DiplomaProrotype
         private void CMDeleteObjects_Click(object sender, RoutedEventArgs e)
         {
             tilesCounter = 0;
+            linkCounter = 0;
 
             for (int i = 0; i < resourceTiles.Count;)
             {
@@ -768,6 +861,7 @@ namespace DiplomaProrotype
         private void CMDeleteAll_Click(object sender, RoutedEventArgs e)
         {
             tilesCounter = 0;
+            linkCounter = 0;
 
             for (int i = 0; i < resourceTiles.Count;)
             {

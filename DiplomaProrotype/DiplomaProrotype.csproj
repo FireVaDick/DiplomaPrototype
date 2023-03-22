@@ -113,6 +113,8 @@
     <None Remove="Icons\x128\Brush128.png" />
     <None Remove="Icons\x128\Brush32.png" />
     <None Remove="Icons\x128\Canvas128.png" />
+    <None Remove="Icons\x128\CheckLinks128.png" />
+    <None Remove="Icons\x128\CheckLinks32.png" />
     <None Remove="Icons\x128\Circle128.png" />
     <None Remove="Icons\x128\Clock128.png" />
     <None Remove="Icons\x128\Delete128.png" />
@@ -123,6 +125,8 @@
     <None Remove="Icons\x128\Hand128.png" />
     <None Remove="Icons\x128\Lathe128.png" />
     <None Remove="Icons\x128\Milling128.png" />
+    <None Remove="Icons\x128\Molecular128.png" />
+    <None Remove="Icons\x128\Molecular32.png" />
     <None Remove="Icons\x128\Path128.png" />
     <None Remove="Icons\x128\Pencil128.png" />
     <None Remove="Icons\x128\Pencil32.png" />
@@ -242,6 +246,8 @@
     <Resource Include="Icons\x128\Brush128.png" />
     <Resource Include="Icons\x128\Brush32.png" />
     <Resource Include="Icons\x128\Canvas128.png" />
+    <Resource Include="Icons\x128\CheckLinks128.png" />
+    <Resource Include="Icons\x128\CheckLinks32.png" />
     <Resource Include="Icons\x128\Circle128.png" />
     <Resource Include="Icons\x128\Clock128.png" />
     <Resource Include="Icons\x128\Delete128.png" />
@@ -252,6 +258,8 @@
     <Resource Include="Icons\x128\Hand128.png" />
     <Resource Include="Icons\x128\Lathe128.png" />
     <Resource Include="Icons\x128\Milling128.png" />
+    <Resource Include="Icons\x128\Molecular128.png" />
+    <Resource Include="Icons\x128\Molecular32.png" />
     <Resource Include="Icons\x128\Path128.png" />
     <Resource Include="Icons\x128\Pencil128.png" />
     <Resource Include="Icons\x128\Pencil32.png" />

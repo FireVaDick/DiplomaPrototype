@@ -108,7 +108,7 @@
                         AllowDrop="True" 
                         Drop="ObjectPanel_Drop"
                         Background="Transparent">
-                <local:ResourceTile Text="Задел"/>
+                <local:ResourceTile Text="Задел" AutomationProperties.IsOffscreenBehavior="Offscreen"/>
                 <local:MachineTile Text="Токарный" Image="Icons/x128/Lathe128.png"/>
                 <local:MachineTile Text="Сварочный" Image="Icons/x128/Welding128.png"/>
                 <local:MachineTile Text="Фрезерный" Image="Icons/x128/Milling128.png"/>
