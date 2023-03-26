@@ -1,0 +1,34 @@
+﻿
+
+// Не реализовано
+        #region Динамическое создание инструментов панелей
+        /*private void AddModetPanelTools()
+        {
+            modeTileArray[0].Text = "Перемещение";
+            modeTileArray[1].Text = "Связи";
+            modeTileArray[2].Text = "Маршруты";
+            modeTileArray[3].Text = "Холсты";
+
+            foreach (ModeTile tile in modeTileArray)
+            {
+                ModePanel.Children.Add(tile);
+            }
+        }
+
+        private void AddObjectPanelTools()
+        {
+            objectTileArray[0].Text = "Работник";
+            objectTileArray[1].Text = "Золото";
+            objectTileArray[2].Text = "Алмаз";
+            objectTileArray[3].Text = "Станок";
+            objectTileArray[4].Text = "Механизм";
+            objectTileArray[5].Text = "Манипулятор";
+            objectTileArray[6].Text = "Тележка";
+            objectTileArray[7].Text = "Погрузчик";
+
+            foreach (ObjectTile tile in objectTileArray)
+            {
+                ObjectPanel.Children.Add(tile);
+            }
+        }*/
+        #endregion

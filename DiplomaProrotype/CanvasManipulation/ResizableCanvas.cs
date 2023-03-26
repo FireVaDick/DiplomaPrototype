@@ -9,15 +9,15 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace DiplomaProrotype
+namespace DiplomaProrotype.CanvasManipulation
 {
-    internal class ResizableAdorner : Adorner
+    internal class ResizableCanvas : Adorner
     {
         VisualCollection AdornerVisuals;
         Thumb thumb1, thumb2;
         Rectangle Rec;
 
-        public ResizableAdorner(UIElement adornedElement) : base(adornedElement)
+        public ResizableCanvas(UIElement adornedElement) : base(adornedElement)
         {
             AdornerVisuals = new VisualCollection(this);
             thumb1 = new Thumb() { Background = Brushes.Black, Height = 8, Width = 8 };
@@ -43,7 +43,7 @@ namespace DiplomaProrotype
         private void Thumb2_DragDelta(object sender, DragDeltaEventArgs e)
         {
             var ele = (FrameworkElement)AdornedElement;
-            ele.Height = ele.Height + e.VerticalChange < 0 ? 0 : ele.Height + e.VerticalChange ;
+            ele.Height = ele.Height + e.VerticalChange < 0 ? 0 : ele.Height + e.VerticalChange;
             ele.Width = ele.Width + e.HorizontalChange < 0 ? 0 : ele.Width + e.HorizontalChange;
         }
 

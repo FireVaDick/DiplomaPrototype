@@ -1,10 +1,16 @@
-﻿using Haley.Models;
+﻿using DiplomaProrotype.Animations;
+using DiplomaProrotype.CanvasManipulation;
+using DiplomaProrotype.Models;
+
+using Haley.Models;
 using Haley.Services;
 using Haley.Utils;
+using Haley.WPF.Controls;
 using ProtoBuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -27,6 +33,7 @@ using System.Windows.Threading;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
+using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace DiplomaProrotype
 {
@@ -34,25 +41,23 @@ namespace DiplomaProrotype
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {        
-        List<ResourceTile> resourceTiles = new List<ResourceTile>();
-        List<MachineTile> machineTiles = new List<MachineTile>();
-        List<MovableTile> movableTiles = new List<MovableTile>();
-        List<Link> links = new List<Link>();
+    {
+        static public List<ResourceTile> resourceTiles = new List<ResourceTile>();
+        static public List<MachineTile> machineTiles = new List<MachineTile>();
+        static public List<MovableTile> movableTiles = new List<MovableTile>();
+        static public List<Link> links = new List<Link>();
 
-        private ResourceTile resourceTileFromContextMenu;
-        private MachineTile machineTileFromContextMenu;
-        private MovableTile movableTileFromContextMenu;
+        public ResourceTile resourceTileFromContextMenu;
+        public MachineTile machineTileFromContextMenu;
+        public MovableTile movableTileFromContextMenu;
 
-        private int tilesCounter = 0;
-        private int linkCounter = 0;
-        private string lastTileType = "";
-        private string currentMode = "path";
+        static public int tilesCounter = 0;
+        static public int linksCounter = 0;
+        static public string lastTileType = "";
+        static public string currentMode = "path";
 
-        private bool resourceIsEmpty = false;
-        private bool modeBorderOpen = true;
-        private bool objectBorderOpen = true;
-        private bool colorBorderOpen = false;
+        public bool resourceIsEmpty = false;
+
 
 
 
@@ -68,7 +73,7 @@ namespace DiplomaProrotype
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            AdornerLayer.GetAdornerLayer(MyGrid).Add(new ResizableAdorner(TargetBorder));
+            AdornerLayer.GetAdornerLayer(MyGrid).Add(new ResizableCanvas(TargetBorder));
         }
 
 
@@ -113,7 +118,7 @@ namespace DiplomaProrotype
         #endregion
 
 
-        #region Перемещение объекта
+        #region Размещение объекта (создание + перемещение)
         private void TargetCanvas_Drop(object sender, DragEventArgs e)
         {
             var resourceData = e.Data.GetData(typeof(ResourceTile)) as ResourceTile;
@@ -136,6 +141,34 @@ namespace DiplomaProrotype
                     {
                         Canvas.SetLeft(resourceData, dropPosition.X - resourceData.Width / 2 - 7.5);
                         Canvas.SetTop(resourceData, dropPosition.Y - resourceData.Height / 2 + 7.5);
+
+                        for (int i = 0; i < links.Count; i++)
+                        {
+                            if (links[i].FirstTargetType == "resource" && links[i].FirstTargetListId == resourceTiles.IndexOf(resourceData))
+                            {
+                                double marginLeftFromObject = dropPosition.X + resourceData.Width / 2 - 20;
+                                double marginTopFromObject = dropPosition.Y + 2.5;
+
+                                links[i].LineInfo.X1 = marginLeftFromObject;
+                                links[i].LineInfo.Y1 = marginTopFromObject;
+
+                                links[i].CircleInfo.Margin = new Thickness(links[i].LineInfo.X1 - 5, links[i].LineInfo.Y1 - 5, 0, 0);
+                            }
+                        }
+
+                        for (int i = 0; i < links.Count; i++)
+                        {
+                            if (links[i].LastTargetType == "resource" && links[i].LastTargetListId == resourceTiles.IndexOf(resourceData))
+                            {
+                                double marginLeftFromObject = dropPosition.X - resourceData.Width / 2 + 20;
+                                double marginTopFromObject = dropPosition.Y + 2.5;
+
+                                links[i].LineInfo.X2 = marginLeftFromObject;
+                                links[i].LineInfo.Y2 = marginTopFromObject;
+
+                                //links[i].CircleInfo.Margin = new Thickness(links[i].LineInfo.X1 - 5, links[i].LineInfo.Y1 - 5, 0, 0);
+                            }
+                        }
                     }
                 }
             }
@@ -154,6 +187,34 @@ namespace DiplomaProrotype
                     {
                         Canvas.SetLeft(machineData, dropPosition.X - machineData.Width / 2 - 7.5);
                         Canvas.SetTop(machineData, dropPosition.Y - machineData.Height / 2 - 2.5);
+
+                        for (int i = 0; i < links.Count; i++)
+                        {
+                            if (links[i].FirstTargetType == "machine" && links[i].FirstTargetListId == machineTiles.IndexOf(machineData))
+                            {
+                                double marginLeftFromObject = dropPosition.X + machineData.Width / 2 - 20;
+                                double marginTopFromObject = dropPosition.Y + 2.5;
+
+                                links[i].LineInfo.X1 = marginLeftFromObject;
+                                links[i].LineInfo.Y1 = marginTopFromObject;
+
+                                links[i].CircleInfo.Margin = new Thickness(links[i].LineInfo.X1 - 5, links[i].LineInfo.Y1 - 5, 0, 0);
+                            }
+                        }
+
+                        for (int i = 0; i < links.Count; i++)
+                        {
+                            if (links[i].LastTargetType == "machine" && links[i].LastTargetListId == machineTiles.IndexOf(machineData))
+                            {
+                                double marginLeftFromObject = dropPosition.X - machineData.Width / 2 + 20;
+                                double marginTopFromObject = dropPosition.Y + 2.5;
+
+                                links[i].LineInfo.X2 = marginLeftFromObject;
+                                links[i].LineInfo.Y2 = marginTopFromObject;
+
+                                //links[i].CircleInfo.Margin = new Thickness(links[i].LineInfo.X1 - 5, links[i].LineInfo.Y1 - 5, 0, 0);
+                            }
+                        }
                     }
                 }
             }
@@ -292,40 +353,16 @@ namespace DiplomaProrotype
 
         #region Рисование линий связи и путей-прямоугольников
         private Link link;
-
+        private Ellipse linkCircle;
         private Line linkLine;
-        private Line routeLine;
-        private Rectangle pathRectangle;
 
+        private Line routeLine;
         private bool routeIsDone = false;
+
+        private Rectangle pathRectangle;
 
         private Point startPos;
         double lastX2 = 0, lastY2 = 0;
-
-        private void SetAllObjectsToUnenabled()
-        {
-            for (int i = 0; i < resourceTiles.Count; i++)
-            {
-                resourceTiles[i].IsEnabled = false;
-            }
-
-            for (int i = 0; i < machineTiles.Count; i++)
-            {
-                machineTiles[i].IsEnabled = false;
-            }
-        }
-        private void SetAllObjectsToEnabled()
-        {
-            for (int i = 0; i < resourceTiles.Count; i++)
-            {
-                resourceTiles[i].IsEnabled = true;
-            }
-
-            for (int i = 0; i < machineTiles.Count; i++)
-            {
-                machineTiles[i].IsEnabled = true;
-            }
-        }
 
         private void TargetCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -350,7 +387,7 @@ namespace DiplomaProrotype
                         }
                     }
 
-                    SetAllObjectsToUnenabled(); // Для прохождения связи сквозь объект
+                    EnableObjectsOrNot.SetAllObjectsToUnenabled(); // Для прохождения связи сквозь объект
 
                     linkLine = new Line
                     {
@@ -361,7 +398,7 @@ namespace DiplomaProrotype
                     double marginLeftFromObject = targetMargin.X + target.Width / 2 - target.Margin.Left / 2 + 20; // 20 и 5 - отступы от центра
                     double marginTopFromObject = targetMargin.Y + target.Height / 2 - target.Margin.Top - 5;
 
-                    Ellipse ellipse = new Ellipse
+                    linkCircle = new Ellipse
                     {
                         Fill = Brushes.White,
                         StrokeThickness = 2,
@@ -375,7 +412,7 @@ namespace DiplomaProrotype
                     linkLine.Y2 = linkLine.Y1 = marginTopFromObject;
 
                     TargetCanvas.Children.Add(linkLine);
-                    TargetCanvas.Children.Add(ellipse);
+                    TargetCanvas.Children.Add(linkCircle);
                 }            
             }
 
@@ -477,7 +514,7 @@ namespace DiplomaProrotype
             if (currentMode == "link")
             {
                 Point mousePos = e.MouseDevice.GetPosition(TargetCanvas);
-                Vector targetMargin; //targetVector - положение объекта на холсте
+                Vector targetMargin; //targetMargin - положение объекта на холсте
 
                 if (machineTiles.Count != 0)
                 {
@@ -492,7 +529,9 @@ namespace DiplomaProrotype
                         {
                             link.LastTargetType = "machine";
                             link.LastTargetListId = i;
-                            link.LinkId = ++linkCounter;
+                            link.LinkId = ++linksCounter;
+                            link.LineInfo = linkLine;
+                            link.CircleInfo = linkCircle;
 
                             links.Add(link);
 
@@ -511,7 +550,7 @@ namespace DiplomaProrotype
 
                             linkLine = null;
 
-                            SetAllObjectsToEnabled();
+                            EnableObjectsOrNot.SetAllObjectsToEnabled();
                         }
                     }
                 }
@@ -801,184 +840,34 @@ namespace DiplomaProrotype
 
 
         #region Очистка холста
-        private void ModeTile_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void ModeTile_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) 
         {
-            Type type = TargetCanvas.Children[^1].GetType();
-
-            if (TargetCanvas.Children.Count!= 0)
-            {
-                if (type == typeof(Ellipse))
-                {
-                    TargetCanvas.Children.RemoveAt(TargetCanvas.Children.Count - 1);
-                }
-
-                TargetCanvas.Children.RemoveAt(TargetCanvas.Children.Count - 1);
-            }
+            Cleanup.UndoLastElementPlacement();
         }
 
         private void ModeTile_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var contextMenu = new ContextMenu();
-
-            Eraser.ContextMenu = contextMenu;
-
-            var menuItemDeleteObjects = new MenuItem();
-            menuItemDeleteObjects.Click += new RoutedEventHandler(CMDeleteObjects_Click);
-            menuItemDeleteObjects.Header = "Удалить только объекты";
-
-            var menuItemDeleteAll = new MenuItem();
-            menuItemDeleteAll.Click += new RoutedEventHandler(CMDeleteAll_Click);
-            menuItemDeleteAll.Header = "Удалить всё";
-
-            contextMenu.Items.Add(menuItemDeleteObjects);
-            contextMenu.Items.Add(menuItemDeleteAll);
-        }
-
-        private void CMDeleteObjects_Click(object sender, RoutedEventArgs e)
-        {
-            tilesCounter = 0;
-            linkCounter = 0;
-
-            for (int i = 0; i < resourceTiles.Count;)
-            {
-                TargetCanvas.Children.Remove(resourceTiles[i]);
-                resourceTiles.Remove(resourceTiles[i]);
-            }
-
-            for (int i = 0; i < machineTiles.Count;)
-            {
-                TargetCanvas.Children.Remove(machineTiles[i]);
-                machineTiles.Remove(machineTiles[i]);
-            }
-
-            for (int i = 0; i < movableTiles.Count;)
-            {
-                TargetCanvas.Children.Remove(movableTiles[i]);
-                movableTiles.Remove(movableTiles[i]);
-            }
-        }
-
-        private void CMDeleteAll_Click(object sender, RoutedEventArgs e)
-        {
-            tilesCounter = 0;
-            linkCounter = 0;
-
-            for (int i = 0; i < resourceTiles.Count;)
-            {
-                resourceTiles.Remove(resourceTiles[i]);
-            }
-
-            for (int i = 0; i < machineTiles.Count;)
-            {
-                machineTiles.Remove(machineTiles[i]);
-            }
-
-            for (int i = 0; i < movableTiles.Count;)
-            {
-                movableTiles.Remove(movableTiles[i]);
-            }
-
-            TargetCanvas.Children.Clear();
+            Cleanup.CreateCleanupContextMenu();
         }
         #endregion
 
 
         #region Анимации сокрытия панелей
-        private void CreateAnimationWidth(Border border, double endValue, double duration)
-        {
-            DoubleAnimation animation = new DoubleAnimation();
-            animation.From = border.ActualWidth;
-            animation.To = endValue;
-            animation.Duration = TimeSpan.FromSeconds(duration);
-            border.BeginAnimation(Button.WidthProperty, animation);
-        }
-
-        private void CreateAnimationHeight(Border border, double endValue, double duration)
-        {
-            DoubleAnimation animation = new DoubleAnimation();
-            animation.From = border.ActualHeight;
-            animation.To = endValue;
-            animation.Duration = TimeSpan.FromSeconds(duration);
-            border.BeginAnimation(Button.HeightProperty, animation);
-        }
 
         private void ModeBorder_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (modeBorderOpen)
-            {
-                CreateAnimationWidth(ModeBorder, 20, 0.3);
-                modeBorderOpen = false;
-            }
-            else
-            {
-                CreateAnimationWidth(ModeBorder, 100, 0.3);
-                modeBorderOpen = true;
-            }
+            PanelAnimation.ModeBorderAnimation();
         }
 
         private void ObjectBorder_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-
-            if (objectBorderOpen)
-            {
-                CreateAnimationHeight(ObjectBorder, 20, 0.3);
-                objectBorderOpen = false;
-            }
-            else
-            {
-                CreateAnimationHeight(ObjectBorder, 100, 0.3);
-                objectBorderOpen = true;
-            }
+            PanelAnimation.ObjectBorderAnimation();
         }
-
 
         private void ColorBorder_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (colorBorderOpen)
-            {
-                CreateAnimationWidth(ColorBorder, 35.5, 0.7);
-                colorBorderOpen = false;
-            }
-            else
-            {
-                CreateAnimationWidth(ColorBorder, 350, 0.7);
-                colorBorderOpen = true;
-            }
+            PanelAnimation.ColorBorderAnimation();
         }
-        #endregion
-
-
-        // Не реализовано
-        #region Динамическое создание инструментов панелей
-        /*private void AddModetPanelTools()
-        {
-            modeTileArray[0].Text = "Перемещение";
-            modeTileArray[1].Text = "Связи";
-            modeTileArray[2].Text = "Маршруты";
-            modeTileArray[3].Text = "Холсты";
-
-            foreach (ModeTile tile in modeTileArray)
-            {
-                ModePanel.Children.Add(tile);
-            }
-        }
-
-        private void AddObjectPanelTools()
-        {
-            objectTileArray[0].Text = "Работник";
-            objectTileArray[1].Text = "Золото";
-            objectTileArray[2].Text = "Алмаз";
-            objectTileArray[3].Text = "Станок";
-            objectTileArray[4].Text = "Механизм";
-            objectTileArray[5].Text = "Манипулятор";
-            objectTileArray[6].Text = "Тележка";
-            objectTileArray[7].Text = "Погрузчик";
-
-            foreach (ObjectTile tile in objectTileArray)
-            {
-                ObjectPanel.Children.Add(tile);
-            }
-        }*/
         #endregion
 
     }

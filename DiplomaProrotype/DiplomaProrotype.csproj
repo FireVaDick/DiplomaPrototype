@@ -272,4 +272,8 @@
     <Resource Include="Icons\x128\Worker128.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ColorChooser\" />
+  </ItemGroup>
+
 </Project>
