@@ -56,9 +56,34 @@
                     AllowDrop="True" 
                     DragOver="TargetCanvas_DragOver" 
                     Drop="TargetCanvas_Drop" 
-                    Background="Transparent" MouseMove="Canvas_MouseMove" 
-                PreviewMouseLeftButtonDown="Canvas_PreviewMouseLeftButtonDown" 
-                PreviewMouseRightButtonDown="Canvas_PreviewMouseRightButtonDown"/>
+                    Background="Transparent"
+                PreviewMouseLeftButtonDown="Canvas_MouseLeftButtonDown" 
+                PreviewMouseRightButtonDown="Canvas_MouseRightButtonDown">
+                <Image x:Name="image" Source="/Forklift128.png" Width="80" Height="60">
+                    <Image.RenderTransform>
+                        <MatrixTransform x:Name="ImageMatrixTransform" />
+                    </Image.RenderTransform>
+                    <Image.Triggers>
+                        <EventTrigger RoutedEvent="Image.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard Name="TargetStoryboard">
+                                    <MatrixAnimationUsingPath
+                                    Name="TargetAnimation"
+                Storyboard.TargetName="ImageMatrixTransform"
+                Storyboard.TargetProperty="Matrix"
+                Duration="0:0:10" 
+                RepeatBehavior="Forever" >
+                                        <MatrixAnimationUsingPath.PathGeometry>
+                                            <PathGeometry x:Name="TargetPathGeometry"  
+                    Figures=""/>
+                                        </MatrixAnimationUsingPath.PathGeometry>
+                                    </MatrixAnimationUsingPath>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Image.Triggers>
+                </Image>
+            </Canvas>
         </Border>
 
         <!-- Меню режимов слева -->
@@ -150,60 +175,8 @@
                                 ShowMiniInfo="True" 
                                 MouseLeftButtonUp="ColorPicker_MouseLeftButtonUp"/>
             </StackPanel>
-            
-            
+
+
         </Border>
-
-        <UniformGrid x:Name="modes_grid" Height="35" Width="800" Margin="10,0,10,51" 
-                     VerticalAlignment="Bottom" Columns="5">
-            <ToggleButton Content="Свободно" Margin="3,0" Tag="1" 
-                          Background="#FFDADADA" BorderBrush="Black"
-                          FontFamily="laCartoonerie(RUS BY LYAJKA)" FontSize="13" 
-                          Click="ModeChange_Click" />
-            <ToggleButton Content="Влево-вправо" Margin="3,0" Tag="2" 
-                          Background="#FFDADADA" BorderBrush="Black"
-                          FontFamily="laCartoonerie(RUS BY LYAJKA)" FontSize="13" 
-                          Click="ModeChange_Click" />
-            <ToggleButton Content="Вверх-вниз"  Margin="3,0" Tag="3" 
-                          Background="#FFDADADA" BorderBrush="Black"
-                          FontFamily="laCartoonerie(RUS BY LYAJKA)" FontSize="13" 
-                          Click="ModeChange_Click" />
-            <ToggleButton Content="45° Сверху слева" Margin="3,0" Tag="4" 
-                          Background="#FFDADADA" BorderBrush="Black"
-                          FontFamily="laCartoonerie(RUS BY LYAJKA)" FontSize="13" 
-                          Click="ModeChange_Click" />
-            <ToggleButton Content="45° Сверху справа" Margin="3,0" Tag="5" 
-                          Background="#FFDADADA" BorderBrush="Black"
-                          FontFamily="laCartoonerie(RUS BY LYAJKA)" FontSize="13" 
-                          Click="ModeChange_Click" />
-        </UniformGrid>
-
-        <UniformGrid x:Name="animation_grid" Height="35" Width="600" Margin="10,0,10,10" 
-                     VerticalAlignment="Bottom" Columns="3">
-            <Button x:Name="stop_animation" Content="Остановить анимацию" 
-                    Style="{StaticResource ResourceKey=buttonTrigger}" 
-                    Click="StopAnimation">
-                <Button.Background>
-                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                        <LinearGradientBrush.GradientStops>
-                            <GradientStop Color="#FFE68484" Offset="0" />
-                            <GradientStop Color="#FFFDC8C8" Offset="1" />
-                        </LinearGradientBrush.GradientStops>
-                    </LinearGradientBrush>
-                </Button.Background>
-            </Button>
-            <Button x:Name="start_animate" Content="Начать анимацию" 
-                    Style="{StaticResource ResourceKey=buttonTrigger}"
-                    Click="StartAnimation">
-                <Button.Background>
-                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                        <LinearGradientBrush.GradientStops>
-                            <GradientStop Color="#FF84E677" Offset="0" />
-                            <GradientStop Color="#FFD9FFB5" Offset="1" />
-                        </LinearGradientBrush.GradientStops>
-                    </LinearGradientBrush>
-                </Button.Background>
-            </Button>
-        </UniformGrid>
     </Grid>
 </Window>

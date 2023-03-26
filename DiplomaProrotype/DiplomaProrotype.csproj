@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Forklift128.png" />
     <None Remove="Icons\BlackMaterial\icons8-advance-48.png" />
     <None Remove="Icons\BlackMaterial\icons8-automation-48.png" />
     <None Remove="Icons\BlackMaterial\icons8-cancel-48.png" />
@@ -142,6 +143,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Forklift128.png" />
     <Resource Include="Icons\BlackMaterial\icons8-advance-48.png" />
     <Resource Include="Icons\BlackMaterial\icons8-automation-48.png" />
     <Resource Include="Icons\BlackMaterial\icons8-cancel-48.png" />

@@ -572,190 +572,59 @@ namespace DiplomaProrotype
         }
         #endregion
 
+        #region Анимация объекта на холсте
 
-        public lineControl Line;
-        public int Mode = 1;
-
-        public int Delay = 500;
-        public int Speed = 1500;
-
-        private List<lineControl> _lines = new List<lineControl>();
-        private System.Threading.Thread _animationThread;
-
-        private void StartAnimation(object sender = null, RoutedEventArgs e = null)
+        private List<Point> coordinates = new List<Point>();
+        public void Animation()
         {
+            List<Point> points = coordinates; //Список координат по которым будет двигаться объект
 
-            StopAnimation();
-            TargetCanvas.IsEnabled = false;
 
-            lineControl.CompleteAnimationCallback callback = delegate (lineControl l)
+            PathFigure pFigure = new PathFigure(); //Создание фигуры,описывающей движение анимации
+            pFigure.StartPoint = new Point(35, 0); //Стартовая точка анимации
+
+            for (int i = 0; i < points.Count; i++)
             {
 
-                Task.Run(delegate ()
+                int X = (int)points[i].X;
+                int Y = (int)points[i].Y;
+                LineSegment lineSegment = new() //Создание линии с координатами конечной точки
                 {
-                    _animationThread = System.Threading.Thread.CurrentThread; //берём поток нащей функии чтобы потом в любой момент убить его
-                    foreach (lineControl line in _lines)
-                    {
-                        if (_animationThread == null) return;
-                        System.Threading.Thread.Sleep(Delay); //задержка
-                        App.Current.Dispatcher.Invoke(delegate ()
-                        {
-                            line.SetSpeed(new TimeSpan(0, 0, 0, 0, Speed)); //установка скорости
-                            line.BeginAnimation(); //старт анимации
-                        });
-
-                    }
-                });
-            };
-
-            _lines.Last().CompleteAnimationEvent += callback; //подписиваемся на событие
-
-            foreach (lineControl line in _lines)
-            {
-                line.line.X1 = line.line.X2 = line.line.Y1 = line.line.Y2 = 0; //скрываем линии
+                    Point = new Point(X, Y)
+                };
+                pFigure.Segments.Add(lineSegment); //Добавление линии к фигуре,описывающей движение
             }
-            callback(null);
+
+
+            TargetPathGeometry.Figures.Clear(); //Очистка массива фигур на случай предыдущих данных
+
+            TargetPathGeometry.Figures.Add(pFigure); //Добавление фигуры в качестве пути движения
+
+            TargetPathGeometry.Figures.Clear();
+
+            TargetPathGeometry.Figures.Add(pFigure);
+            TargetStoryboard.Begin(this);
 
         }
 
-        private void StopAnimation(object sender = null, RoutedEventArgs e = null)
+        private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _animationThread?.Abort(); //убиваем поток если он есть
-            _animationThread = null;
 
-            foreach (lineControl line in _lines) //убираем функции с события и останавливаем анимации
-            {
-                line.StopAnimation();
-                line.RemoveAllHandles_CompleteAnimationEvent();
-            }
-            TargetCanvas.IsEnabled = true;
+
+
+            Point point = e.GetPosition(TargetCanvas);
+            coordinates.Add(point);
         }
 
-        private void ClearCanvas(object sender, RoutedEventArgs e)
+        private void Canvas_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _animationThread?.Abort(); //убиваем поток если он есть
-            _animationThread = null;
+            // Здесь происходит завершение работы и возвращение массива координат
+            coordinates.Add(e.GetPosition(TargetCanvas));
 
-            foreach (lineControl line in _lines) //убираем функции с события и останавливаем анимации
-            {
-                line.StopAnimation();
-                line.RemoveAllHandles_CompleteAnimationEvent();
-            }
-            TargetCanvas.IsEnabled = true;
-
-            _lines.Clear();
-            TargetCanvas.Children.Clear();
-        }
-
-        private void SetLinePosition(int mode)
-        {
-            if (Line == null) return;
-            switch (mode)
-            {
-                case 1: //стандарт
-                    Line.X2 = Mouse.GetPosition(this).X - TargetCanvas.Margin.Left;
-                    Line.Y2 = Mouse.GetPosition(this).Y - TargetCanvas.Margin.Top;
-                    break;
-
-                case 2: //по горизонтали
-                    Line.X2 = Mouse.GetPosition(this).X - TargetCanvas.Margin.Left;
-                    Line.Y2 = Line.Y1;
-                    break;
-
-                case 3: //по вертикали
-                    Line.X2 = Line.X1;
-                    Line.Y2 = Mouse.GetPosition(this).Y - TargetCanvas.Margin.Top;
-                    break;
-
-                case 4: //по углом 45 градусов слева
-                    Line.X2 = Mouse.GetPosition(this).X - TargetCanvas.Margin.Left;
-                    Line.Y2 = Line.Y1 - (Line.X1 - Mouse.GetPosition(this).X + TargetCanvas.Margin.Left);
-                    break;
-
-                case 5: //по углом 45 градусов справа
-                    Line.X2 = Mouse.GetPosition(this).X - TargetCanvas.Margin.Left;
-                    Line.Y2 = Line.Y1 + (Line.X1 - Mouse.GetPosition(this).X + TargetCanvas.Margin.Left);
-                    break;
-            }
-            //Console.WriteLine($"X1: {l.X1}, X2: {l.X2}, Y1: {l.Y1}, Y2: {l.Y2}, V: {(l.X1 - Mouse.GetPosition(this).X)}"); //DEBUG
-        }
-
-        private void Canvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            SetLinePosition(Mode); //обновляем линию
-        }
-
-        private void Canvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Line = new lineControl()
-            {
-                X1 = (Line == null) ? Mouse.GetPosition(this).X - TargetCanvas.Margin.Left : Line.X2,
-                Y1 = (Line == null) ? Mouse.GetPosition(this).Y - TargetCanvas.Margin.Top : Line.Y2,
-                X2 = Mouse.GetPosition(this).X - TargetCanvas.Margin.Left,
-                Y2 = Mouse.GetPosition(this).Y - TargetCanvas.Margin.Top
-            };
-            Line.line.StrokeThickness = 3; //ширина линии
-
-            _lines.Add(Line);
-            TargetCanvas.Children.Add(Line);
+            Animation();
 
         }
-
-        private void Canvas_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            SetLinePosition(Mode);
-            Line = null;
-        }
-
-        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.Source.GetType() == typeof(TextBox) || (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl) &&
-                    !Keyboard.IsKeyDown(Key.Tab))) return; //проверка на Ctrl и Tab
-                Mode = Convert.ToInt32(e.Key.ToString()[1].ToString());
-                ModeChange_Click(modes_grid.Children[Mode - 1]);
-            }
-            catch (Exception)
-            { }
-            finally
-            {
-                Canvas_MouseMove(null, null);
-            }
-        }
-
-        private void TB_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            if (sender.GetType() != typeof(TextBox)) return;
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
-        }
-
-        private void Delay_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Delay = ((sender as TextBox).Text == "") ? 0 : Convert.ToInt32((sender as TextBox).Text);
-        }
-
-        private void Speed_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Speed = ((sender as TextBox).Text == "") ? 0 : Convert.ToInt32((sender as TextBox).Text);
-        }
-
-        private void ModeChange_Click(object sender, RoutedEventArgs e = null)
-        {
-            ToggleButton s = sender as ToggleButton;
-            UniformGrid parent = s.Parent as UniformGrid;
-
-            foreach (ToggleButton button in parent.Children)
-            {
-                button.IsChecked = false;
-            }
-            s.IsChecked = true;
-
-            Mode = Convert.ToInt32(s.Tag);
-            Canvas_MouseMove(null, null);
-        }
-
+        #endregion
     }
 }
 

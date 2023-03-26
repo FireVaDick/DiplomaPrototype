@@ -91,5 +91,7 @@ namespace SDKSample
                 pathAnimationStoryboard.Begin(this);
             };
         }
+
+
     }
 }

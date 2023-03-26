@@ -50,6 +50,7 @@
         </Storyboard>
     </UserControl.Resources>
     <Grid>
+        <Image Source="/Forklift128.png"></Image>
         <Line x:Name="line" Stroke="#FF3569EA" X2="40" Y2="40" StrokeThickness="2">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Loaded">
