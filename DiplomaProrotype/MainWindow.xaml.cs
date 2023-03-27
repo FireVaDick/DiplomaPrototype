@@ -47,6 +47,11 @@ namespace DiplomaProrotype
         private bool objectBorderOpen = true;
         private bool colorBorderOpen = false;
 
+        private Line routeLine;
+        private bool routeIsDone = false;
+        private Point startPos;
+        double lastX2 = 0, lastY2 = 0;
+
         private ObjectTile objectTileContextMenu;
         private ResourceTile resourceTileContextMenu;
 
@@ -609,15 +614,58 @@ namespace DiplomaProrotype
 
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            startPos = e.GetPosition(TargetCanvas);
 
+            if (!(routeLine is null))
+            {
+                lastX2 = routeLine.X2;
+                lastY2 = routeLine.Y2;
+            }
 
+            routeLine = new Line
+            {
+                Stroke = Brushes.Black,
+                StrokeThickness = 3
+            };
+
+            if (lastX2 == 0 && lastY2 == 0)
+            {
+                lastX2 = startPos.X;
+                lastY2 = startPos.Y;
+            }
+
+            if (routeIsDone == false)
+            {
+                routeLine.X1 = lastX2;
+                routeLine.Y1 = lastY2;
+            }
+
+            routeLine.X2 = routeLine.X1;
+            routeLine.Y2 = routeLine.Y1;
+
+            routeIsDone = false;
+            TargetCanvas.Children.Add(routeLine);
 
             Point point = e.GetPosition(TargetCanvas);
             coordinates.Add(point);
         }
 
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Released || routeLine == null)
+                return;
+
+            var pos = e.GetPosition(TargetCanvas);
+
+            routeLine.X2 = pos.X;
+            routeLine.Y2 = pos.Y;
+        }
+
         private void Canvas_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            routeIsDone = true;
+            routeLine = null;
+
             // Здесь происходит завершение работы и возвращение массива координат
             coordinates.Add(e.GetPosition(TargetCanvas));
 

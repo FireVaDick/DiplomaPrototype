@@ -57,6 +57,7 @@
                     DragOver="TargetCanvas_DragOver" 
                     Drop="TargetCanvas_Drop" 
                     Background="Transparent"
+                MouseMove="Canvas_MouseMove"
                 PreviewMouseLeftButtonDown="Canvas_MouseLeftButtonDown" 
                 PreviewMouseRightButtonDown="Canvas_MouseRightButtonDown">
                 <Image x:Name="image" Source="/Forklift128.png" Width="80" Height="60">
