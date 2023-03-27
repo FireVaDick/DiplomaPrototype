@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiplomaProrotype.CanvasManipulation
+namespace DiplomaProrotype.ObjectsManipulation
 {
     internal class EnableObjectsOrNot
     {
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
-        static private List<MovableTile> movableTiles = MainWindow.movableTiles;
+
 
         static public void SetAllObjectsToUnenabled()
         {

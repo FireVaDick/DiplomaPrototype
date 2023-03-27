@@ -32,3 +32,13 @@
             }
         }*/
         #endregion
+
+
+
+// Контекстное меню
+
+            var menuItemEdit = new MenuItem();
+            Image imageEdit = new Image();
+            imageEdit.Source = new BitmapImage(new Uri("/Icons/x128/Pencil32.png", UriKind.Relative));
+            menuItemEdit.Icon = imageEdit;
+            menuItemEdit.Header = "Редактировать";

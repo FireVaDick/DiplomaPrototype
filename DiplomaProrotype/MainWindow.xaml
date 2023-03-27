@@ -7,6 +7,7 @@
         xmlns:hm="http://schemas.hpod9.com/haley/mvvm"
         xmlns:local="clr-namespace:DiplomaProrotype"
         mc:Ignorable="d"
+        KeyDown="TargetCanvas_KeyDown"
         Title="MainWindow" Height="735" Width="1100">
     <Window.Resources>
         <Style TargetType="Border" x:Key="PaleBorder">
@@ -127,7 +128,7 @@
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="ClearPanel"          
                         Style="{StaticResource ResourceKey=SquarePanel}" >
-                <local:ModeTile Margin="0,0,0,0" x:Name="Eraser" Text="Очистить" Image="Icons/x128/Eraser128.png" MouseDown="ModeTile_MouseDown">
+                <local:ModeTile Margin="0,0,0,0" x:Name="Eraser" Text="Очистить" Image="Icons/x128/Eraser128.png" MouseDown="ModeTile_Erase_MouseDown">
                     <UserControl.ToolTip>
                         <ToolTip>
                             Нажав правую кнопку, появится контекстное меню, которое позволит очистить разные элементы холста или его целиком.
@@ -147,7 +148,7 @@
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="InfoPanel"
                         Style="{StaticResource ResourceKey=SquarePanel}">
-                <local:ModeTile Margin="0,0,0,0" Text="Отменить" Image="Icons/x128/Back128.png" MouseLeftButtonDown="ModeTile_MouseLeftButtonDown">
+                <local:ModeTile Margin="0,0,0,0" Text="Отменить" Image="Icons/x128/Back128.png" MouseLeftButtonDown="ModeTile_Undo_MouseLeftButtonDown">
                     <UserControl.ToolTip>
                         <ToolTip>
                             Позволяет отменить размещение последнего элемента, удаляя его из холста.

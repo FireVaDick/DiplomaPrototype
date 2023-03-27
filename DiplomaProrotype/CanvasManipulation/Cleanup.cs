@@ -1,4 +1,5 @@
-﻿using Haley.Utils;
+﻿using DiplomaProrotype.ObjectsManipulation;
+using Haley.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,6 @@ namespace DiplomaProrotype.CanvasManipulation
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
         static private List<MovableTile> movableTiles = MainWindow.movableTiles;
-
-        static private int tilesCounter = MainWindow.tilesCounter;
-        static private int linksCounter = MainWindow.linksCounter;
 
 
         static public void UndoLastElementPlacement()
@@ -59,10 +57,11 @@ namespace DiplomaProrotype.CanvasManipulation
             contextMenu.Items.Add(menuItemDeleteAll);
         }
 
+
         static private void CMDeleteObjects_Click(object sender, RoutedEventArgs e)
         {
-            tilesCounter = 0;
-            linksCounter = 0;
+            MainWindow.tilesCounter = 0;
+            MainWindow.linksCounter = 0;
 
             for (int i = 0; i < resourceTiles.Count;)
             {
@@ -87,8 +86,8 @@ namespace DiplomaProrotype.CanvasManipulation
 
         static private void CMDeleteAll_Click(object sender, RoutedEventArgs e)
         {
-            tilesCounter = 0;
-            linksCounter = 0;
+            MainWindow.tilesCounter = 0;
+            MainWindow.linksCounter = 0;
 
             for (int i = 0; i < resourceTiles.Count;)
             {
