@@ -57,7 +57,6 @@ namespace DiplomaProrotype
         static public int linksCounter = 0;
         static public string lastTileType = "";
         static public string currentMode = "path";
-
         static public bool resourceIsEmpty = false;
 
 

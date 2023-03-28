@@ -260,6 +260,8 @@ namespace DiplomaProrotype.CanvasManipulation
 
             if (MainWindow.currentMode == "path")
             {
+                EnableObjectsOrNot.SetAllObjectsToUnenabled();
+
                 pathRectangle = new Rectangle
                 {
                     Stroke = Brushes.Black,
@@ -328,6 +330,8 @@ namespace DiplomaProrotype.CanvasManipulation
             if (MainWindow.currentMode == "path")
             {
                 pathRectangle = null;
+
+                EnableObjectsOrNot.SetAllObjectsToEnabled();
             }
         }
 
