@@ -53,11 +53,10 @@ namespace DiplomaProrotype
         static public MachineTile machineTileFromContextMenu;
         static public MovableTile movableTileFromContextMenu;
 
-        static public int tilesCounter = 0;
         static public int linksCounter = 0;
         static public string lastTileType = "";
-        static public string currentMode = "path";
-        static public bool resourceIsEmpty = false;
+        static public string currentMode = "move";
+        static public bool resourceNearMachineIsEmpty = false;
 
 
         public MainWindow()
@@ -95,136 +94,15 @@ namespace DiplomaProrotype
         }
         #endregion
 
-        //
+
         #region Размещение объекта (создание + перемещение)
         private void TargetCanvas_Drop(object sender, DragEventArgs e)
         {
-            var resourceData = e.Data.GetData(typeof(ResourceTile)) as ResourceTile;
-            var machineData = e.Data.GetData(typeof(MachineTile)) as MachineTile;
-            var movableData = e.Data.GetData(typeof(MovableTile)) as MovableTile;
-
-            Point dropPosition = e.GetPosition(TargetCanvas);
-
-            // Манипуляции с resourceData
-            if (!(resourceData is null))
-            {
-                if (resourceData.Parent is StackPanel)
-                {
-                    ObjectPlacement.CreateResourceTile(dropPosition, resourceIsEmpty);
-                }
-
-                if (resourceData.Parent is Canvas && currentMode == "move")
-                {
-                    if (resourceTiles.Contains(resourceData))
-                    {
-                        Canvas.SetLeft(resourceData, dropPosition.X - resourceData.Width / 2 - 7.5);
-                        Canvas.SetTop(resourceData, dropPosition.Y - resourceData.Height / 2 + 7.5);
-
-                        for (int i = 0; i < links.Count; i++)
-                        {
-                            if (links[i].FirstTargetType == "resource" && links[i].FirstTargetListId == resourceTiles.IndexOf(resourceData))
-                            {
-                                double firstMarginLeft = dropPosition.X + resourceData.Width / 2 - 20;
-                                double firstMarginTop = dropPosition.Y + 2.5;
-
-                                links[i].LineInfo.X1 = firstMarginLeft;
-                                links[i].LineInfo.Y1 = firstMarginTop;
-
-                                links[i].CircleInfo.Margin = new Thickness(links[i].LineInfo.X1 - 5, links[i].LineInfo.Y1 - 5, 0, 0);
-                            }
-                        }
-
-                        for (int i = 0; i < links.Count; i++)
-                        {
-                            if (links[i].LastTargetType == "resource" && links[i].LastTargetListId == resourceTiles.IndexOf(resourceData))
-                            {
-                                double lastMarginLeft = dropPosition.X - resourceData.Width / 2 + 25;
-                                double lastMarginTop = dropPosition.Y + 2.5;
-
-                                links[i].LineInfo.X2 = lastMarginLeft;
-                                links[i].LineInfo.Y2 = lastMarginTop;
-
-                                //links[i].CircleInfo.Margin = new Thickness(links[i].LineInfo.X1 - 5, links[i].LineInfo.Y1 - 5, 0, 0);
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Манипуляции с machineData
-            if (!(machineData is null))
-            {
-                if (machineData.Parent is StackPanel)
-                {
-                    ObjectPlacement.CreateMachineTile(machineData, dropPosition);
-                }
-
-                if (machineData.Parent is Canvas && currentMode == "move")
-                {
-                    if (machineTiles.Contains(machineData))
-                    {
-                        Canvas.SetLeft(machineData, dropPosition.X - machineData.Width / 2 - 7.5);
-                        Canvas.SetTop(machineData, dropPosition.Y - machineData.Height / 2 - 2.5);
-
-                        for (int i = 0; i < links.Count; i++)
-                        {
-                            if (links[i].FirstTargetType == "machine" && links[i].FirstTargetListId == machineTiles.IndexOf(machineData))
-                            {
-                                double firstMarginLeft = dropPosition.X + machineData.Width / 2 - 10;
-                                double firstMarginTop = dropPosition.Y + 2.5;
-
-                                links[i].LineInfo.X1 = firstMarginLeft;
-                                links[i].LineInfo.Y1 = firstMarginTop;
-
-                                links[i].CircleInfo.Margin = new Thickness(links[i].LineInfo.X1 - 5, links[i].LineInfo.Y1 - 5, 0, 0);
-                            }
-                        }
-
-                        for (int i = 0; i < links.Count; i++)
-                        {
-                            if (links[i].LastTargetType == "machine" && links[i].LastTargetListId == machineTiles.IndexOf(machineData))
-                            {
-                                double lastMarginLeft = dropPosition.X - machineData.Width / 2;
-                                double lastMarginTop = dropPosition.Y + 2.5;
-
-                                switch (machineData.MachineText.Text)
-                                {
-                                    case "Токарный": lastMarginLeft += 18.5; break;
-                                    case "Сварочный": lastMarginLeft += 16.5; break;
-                                    case "Фрезерный": lastMarginLeft += 17.5; break;
-                                }
-
-                                links[i].LineInfo.X2 = lastMarginLeft;
-                                links[i].LineInfo.Y2 = lastMarginTop;
-
-                                //links[i].CircleInfo.Margin = new Thickness(links[i].LineInfo.X1 - 5, links[i].LineInfo.Y1 - 5, 0, 0);
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Манипуляции с movableData
-            if (!(movableData is null))
-            {
-                if (movableData.Parent is StackPanel)
-                {
-                    ObjectPlacement.CreateMovableTile(movableData, dropPosition);
-                }
-
-                if (movableData.Parent is Canvas && currentMode == "move")
-                {
-                    if (movableTiles.Contains(movableData))
-                    {
-                        Canvas.SetLeft(movableData, dropPosition.X - movableData.Width / 2 - 10);
-                        Canvas.SetTop(movableData, dropPosition.Y - movableData.Height / 2 - 2.5);
-                    }
-                }
-            }
+            ObjectPlacement.ObjectMovingFromPanelOrCanvas(e);
         }
 
         private void TargetCanvas_DragOver(object sender, DragEventArgs e)
-        { }
+        {}
 
         private void ObjectPanel_Drop(object sender, DragEventArgs e)
         {
@@ -277,6 +155,14 @@ namespace DiplomaProrotype
         private void ColorPicker_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             ColorChooser.DynamicChooseColorFromPalette();
+        }
+        #endregion
+
+
+        #region Просмотр всех связей
+        private void ModeTile_CheckAllLinks_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            
         }
         #endregion
 

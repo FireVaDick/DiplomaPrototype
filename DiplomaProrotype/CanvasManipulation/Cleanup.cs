@@ -60,7 +60,6 @@ namespace DiplomaProrotype.CanvasManipulation
 
         static private void CMDeleteObjects_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.tilesCounter = 0;
             MainWindow.linksCounter = 0;
 
             for (int i = 0; i < resourceTiles.Count;)
@@ -86,7 +85,6 @@ namespace DiplomaProrotype.CanvasManipulation
 
         static private void CMDeleteAll_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.tilesCounter = 0;
             MainWindow.linksCounter = 0;
 
             for (int i = 0; i < resourceTiles.Count;)
