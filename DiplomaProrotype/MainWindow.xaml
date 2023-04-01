@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:DiplomaProrotype"
         mc:Ignorable="d"
         KeyDown="TargetCanvas_KeyDown"
-        Title="MainWindow" Height="735" Width="1100">
+        Title="Основа" Height="735" Width="1100">
     <Window.Resources>
         <Style TargetType="Border" x:Key="PaleBorder">
             <Setter Property="Background" Value="#FFFBFDFF" />
@@ -27,12 +27,12 @@
     <Grid Name="MyGrid"
           AllowDrop="True" >
         <Grid.Background>
-            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.75,1" >
-                <GradientStop Color="#FFC6E6FF" Offset="0"/>
-                <GradientStop Color="#FFFF9C9C" Offset="1"/>
+            <LinearGradientBrush StartPoint="0.0, 0.0" EndPoint="0.9, 1" >
+                <GradientStop Color="#84A98C" Offset="0"/>
+                <GradientStop Color="#E5E9EC" Offset="0.45"/>
+                <GradientStop Color="#84A98C" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-
 
         <!-- Целевой холст -->
         <Border Name="TargetBorder"
@@ -48,7 +48,13 @@
                     MouseMove="TargetCanvas_MouseMove"
                     MouseLeftButtonUp="TargetCanvas_MouseLeftButtonUp"
                     MouseRightButtonDown="TargetCanvas_MouseRightButtonUp"
-                    Background="Transparent" />
+                    Background="Transparent" >
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="{Binding ElementName=SliderAllInterface, Path=Value}" ScaleY="{Binding ElementName=SliderAllInterface, Path=Value}"/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
+            </Canvas>
         </Border>
 
         <!-- Меню режимов слева -->
@@ -72,7 +78,7 @@
                 <local:ModeTile x:Name="ModeLink" Text="Связи" Image="Icons/x128/Arrow128.png" MouseLeftButtonDown="ModeTile_Link_MouseLeftButtonDown">
                     <UserControl.ToolTip>
                         <ToolTip>
-                            Режим, позволяющий создавать связи между размещёнными объектами. Для этого нужно зажать ЛКМ на первом нужно объекте, переместить 
+                            Режим, позволяющий создавать связи между размещёнными объектами. Для этого нужно зажать ЛКМ на первом объекте, переместить 
                             мышь и отпустить на втором объекте, с которым нужно создать связь.
                         </ToolTip>
                     </UserControl.ToolTip>
@@ -81,14 +87,14 @@
                     <UserControl.ToolTip>
                         <ToolTip>
                             Режим, позволяющий рисовать маршруты транспортных средств. Для этого нужно зажать ЛКМ на холсте, переместить мышь и отпустить, появится 
-                            линия. В следующий раз будет создана линия из той точки, где закончилась предыдущая. Для завершения маршрута, нажмите ПКМ.                         
+                            линия. В следующий раз будет создана линия из той точки, где закончилась предыдущая. Для завершения маршрута нажмите ПКМ.                         
                         </ToolTip>
                     </UserControl.ToolTip>
                 </local:ModeTile>
                 <local:ModeTile x:Name="ModePath" Text="Пути" Image="Icons/x128/Path128.png" MouseLeftButtonDown="ModeTile_Path_MouseLeftButtonDown">
                     <UserControl.ToolTip>
                         <ToolTip>
-                            Режим, позволяющий рисовать траспортные пути/места размещения станков и заделов. Для этого нужно зажать ЛКМ на холсте, переместить 
+                            Режим, позволяющий рисовать транспортные пути/места размещения станков и заделов. Для этого нужно зажать ЛКМ на холсте, переместить 
                             мышь и отпустить, появится прямоугольник.
                         </ToolTip>
                     </UserControl.ToolTip>
@@ -118,16 +124,16 @@
             </StackPanel>
         </Border>
 
-        <!-- Меню связей -->
-        <Border Name="LinkBorder" 
+        <!-- Меню матрицы -->
+        <Border Name="MatrixBorder" 
                 Width="100" 
                 Height="100" 
                 Margin="10" 
                 VerticalAlignment="Top" 
                 HorizontalAlignment="Left"
+                MouseWheel="MatrixBorder_MouseWheel" 
                 Style="{StaticResource ResourceKey=PaleBorder}" >
-            <StackPanel Name="LinkPanel"
-                        Style="{StaticResource ResourceKey=SquarePanel}">
+            <StackPanel Name="MatrixPanel" Style="{StaticResource ResourceKey=SquarePanel}">
                 <local:ModeTile Margin="0,0,0,0" Text="Матрица" Image="Icons/x128/CheckLinks128.png" MouseLeftButtonDown="ModeTile_CheckAllLinks_MouseLeftButtonDown">
                     <UserControl.ToolTip>
                         <ToolTip>
@@ -145,9 +151,9 @@
                 Margin="10" 
                 VerticalAlignment="Bottom" 
                 HorizontalAlignment="Left"
+                MouseWheel="ClearBorder_MouseWheel" 
                 Style="{StaticResource ResourceKey=PaleBorder}" >
-            <StackPanel Name="ClearPanel"          
-                        Style="{StaticResource ResourceKey=SquarePanel}" >
+            <StackPanel Name="ClearPanel" Style="{StaticResource ResourceKey=SquarePanel}" >
                 <local:ModeTile Margin="0,0,0,0" x:Name="Eraser" Text="Очистить" Image="Icons/x128/Eraser128.png" MouseDown="ModeTile_Erase_MouseDown">
                     <UserControl.ToolTip>
                         <ToolTip>
@@ -159,15 +165,15 @@
         </Border>
         
         <!-- Меню отмены размещения последнего элемента -->
-        <Border Name="InfoBorder" 
+        <Border Name="UndoBorder" 
                 Width="100" 
                 Height="100" 
                 Margin="10" 
                 VerticalAlignment="Top" 
                 HorizontalAlignment="Right"
+                MouseWheel="UndoBorder_MouseWheel" 
                 Style="{StaticResource ResourceKey=PaleBorder}" >
-            <StackPanel Name="InfoPanel"
-                        Style="{StaticResource ResourceKey=SquarePanel}">
+            <StackPanel Name="UndoPanel" Style="{StaticResource ResourceKey=SquarePanel}">
                 <local:ModeTile Margin="0,0,0,0" Text="Отменить" Image="Icons/x128/Back128.png" MouseLeftButtonDown="ModeTile_Undo_MouseLeftButtonDown">
                     <UserControl.ToolTip>
                         <ToolTip>
@@ -200,6 +206,8 @@
             </StackPanel>
         </Border>
 
+        <Slider Name="SliderAllInterface" Width="400" Margin="0,0,0,15" Minimum="0.5" Maximum="1.5" Value="1" 
+                VerticalAlignment="Bottom" HorizontalAlignment="Center" />
 
     </Grid>
 </Window>

@@ -145,15 +145,15 @@ namespace DiplomaProrotype.CanvasManipulation
                             mousePos.Y > targetMargin.Y &&
                             mousePos.Y < targetMargin.Y + machineTiles[i].Height)
                         {
+                            MainWindow.links.Add(link);
+
                             link.LastTargetType = "machine";
                             link.LastTargetListId = i;
-                            link.LinkId = ++MainWindow.linksCounter;
+                            link.LinkId = MainWindow.links.Count;
                             link.LineInfo = linkLine;
                             link.CircleInfo = linkCircle;
 
-                            MainWindow.links.Add(link);
-
-                            switch (machineTiles[i].MachineText.Text) // Отступы в зависимости от картинки, чтобы было красиво и касалось
+;                           switch (machineTiles[i].MachineText.Text) // Отступы в зависимости от картинки, чтобы было красиво и касалось
                             {
                                 case "Токарный": lastMarginLeft -= 15; break;
                                 case "Сварочный": lastMarginLeft -= 20; break;
@@ -162,8 +162,9 @@ namespace DiplomaProrotype.CanvasManipulation
 
                             linkLine.X2 = lastMarginLeft;
                             linkLine.Y2 = lastMarginTop;
-
                             linkLine = null;
+
+                            MainWindow.matrixResourceMachine[link.LastTargetListId, link.FirstTargetListId] = -1;
 
                             EnableObjectsOrNot.SetAllObjectsToEnabled();
                         }
@@ -187,18 +188,19 @@ namespace DiplomaProrotype.CanvasManipulation
                             mousePos.Y > targetMargin.Y &&
                             mousePos.Y < targetMargin.Y + resourceTiles[i].Height)
                         {
+                            MainWindow.links.Add(link);
+
                             link.LastTargetType = "resource";
                             link.LastTargetListId = i;
-                            link.LinkId = ++MainWindow.linksCounter;
+                            link.LinkId = MainWindow.links.Count;
                             link.LineInfo = linkLine;
                             link.CircleInfo = linkCircle;
 
-                            MainWindow.links.Add(link);
-
                             linkLine.X2 = lastMarginLeft;
                             linkLine.Y2 = lastMarginTop;
-
                             linkLine = null;
+
+                            MainWindow.matrixResourceMachine[link.FirstTargetListId, link.LastTargetListId] = 1;
 
                             EnableObjectsOrNot.SetAllObjectsToEnabled();
                         }

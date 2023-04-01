@@ -238,6 +238,8 @@ namespace DiplomaProrotype.ObjectsManipulation
                 mw.TargetCanvas.Children.Remove(movableTileFromContextMenu);
                 movableTiles.Remove(movableTileFromContextMenu);
             }
+
+            MainWindow.matrixResourceMachine = (int[,])ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
         }
     }
 }

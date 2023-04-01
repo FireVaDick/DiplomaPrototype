@@ -15,6 +15,9 @@ namespace DiplomaProrotype.Animations
 
         static private bool modeBorderOpen = true;
         static private bool objectBorderOpen = true;
+        static private bool matrixBorderOpen = true;
+        static private bool clearBorderOpen = true;
+        static private bool undoBorderOpen = true;
         static private bool colorBorderOpen = false;
 
 
@@ -36,17 +39,28 @@ namespace DiplomaProrotype.Animations
             border.BeginAnimation(Button.HeightProperty, animation);
         }
 
+        static public void CreateAnimationOpacity(Panel panel, double endValue, double duration)
+        {
+            DoubleAnimation animation = new DoubleAnimation();
+            animation.From = panel.Opacity;
+            animation.To = endValue;
+            animation.Duration = TimeSpan.FromSeconds(duration);
+            panel.BeginAnimation(Button.OpacityProperty, animation);
+        }
+
 
         static public void ModeBorderAnimation()
         {
             if (modeBorderOpen)
             {
                 CreateAnimationWidth(mw.ModeBorder, 20, 0.3);
+                CreateAnimationOpacity(mw.ModePanel, 0, 0.3);
                 modeBorderOpen = false;
             }
             else
             {
                 CreateAnimationWidth(mw.ModeBorder, 100, 0.3);
+                CreateAnimationOpacity(mw.ModePanel, 1, 0.3);
                 modeBorderOpen = true;
             }
         }
@@ -56,12 +70,62 @@ namespace DiplomaProrotype.Animations
             if (objectBorderOpen)
             {
                 CreateAnimationHeight(mw.ObjectBorder, 20, 0.3);
+                CreateAnimationOpacity(mw.ObjectPanel, 0, 0.3);
                 objectBorderOpen = false;
             }
             else
             {
                 CreateAnimationHeight(mw.ObjectBorder, 100, 0.3);
+                CreateAnimationOpacity(mw.ObjectPanel, 1, 0.3);
                 objectBorderOpen = true;
+            }
+        }
+
+        static public void MatrixBorderAnimation()
+        {
+            if (matrixBorderOpen)
+            {
+                CreateAnimationWidth(mw.MatrixBorder, 20, 0.3);
+                CreateAnimationOpacity(mw.MatrixPanel, 0, 0.3);
+                matrixBorderOpen = false;
+            }
+            else
+            {
+                CreateAnimationWidth(mw.MatrixBorder, 100, 0.3);
+                CreateAnimationOpacity(mw.MatrixPanel, 1, 0.3);
+                matrixBorderOpen = true;
+            }
+        }
+
+        static public void ClearBorderAnimation()
+        {
+            if (clearBorderOpen)
+            {
+                CreateAnimationWidth(mw.ClearBorder, 20, 0.3);
+                CreateAnimationOpacity(mw.ClearPanel, 0, 0.3);
+                clearBorderOpen = false;
+            }
+            else
+            {
+                CreateAnimationWidth(mw.ClearBorder, 100, 0.3);
+                CreateAnimationOpacity(mw.ClearPanel, 1, 0.3);
+                clearBorderOpen = true;
+            }
+        }
+
+        static public void UndoBorderAnimation()
+        {
+            if (undoBorderOpen)
+            {
+                CreateAnimationWidth(mw.UndoBorder, 20, 0.3);
+                CreateAnimationOpacity(mw.UndoPanel, 0, 0.3);
+                undoBorderOpen = false;
+            }
+            else
+            {
+                CreateAnimationWidth(mw.UndoBorder, 100, 0.3);
+                CreateAnimationOpacity(mw.UndoPanel, 1, 0.3);
+                undoBorderOpen = true;
             }
         }
 

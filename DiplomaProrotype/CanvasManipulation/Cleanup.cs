@@ -1,4 +1,5 @@
-﻿using DiplomaProrotype.ObjectsManipulation;
+﻿using DiplomaProrotype.Models;
+using DiplomaProrotype.ObjectsManipulation;
 using Haley.Utils;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace DiplomaProrotype.CanvasManipulation
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
         static private List<MovableTile> movableTiles = MainWindow.movableTiles;
+        static private List<Link> links = MainWindow.links;
 
 
         static public void UndoLastElementPlacement()
@@ -60,8 +62,6 @@ namespace DiplomaProrotype.CanvasManipulation
 
         static private void CMDeleteObjects_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.linksCounter = 0;
-
             for (int i = 0; i < resourceTiles.Count;)
             {
                 mw.TargetCanvas.Children.Remove(resourceTiles[i]);
@@ -80,13 +80,19 @@ namespace DiplomaProrotype.CanvasManipulation
                 movableTiles.Remove(movableTiles[i]);
             }
 
+            for (int i = 0; i < links.Count;)
+            {
+                //mw.TargetCanvas.Children.Remove(links[i]);
+                links.Remove(links[i]);
+            }
+
+            MainWindow.matrixResourceMachine = (int[,])ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
+
             EnableObjectsOrNot.SetAllObjectsToEnabled();
         }
 
         static private void CMDeleteAll_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.linksCounter = 0;
-
             for (int i = 0; i < resourceTiles.Count;)
             {
                 resourceTiles.Remove(resourceTiles[i]);
@@ -102,7 +108,14 @@ namespace DiplomaProrotype.CanvasManipulation
                 movableTiles.Remove(movableTiles[i]);
             }
 
+            for (int i = 0; i < links.Count;)
+            {
+                links.Remove(links[i]);
+            }
+
             mw.TargetCanvas.Children.Clear();
+
+            MainWindow.matrixResourceMachine = (int[,])ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
 
             EnableObjectsOrNot.SetAllObjectsToEnabled();
         }

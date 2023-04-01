@@ -156,6 +156,8 @@ namespace DiplomaProrotype.ObjectsManipulation
             CreateResourceContextMenu(resourceTile);
             MainWindow.resourceTiles.Add(resourceTile);
 
+            MainWindow.matrixResourceMachine = (int[,]) ResizeArray(MainWindow.matrixResourceMachine, new int[] {machineTiles.Count, resourceTiles.Count});
+
             resourceTile.Text = "Задел";
             resourceTile.Id = MainWindow.resourceTiles.Count;
 
@@ -182,6 +184,8 @@ namespace DiplomaProrotype.ObjectsManipulation
 
             CreateMachineContextMenu(machineTile);
             MainWindow.machineTiles.Add(machineTile);
+
+            MainWindow.matrixResourceMachine = (int[,]) ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
 
             machineTile.Image = machineData.Image;
             machineTile.Text = machineData.Text;
@@ -254,6 +258,17 @@ namespace DiplomaProrotype.ObjectsManipulation
             var contextMenu = new ContextMenu();
             movableTile.ContextMenu = contextMenu;
             ObjectContextMenu.CreateDefaultContextMenu(contextMenu);
+        }
+
+        public static Array ResizeArray(Array arr, int[] newSizes)
+        {
+            if (newSizes.Length != arr.Rank)
+                throw new ArgumentException("Arr must have the same number of dimensions as there are elements in newSizes", "newSizes");
+
+            var temp = Array.CreateInstance(arr.GetType().GetElementType(), newSizes);
+            int length = arr.Length <= temp.Length ? arr.Length : temp.Length;
+            Array.ConstrainedCopy(arr, 0, temp, 0, length);
+            return temp;
         }
     }
 }

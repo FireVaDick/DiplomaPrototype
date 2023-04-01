@@ -39,9 +39,6 @@ using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace DiplomaProrotype
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         static public List<ResourceTile> resourceTiles = new List<ResourceTile>();
@@ -53,7 +50,8 @@ namespace DiplomaProrotype
         static public MachineTile machineTileFromContextMenu;
         static public MovableTile movableTileFromContextMenu;
 
-        static public int linksCounter = 0;
+        static public int [,] matrixResourceMachine = new int[0, 0];
+
         static public string lastTileType = "";
         static public string currentMode = "move";
         static public bool resourceNearMachineIsEmpty = false;
@@ -162,7 +160,8 @@ namespace DiplomaProrotype
         #region Просмотр всех связей
         private void ModeTile_CheckAllLinks_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
+            MatrixWindow matrixWindow = new MatrixWindow();
+            matrixWindow.Show();
         }
         #endregion
 
@@ -201,6 +200,21 @@ namespace DiplomaProrotype
         {
             PanelAnimation.ObjectBorderAnimation();
         }
+
+        private void MatrixBorder_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            PanelAnimation.MatrixBorderAnimation();
+        }
+
+        private void ClearBorder_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            PanelAnimation.ClearBorderAnimation();
+        }
+
+        private void UndoBorder_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            PanelAnimation.UndoBorderAnimation();
+        }       
 
         private void ColorBorder_MouseWheel(object sender, MouseWheelEventArgs e)
         {
