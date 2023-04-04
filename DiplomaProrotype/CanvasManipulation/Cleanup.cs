@@ -23,7 +23,31 @@ namespace DiplomaProrotype.CanvasManipulation
         static private List<Link> links = MainWindow.links;
 
 
-        static public void UndoLastElementPlacement()
+        static public void CreateCleanupContextMenu()
+        {
+            var contextMenu = new ContextMenu();
+
+            mw.Eraser.ContextMenu = contextMenu;
+
+            var menuItemDeleteLastElement = new MenuItem();
+            menuItemDeleteLastElement.Click += new RoutedEventHandler(CMDeleteLastElement_Click);
+            menuItemDeleteLastElement.Header = "Удалить последнее размещённое";
+
+            var menuItemDeleteObjects = new MenuItem();
+            menuItemDeleteObjects.Click += new RoutedEventHandler(CMDeleteObjects_Click);
+            menuItemDeleteObjects.Header = "Удалить только объекты";
+
+            var menuItemDeleteAll = new MenuItem();
+            menuItemDeleteAll.Click += new RoutedEventHandler(CMDeleteAll_Click);
+            menuItemDeleteAll.Header = "Удалить всё";
+
+            contextMenu.Items.Add(menuItemDeleteLastElement);
+            contextMenu.Items.Add(menuItemDeleteObjects);
+            contextMenu.Items.Add(menuItemDeleteAll);
+        }
+
+
+        static public void CMDeleteLastElement_Click(object sender, RoutedEventArgs e)
         {
             Type type = mw.TargetCanvas.Children[^1].GetType();
 
@@ -39,26 +63,6 @@ namespace DiplomaProrotype.CanvasManipulation
 
             EnableObjectsOrNot.SetAllObjectsToEnabled();
         }
-
-
-        static public void CreateCleanupContextMenu()
-        {
-            var contextMenu = new ContextMenu();
-
-            mw.Eraser.ContextMenu = contextMenu;
-
-            var menuItemDeleteObjects = new MenuItem();
-            menuItemDeleteObjects.Click += new RoutedEventHandler(CMDeleteObjects_Click);
-            menuItemDeleteObjects.Header = "Удалить только объекты";
-
-            var menuItemDeleteAll = new MenuItem();
-            menuItemDeleteAll.Click += new RoutedEventHandler(CMDeleteAll_Click);
-            menuItemDeleteAll.Header = "Удалить всё";
-
-            contextMenu.Items.Add(menuItemDeleteObjects);
-            contextMenu.Items.Add(menuItemDeleteAll);
-        }
-
 
         static private void CMDeleteObjects_Click(object sender, RoutedEventArgs e)
         {

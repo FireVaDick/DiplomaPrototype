@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DiplomaProrotype.Animations;
+using DiplomaProrotype.CanvasManipulation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,8 +29,11 @@ namespace DiplomaProrotype
         {
             InitializeComponent();
 
-            CreateMatrixTable();
-
+            if (resourceTiles.Count != 0 && machineTiles.Count != 0)
+            {
+                CreateMatrixTable();
+            }
+     
             double screenWidth = SystemParameters.FullPrimaryScreenWidth;
             double screenHeight = SystemParameters.FullPrimaryScreenHeight;
             this.Left = (screenWidth - this.Width) - 15;
@@ -99,6 +104,37 @@ namespace DiplomaProrotype
             myFlowDocumentReader.Document = FlowDoc;
 
             this.Content = myFlowDocumentReader;
-        }     
+        }
+
+        static public void CreateMatrixWindow()
+        {
+            if (Application.Current.Windows.OfType<MatrixWindow>().Count() > 0)
+            {
+                MainWindow.matrixWindow.Close();
+            }
+
+            MainWindow.matrixWindow = new MatrixWindow();
+            MainWindow.matrixWindow.Show();
+        }
+
+
+        #region Горячие клавиши
+        private async void MatrixWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Escape:
+                    Close(); break;
+
+                case Key.Tab:
+                    MatrixWindow matrixWindow = new MatrixWindow();
+                    matrixWindow.Show();
+
+                    await Task.Delay(300);
+                    this.Close(); 
+                    break;
+            }
+        }
+        #endregion
     }
 }

@@ -7,7 +7,7 @@
         xmlns:hm="http://schemas.hpod9.com/haley/mvvm"
         xmlns:local="clr-namespace:DiplomaProrotype"
         mc:Ignorable="d"
-        KeyDown="TargetCanvas_KeyDown"
+        KeyDown="MainWindow_KeyDown"
         Title="Основа" Height="735" Width="1100">
     <Window.Resources>
         <Style TargetType="Border" x:Key="PaleBorder">
@@ -67,7 +67,7 @@
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="ModePanel" 
                         Orientation="Vertical" 
-                        Background="Transparent">
+                        Background="Transparent" Cursor="Hand">
                 <local:ModeTile x:Name="ModeMove" Text="Перемещение" Image="Icons/x128/Hand128.png" MouseLeftButtonDown="ModeTile_Move_MouseLeftButtonDown" Foreground="Crimson">
                     <UserControl.ToolTip>
                         <ToolTip>
@@ -114,7 +114,7 @@
                         Orientation="Horizontal" 
                         AllowDrop="True" 
                         Drop="ObjectPanel_Drop"
-                        Background="Transparent">
+                        Background="Transparent" Cursor="Hand">
                 <local:ResourceTile Text="Задел" AutomationProperties.IsOffscreenBehavior="Offscreen"/>
                 <local:MachineTile Text="Токарный" Image="Icons/x128/Lathe128.png"/>
                 <local:MachineTile Text="Сварочный" Image="Icons/x128/Welding128.png"/>
@@ -130,7 +130,7 @@
                 Height="100" 
                 Margin="10" 
                 VerticalAlignment="Top" 
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Right"
                 MouseWheel="MatrixBorder_MouseWheel" 
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="MatrixPanel" Style="{StaticResource ResourceKey=SquarePanel}">
@@ -163,26 +163,6 @@
                 </local:ModeTile>
             </StackPanel>
         </Border>
-        
-        <!-- Меню отмены размещения последнего элемента -->
-        <Border Name="UndoBorder" 
-                Width="100" 
-                Height="100" 
-                Margin="10" 
-                VerticalAlignment="Top" 
-                HorizontalAlignment="Right"
-                MouseWheel="UndoBorder_MouseWheel" 
-                Style="{StaticResource ResourceKey=PaleBorder}" >
-            <StackPanel Name="UndoPanel" Style="{StaticResource ResourceKey=SquarePanel}">
-                <local:ModeTile Margin="0,0,0,0" Text="Отменить" Image="Icons/x128/Back128.png" MouseLeftButtonDown="ModeTile_Undo_MouseLeftButtonDown">
-                    <UserControl.ToolTip>
-                        <ToolTip>
-                            Позволяет отменить размещение последнего элемента, удаляя его из холста.
-                        </ToolTip>
-                    </UserControl.ToolTip>
-                </local:ModeTile>
-            </StackPanel>
-        </Border>
 
         <!-- Палитра цветов -->
         <Border Name="ColorBorder"
@@ -207,7 +187,7 @@
         </Border>
 
         <Slider Name="SliderAllInterface" Width="400" Margin="0,0,0,15" Minimum="0.5" Maximum="1.5" Value="1" 
-                VerticalAlignment="Bottom" HorizontalAlignment="Center" />
+                VerticalAlignment="Bottom" HorizontalAlignment="Center" LargeChange="0.1" Cursor="Hand" Focusable="False"/>
 
     </Grid>
 </Window>

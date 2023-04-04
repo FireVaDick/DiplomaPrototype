@@ -17,7 +17,6 @@ namespace DiplomaProrotype.Animations
         static private bool objectBorderOpen = true;
         static private bool matrixBorderOpen = true;
         static private bool clearBorderOpen = true;
-        static private bool undoBorderOpen = true;
         static private bool colorBorderOpen = false;
 
 
@@ -113,22 +112,6 @@ namespace DiplomaProrotype.Animations
             }
         }
 
-        static public void UndoBorderAnimation()
-        {
-            if (undoBorderOpen)
-            {
-                CreateAnimationWidth(mw.UndoBorder, 20, 0.3);
-                CreateAnimationOpacity(mw.UndoPanel, 0, 0.3);
-                undoBorderOpen = false;
-            }
-            else
-            {
-                CreateAnimationWidth(mw.UndoBorder, 100, 0.3);
-                CreateAnimationOpacity(mw.UndoPanel, 1, 0.3);
-                undoBorderOpen = true;
-            }
-        }
-
         static public void ColorBorderAnimation()
         {
             if (colorBorderOpen)
@@ -143,5 +126,30 @@ namespace DiplomaProrotype.Animations
             }
         }
 
+        static public void ShowAllBordersAnimation()
+        {
+            modeBorderOpen = false;
+            objectBorderOpen = false;
+            matrixBorderOpen = false;
+            clearBorderOpen = false;
+
+            ModeBorderAnimation();
+            ObjectBorderAnimation();
+            MatrixBorderAnimation();
+            ClearBorderAnimation();
+        }
+
+        static public void HideAllBordersAnimation()
+        {
+            modeBorderOpen = true;
+            objectBorderOpen = true;
+            matrixBorderOpen = true;
+            clearBorderOpen = true;
+
+            ModeBorderAnimation();
+            ObjectBorderAnimation();
+            MatrixBorderAnimation();
+            ClearBorderAnimation();
+        }
     }
 }

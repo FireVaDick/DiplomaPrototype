@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiplomaProrotype"
         mc:Ignorable="d"
+        KeyDown="MatrixWindow_KeyDown"
         Title="Матрица" Height="400" Width="500">
     <FlowDocument Name="FlowDoc">
         <Table Name="MatrixTable">

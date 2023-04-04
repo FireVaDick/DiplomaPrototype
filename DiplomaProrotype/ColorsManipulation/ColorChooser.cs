@@ -20,18 +20,21 @@ namespace DiplomaProrotype.ColorsManipulation
 
         static public void DynamicChooseColorFromPalette()
         {
-            if (MainWindow.lastTileType == "resource")
+
+            Type type = MainWindow.chosenOneObject.GetType();
+
+            if (type == typeof(ResourceTile))
             {
-                resourceTiles[resourceTiles.Count - 1].ResourceFigure.Fill = mw.ColorPalette.SelectedBrush;
+                ((ResourceTile)MainWindow.chosenOneObject).ResourceFigure.Fill = mw.ColorPalette.SelectedBrush;
 
                 for (int i = 0; i < links.Count; i++)
                 {
-                    if (links[i].FirstTargetType == "resource" && links[i].FirstTargetListId == resourceTiles.Count - 1)
+                    if (links[i].FirstTargetType == "resource" && links[i].FirstTargetListId == resourceTiles.IndexOf((ResourceTile)MainWindow.chosenOneObject))
                     {
                         links[i].LineInfo.Stroke = mw.ColorPalette.SelectedBrush;
                     }
 
-                    if (links[i].LastTargetType == "resource" && links[i].LastTargetListId == resourceTiles.Count - 1)
+                    if (links[i].LastTargetType == "resource" && links[i].LastTargetListId == resourceTiles.IndexOf((ResourceTile)MainWindow.chosenOneObject))
                     {
                         links[i].LineInfo.Stroke = mw.ColorPalette.SelectedBrush;
                     }

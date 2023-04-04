@@ -34,6 +34,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
+using Application = System.Windows.Application;
 using Image = System.Windows.Controls.Image;
 using MenuItem = System.Windows.Controls.MenuItem;
 
@@ -41,6 +42,9 @@ namespace DiplomaProrotype
 {
     public partial class MainWindow : Window
     {
+        static public MatrixWindow matrixWindow;
+        static public int[,] matrixResourceMachine = new int[0, 0];
+
         static public List<ResourceTile> resourceTiles = new List<ResourceTile>();
         static public List<MachineTile> machineTiles = new List<MachineTile>();
         static public List<MovableTile> movableTiles = new List<MovableTile>();
@@ -50,12 +54,13 @@ namespace DiplomaProrotype
         static public MachineTile machineTileFromContextMenu;
         static public MovableTile movableTileFromContextMenu;
 
-        static public int [,] matrixResourceMachine = new int[0, 0];
+        static public UserControl chosenOneObject;
 
         static public string lastTileType = "";
         static public string currentMode = "move";
         static public bool resourceNearMachineIsEmpty = false;
 
+        Vector targetMargin;
 
         public MainWindow()
         {
@@ -149,47 +154,6 @@ namespace DiplomaProrotype
         #endregion
 
 
-        #region Динамическая передача цвета последнему размещённому элементу
-        private void ColorPicker_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            ColorChooser.DynamicChooseColorFromPalette();
-        }
-        #endregion
-
-
-        #region Просмотр всех связей
-        private void ModeTile_CheckAllLinks_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            MatrixWindow matrixWindow = new MatrixWindow();
-            matrixWindow.Show();
-        }
-        #endregion
-
-
-        #region Очистка холста
-        private void TargetCanvas_KeyDown(object sender, KeyEventArgs e)
-        {
-            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                if (e.Key == Key.Z)
-                {
-                    Cleanup.UndoLastElementPlacement();
-                }
-            }
-        }
-
-        private void ModeTile_Undo_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) 
-        {
-            Cleanup.UndoLastElementPlacement();
-        }
-
-        private void ModeTile_Erase_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Cleanup.CreateCleanupContextMenu();
-        }
-        #endregion
-
-
         #region Анимации сокрытия панелей
         private void ModeBorder_MouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -211,14 +175,114 @@ namespace DiplomaProrotype
             PanelAnimation.ClearBorderAnimation();
         }
 
-        private void UndoBorder_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            PanelAnimation.UndoBorderAnimation();
-        }       
-
         private void ColorBorder_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             PanelAnimation.ColorBorderAnimation();
+        }
+        #endregion
+
+
+        #region Динамическая передача цвета последнему размещённому элементу
+        private void ColorPicker_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ColorChooser.DynamicChooseColorFromPalette();
+        }
+        #endregion
+
+
+        #region Просмотр всех связей
+        private void ModeTile_CheckAllLinks_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MatrixWindow.CreateMatrixWindow();
+        }
+        #endregion
+
+
+        #region Очистка холста
+        private void ModeTile_Erase_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Cleanup.CreateCleanupContextMenu();
+        }
+        #endregion
+
+
+        #region Горячие клавиши
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                switch (e.Key)
+                {
+                    case Key.Z:
+                        Cleanup.CMDeleteLastElement_Click(sender, e); break;
+
+                    case Key.S:
+                        PanelAnimation.ShowAllBordersAnimation(); break;
+
+                    case Key.H:
+                        PanelAnimation.HideAllBordersAnimation(); break;
+                }
+            }
+            else 
+                switch (e.Key)
+                {
+                    case Key.Escape:
+                        Close(); break;
+
+                    case Key.Tab:
+                        MatrixWindow.CreateMatrixWindow(); break;
+
+                    case Key.D1:
+                        ModeChooser.ChooseMoveMode(); break;
+
+                    case Key.D2:
+                        ModeChooser.ChooseLinkMode(); break;
+
+                    case Key.D3:
+                        ModeChooser.ChooseRouteMode(); break;
+
+                    case Key.D4:
+                        ModeChooser.ChoosePathMode(); break;
+
+                    case Key.Up:
+                        targetMargin = VisualTreeHelper.GetOffset(chosenOneObject);
+                        Canvas.SetTop(chosenOneObject, --targetMargin.Y - 10);
+                        CheckLinkPlacement(); break;
+
+                    case Key.Down:
+                        targetMargin = VisualTreeHelper.GetOffset(chosenOneObject);
+                        Canvas.SetTop(chosenOneObject, ++targetMargin.Y - 10);
+                        CheckLinkPlacement(); break;
+
+                    case Key.Left:
+                        targetMargin = VisualTreeHelper.GetOffset(chosenOneObject);
+                        Canvas.SetLeft(chosenOneObject, --targetMargin.X - 10); 
+                        CheckLinkPlacement(); break;
+
+                    case Key.Right:
+                        targetMargin = VisualTreeHelper.GetOffset(chosenOneObject);
+                        Canvas.SetLeft(chosenOneObject, ++targetMargin.X - 10);
+                        CheckLinkPlacement(); break;
+                }
+        }
+
+        private void CheckLinkPlacement()
+        {
+            Type type = chosenOneObject.GetType();
+
+            if (type == typeof(ResourceTile))
+            {
+                targetMargin.X += chosenOneObject.Width / 2 - 2.5;
+                targetMargin.Y += 22.5 + 2.5; // 22.5 = ((ResourceTile)chosenOneObject).ResourceFigure.Height / 2
+                ObjectPlacement.ResourceLinkMoving((Point)targetMargin, (ResourceTile)chosenOneObject);
+            }
+
+            if (type == typeof(MachineTile))
+            {
+                targetMargin.X += chosenOneObject.Width / 2 - 2.5;
+                targetMargin.Y += ((MachineTile)chosenOneObject).MachineIndicator.Height + ((MachineTile)chosenOneObject).MachineImage.Height / 2 + 5;
+                ObjectPlacement.MachineLinkMoving((Point)targetMargin, (MachineTile)chosenOneObject);
+            }
         }
         #endregion
 

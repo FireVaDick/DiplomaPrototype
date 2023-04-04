@@ -129,7 +129,7 @@ namespace DiplomaProrotype.CanvasManipulation
             Point mousePos = e.MouseDevice.GetPosition(mw.TargetCanvas);
             Vector targetMargin;
 
-            if (link.FirstTargetType == "resource" && !(link is null))
+            if (!(link is null) && link.FirstTargetType == "resource")
             {
                 if (machineTiles.Count != 0)
                 {
@@ -172,7 +172,7 @@ namespace DiplomaProrotype.CanvasManipulation
                 }
             }
 
-            if (link.FirstTargetType == "machine" && !(link is null))
+            if (!(link is null) && link.FirstTargetType == "machine")
             {
                 if (resourceTiles.Count != 0)
                 {
