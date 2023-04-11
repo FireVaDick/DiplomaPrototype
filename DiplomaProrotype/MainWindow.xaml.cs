@@ -4,6 +4,7 @@ using ProtoBuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -47,11 +48,15 @@ namespace DiplomaProrotype
         private bool objectBorderOpen = true;
         private bool colorBorderOpen = false;
 
+
+        //поля для анимации
         private Line routeLine;
         private bool routeIsDone = false;
         private Point startPos;
         double lastX2 = 0, lastY2 = 0;
 
+        List<Line> animationLineList = new List<Line>();
+        //
         private ObjectTile objectTileContextMenu;
         private ResourceTile resourceTileContextMenu;
 
@@ -72,6 +77,8 @@ namespace DiplomaProrotype
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             AdornerLayer.GetAdornerLayer(MyGrid).Add(new ResizableAdorner(TargetBorder));
+
+            coordinates.Add(new Point(0, 0));
         }
 
 
@@ -174,7 +181,26 @@ namespace DiplomaProrotype
 
             Canvas.SetLeft(objectTile, dropPosition.X - objectTile.Width / 2 - 7.5);
             Canvas.SetTop(objectTile, dropPosition.Y - objectTile.Height / 2 - 25);
-        
+
+          //при добавлении объекта на холст к нему будет рисоваться линия и его координаты добавляются в список для маршрута
+            
+            Line routeLine = new Line
+            {
+                Stroke = Brushes.Black,
+                StrokeThickness = 3
+            };
+
+            routeLine.X1 = coordinates[coordinates.Count - 1].X;
+            routeLine.Y1 = coordinates[coordinates.Count - 1].Y;
+            routeLine.X2 = dropPosition.X;
+            routeLine.Y2 = dropPosition.Y;
+
+            coordinates.Add(dropPosition);
+           
+            TargetCanvas.Children.Add(routeLine);
+            animationLineList.Add(routeLine);
+            //
+
             objectTile.ObjectImage.Margin = new Thickness(0, 25, 0, 0);          
             objectTile.ObjectProgress.Margin = new Thickness(10, 0, 10, 30);
             objectTile.ObjectText.Margin = new Thickness(0, 0, 0, 15);
@@ -652,7 +678,7 @@ namespace DiplomaProrotype
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Released || routeLine == null)
+            if (routeLine == null)
                 return;
 
             var pos = e.GetPosition(TargetCanvas);
@@ -663,6 +689,7 @@ namespace DiplomaProrotype
 
         private void Canvas_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+
             routeIsDone = true;
             routeLine = null;
 
