@@ -123,7 +123,6 @@ namespace DiplomaProrotype.CanvasManipulation
             mw.TargetCanvas.Children.Add(linkCircle);
         }
 
-
         static private void FinishLink(MouseButtonEventArgs e)
         {
             Point mousePos = e.MouseDevice.GetPosition(mw.TargetCanvas);
@@ -195,6 +194,15 @@ namespace DiplomaProrotype.CanvasManipulation
                             link.LinkId = MainWindow.links.Count;
                             link.LineInfo = linkLine;
                             link.CircleInfo = linkCircle;
+
+                            if (resourceTiles[i].ResourceFigure.Fill == Brushes.White) // Для раскрашивания связи от станка к ресурсу, если ресурс уже цветной
+                            {
+                                linkLine.Stroke = Brushes.Black;
+                            }
+                            else
+                            {
+                                linkLine.Stroke = resourceTiles[i].ResourceFigure.Fill;
+                            }
 
                             linkLine.X2 = lastMarginLeft;
                             linkLine.Y2 = lastMarginTop;
@@ -269,6 +277,11 @@ namespace DiplomaProrotype.CanvasManipulation
                     Stroke = Brushes.Black,
                     StrokeThickness = 3
                 };
+
+                if (MainWindow.currentPathType == "discontinuous")
+                {
+                    pathRectangle.StrokeDashArray = new DoubleCollection() { 2, 1 };
+                }
 
                 Canvas.SetLeft(pathRectangle, startPos.X);
                 Canvas.SetTop(pathRectangle, startPos.Y);

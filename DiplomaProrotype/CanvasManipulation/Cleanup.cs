@@ -23,6 +23,7 @@ namespace DiplomaProrotype.CanvasManipulation
         static private List<Link> links = MainWindow.links;
 
 
+        // Контекстное меню для очистки
         static public void CreateCleanupContextMenu()
         {
             var contextMenu = new ContextMenu();
@@ -45,7 +46,6 @@ namespace DiplomaProrotype.CanvasManipulation
             contextMenu.Items.Add(menuItemDeleteObjects);
             contextMenu.Items.Add(menuItemDeleteAll);
         }
-
 
         static public void CMDeleteLastElement_Click(object sender, RoutedEventArgs e)
         {

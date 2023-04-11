@@ -11,6 +11,8 @@ namespace DiplomaProrotype.ObjectsManipulation
     {
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
+        static private List<MovableTile> movableTiles = MainWindow.movableTiles;
+        static private List<StopTile> stopTiles = MainWindow.stopTiles;
 
 
         static public void SetAllObjectsToUnenabled()
@@ -24,6 +26,16 @@ namespace DiplomaProrotype.ObjectsManipulation
             {
                 machineTiles[i].IsEnabled = false;
             }
+
+            for (int i = 0; i < movableTiles.Count; i++)
+            {
+                movableTiles[i].IsEnabled = false;
+            }
+
+            for (int i = 0; i < stopTiles.Count; i++)
+            {
+                stopTiles[i].IsEnabled = false;
+            }
         }
         static public void SetAllObjectsToEnabled()
         {
@@ -35,6 +47,16 @@ namespace DiplomaProrotype.ObjectsManipulation
             for (int i = 0; i < machineTiles.Count; i++)
             {
                 machineTiles[i].IsEnabled = true;
+            }
+
+            for (int i = 0; i < movableTiles.Count; i++)
+            {
+                movableTiles[i].IsEnabled = true;
+            }
+
+            for (int i = 0; i < stopTiles.Count; i++)
+            {
+                stopTiles[i].IsEnabled = true;
             }
         }
     }

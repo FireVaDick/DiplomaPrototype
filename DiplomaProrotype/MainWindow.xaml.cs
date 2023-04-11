@@ -48,16 +48,18 @@ namespace DiplomaProrotype
         static public List<ResourceTile> resourceTiles = new List<ResourceTile>();
         static public List<MachineTile> machineTiles = new List<MachineTile>();
         static public List<MovableTile> movableTiles = new List<MovableTile>();
+        static public List<StopTile> stopTiles = new List<StopTile>();
         static public List<Link> links = new List<Link>();
 
         static public ResourceTile resourceTileFromContextMenu;
         static public MachineTile machineTileFromContextMenu;
         static public MovableTile movableTileFromContextMenu;
+        static public StopTile stopTileFromContextMenu;
 
         static public UserControl chosenOneObject;
-
         static public string lastTileType = "";
         static public string currentMode = "move";
+        static public string currentPathType = "solid";
         static public bool resourceNearMachineIsEmpty = false;
 
         Vector targetMargin;
@@ -93,6 +95,17 @@ namespace DiplomaProrotype
         }
         private void ModeTile_Path_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            ModeChooser.ChoosePathMode();
+        }
+
+        private void CMChooseSolidPath_Click(object sender, RoutedEventArgs e)
+        {
+            currentPathType = "solid";
+            ModeChooser.ChoosePathMode();
+        }
+        private void CMChooseDiscontinuousPath_Click(object sender, RoutedEventArgs e)
+        {
+            currentPathType = "discontinuous";
             ModeChooser.ChoosePathMode();
         }
         #endregion
@@ -150,7 +163,7 @@ namespace DiplomaProrotype
         private void TargetCanvas_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             DrawLinkRoutePath.DrawEndMouseRight();
-        }
+        }     
         #endregion
 
 
@@ -284,6 +297,7 @@ namespace DiplomaProrotype
                 ObjectPlacement.MachineLinkMoving((Point)targetMargin, (MachineTile)chosenOneObject);
             }
         }
+
         #endregion
 
 

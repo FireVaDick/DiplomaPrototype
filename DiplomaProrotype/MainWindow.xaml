@@ -6,6 +6,7 @@
         xmlns:hw="http://schemas.hpod9.com/haley/wpf"
         xmlns:hm="http://schemas.hpod9.com/haley/mvvm"
         xmlns:local="clr-namespace:DiplomaProrotype"
+        xmlns:canvas="using:clr-namespace:DiplomaProrotype.CanvasManipulation"
         mc:Ignorable="d"
         KeyDown="MainWindow_KeyDown"
         Title="Основа" Height="735" Width="1100">
@@ -92,6 +93,12 @@
                     </UserControl.ToolTip>
                 </local:ModeTile>
                 <local:ModeTile x:Name="ModePath" Text="Пути" Image="Icons/x128/Path128.png" MouseLeftButtonDown="ModeTile_Path_MouseLeftButtonDown">
+                    <local:ModeTile.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Сплошные линии" Click="CMChooseSolidPath_Click"></MenuItem>
+                            <MenuItem Header="Прерывистые линии" Click="CMChooseDiscontinuousPath_Click"></MenuItem>
+                        </ContextMenu>
+                    </local:ModeTile.ContextMenu>
                     <UserControl.ToolTip>
                         <ToolTip>
                             Режим, позволяющий рисовать транспортные пути/места размещения станков и заделов. Для этого нужно зажать ЛКМ на холсте, переместить 
@@ -104,7 +111,7 @@
 
         <!-- Меню объектов сверху -->
         <Border Name="ObjectBorder" 
-                Width="525" 
+                Width="610" 
                 Height="100" 
                 Margin="10" 
                 VerticalAlignment="Top"
@@ -121,6 +128,7 @@
                 <local:MachineTile Text="Фрезерный" Image="Icons/x128/Milling128.png"/>
                 <local:MovableTile Text="Тележка" Image="Icons/x128/Trolley128.png"/>
                 <local:MovableTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/>
+                <local:StopTile Text="Стоянка" AutomationProperties.IsOffscreenBehavior="Offscreen"/>
             </StackPanel>
         </Border>
 

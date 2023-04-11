@@ -20,6 +20,7 @@ namespace DiplomaProrotype.ObjectsManipulation
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
         static private List<MovableTile> movableTiles = MainWindow.movableTiles;
+        static private List<StopTile> stopTiles = MainWindow.stopTiles;
         static private List<Link> links = MainWindow.links;
 
 
@@ -28,6 +29,7 @@ namespace DiplomaProrotype.ObjectsManipulation
             var resourceData = e.Data.GetData(typeof(ResourceTile)) as ResourceTile;
             var machineData = e.Data.GetData(typeof(MachineTile)) as MachineTile;
             var movableData = e.Data.GetData(typeof(MovableTile)) as MovableTile;
+            var stopData = e.Data.GetData(typeof(StopTile)) as StopTile;
 
             Point dropPosition = e.GetPosition(mw.TargetCanvas);
 
@@ -94,6 +96,26 @@ namespace DiplomaProrotype.ObjectsManipulation
                     }
                 }
             }
+
+            // Манипуляции с stopData
+            if (!(stopData is null))
+            {
+                if (stopData.Parent is StackPanel)
+                {
+                    ObjectPlacement.CreateStopTile(stopData, dropPosition);
+                }
+
+                if (stopData.Parent is Canvas && MainWindow.currentMode == "move")
+                {
+                    if (stopTiles.Contains(stopData))
+                    {
+                        MainWindow.chosenOneObject = stopData;
+
+                        Canvas.SetLeft(stopData, dropPosition.X - stopData.Width / 2 - 10);
+                        Canvas.SetTop(stopData, dropPosition.Y - stopData.Height / 2 + 2.5);
+                    }
+                }
+            }
         }
 
 
@@ -112,6 +134,10 @@ namespace DiplomaProrotype.ObjectsManipulation
             if (type == typeof(MovableTile))
             {
                 MainWindow.chosenOneObject = (MovableTile)e.Source;
+            }
+            if (type == typeof(StopTile))
+            {
+                MainWindow.chosenOneObject = (StopTile)e.Source;
             }
         }
 
@@ -284,6 +310,30 @@ namespace DiplomaProrotype.ObjectsManipulation
 
             movableTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
             MainWindow.chosenOneObject = movableTile;
+        }
+
+
+        static public void CreateStopTile(StopTile stopData, Point dropPosition)
+        {
+            var stopTile = new StopTile();
+
+            MainWindow.stopTiles.Add(stopTile);
+
+            stopTile.Text = "Стоянка";
+            stopTile.Id = MainWindow.stopTiles.Count;
+
+            Canvas.SetLeft(stopTile, dropPosition.X - stopTile.Width / 2 - 10);
+            Canvas.SetTop(stopTile, dropPosition.Y - stopTile.Height / 2 - 5);
+
+            stopTile.StopText.Margin = new Thickness(0, 0, 0, 15);
+            stopTile.StopId.Visibility = Visibility.Visible;
+            stopTile.Height = 70;
+
+            MainWindow.lastTileType = "stop";
+            mw.TargetCanvas.Children.Add(stopTile);
+
+            stopTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
+            MainWindow.chosenOneObject = stopTile;
         }
 
 
