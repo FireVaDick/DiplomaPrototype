@@ -3,53 +3,28 @@ using DiplomaProrotype.CanvasManipulation;
 using DiplomaProrotype.ColorsManipulation;
 using DiplomaProrotype.Models;
 using DiplomaProrotype.ObjectsManipulation;
-using DiplomaProrotype.Threads;
-using Haley.Models;
-using Haley.Services;
-using Haley.Utils;
-using Haley.WPF.Controls;
-using ProtoBuf.WellKnownTypes;
+using DiplomaPrototype;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
-using Application = System.Windows.Application;
-using Image = System.Windows.Controls.Image;
-using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace DiplomaProrotype
 {
     public partial class MainWindow : Window
     {
         static public MatrixWindow matrixWindow;
+        static public SelectWindow selectWindow;
         static public int[,] matrixResourceMachine = new int[0, 0];
 
         static public List<ResourceTile> resourceTiles = new List<ResourceTile>();
         static public List<MachineTile> machineTiles = new List<MachineTile>();
         static public List<MovableTile> movableTiles = new List<MovableTile>();
         static public List<StopTile> stopTiles = new List<StopTile>();
-        static public List<Link> links = new List<Link>();
+        static public List<Link> linksResourceMachine = new List<Link>();
 
         static public ResourceTile resourceTileFromContextMenu;
         static public MachineTile machineTileFromContextMenu;
@@ -72,11 +47,11 @@ namespace DiplomaProrotype
             this.Left = (screenWidth - this.Width) / 2;
             this.Top = 0;
 
-            Loaded += Window_Loaded;  
+            Loaded += Window_Loaded;
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            AdornerLayer.GetAdornerLayer(MyGrid).Add(new ResizableCanvas(TargetBorder));
+            AdornerLayer.GetAdornerLayer(MyGrid).Add(new ResizableCanvas(TargetBorder));          
         }
 
 
@@ -125,6 +100,7 @@ namespace DiplomaProrotype
             var resourceData = e.Data.GetData(typeof(ResourceTile)) as ResourceTile;
             var machineData = e.Data.GetData(typeof(MachineTile)) as MachineTile;
             var movableData = e.Data.GetData(typeof(MovableTile)) as MovableTile;
+            var stopData = e.Data.GetData(typeof(StopTile)) as StopTile;
 
             if (!(resourceData is null) && resourceData.Parent is StackPanel == false)
             {
@@ -139,6 +115,11 @@ namespace DiplomaProrotype
             if (!(movableData is null) && movableData.Parent is StackPanel == false)
             {
                 ((Canvas)(movableData.Parent)).Children.Remove(movableData);
+            }
+
+            if (!(stopData is null) && stopData.Parent is StackPanel == false)
+            {
+                ((Canvas)(stopData.Parent)).Children.Remove(stopData);
             }
         }
         #endregion
@@ -206,7 +187,7 @@ namespace DiplomaProrotype
         #region Просмотр всех связей
         private void ModeTile_CheckAllLinks_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MatrixWindow.CreateMatrixWindow();
+            MatrixWindow.CreateMatrixWindow(); 
         }
         #endregion
 

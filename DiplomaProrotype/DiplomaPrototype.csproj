@@ -51,6 +51,32 @@
     <None Remove="Icons\x128\Way128.png" />
     <None Remove="Icons\x128\Welding128.png" />
     <None Remove="Icons\x128\Worker128.png" />
+    <None Remove="Icons\x512\Animate.png" />
+    <None Remove="Icons\x512\Arrow.png" />
+    <None Remove="Icons\x512\Back.png" />
+    <None Remove="Icons\x512\Book.png" />
+    <None Remove="Icons\x512\Brush.png" />
+    <None Remove="Icons\x512\Canvas.png" />
+    <None Remove="Icons\x512\CheckLinks.png" />
+    <None Remove="Icons\x512\Circle.png" />
+    <None Remove="Icons\x512\Clock.png" />
+    <None Remove="Icons\x512\Delete.png" />
+    <None Remove="Icons\x512\Drilling.png" />
+    <None Remove="Icons\x512\Eraser.png" />
+    <None Remove="Icons\x512\Forklift.png" />
+    <None Remove="Icons\x512\Hand.png" />
+    <None Remove="Icons\x512\Lathe.png" />
+    <None Remove="Icons\x512\Milling.png" />
+    <None Remove="Icons\x512\Molecular.png" />
+    <None Remove="Icons\x512\Path.png" />
+    <None Remove="Icons\x512\Pencil.png" />
+    <None Remove="Icons\x512\Press.png" />
+    <None Remove="Icons\x512\Route.png" />
+    <None Remove="Icons\x512\Square.png" />
+    <None Remove="Icons\x512\Trolley.png" />
+    <None Remove="Icons\x512\Way.png" />
+    <None Remove="Icons\x512\Welding.png" />
+    <None Remove="Icons\x512\Worker.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -94,6 +120,32 @@
     <Resource Include="Icons\x128\Way128.png" />
     <Resource Include="Icons\x128\Welding128.png" />
     <Resource Include="Icons\x128\Worker128.png" />
+    <Resource Include="Icons\x512\Animate.png" />
+    <Resource Include="Icons\x512\Arrow.png" />
+    <Resource Include="Icons\x512\Back.png" />
+    <Resource Include="Icons\x512\Book.png" />
+    <Resource Include="Icons\x512\Brush.png" />
+    <Resource Include="Icons\x512\Canvas.png" />
+    <Resource Include="Icons\x512\CheckLinks.png" />
+    <Resource Include="Icons\x512\Circle.png" />
+    <Resource Include="Icons\x512\Clock.png" />
+    <Resource Include="Icons\x512\Delete.png" />
+    <Resource Include="Icons\x512\Drilling.png" />
+    <Resource Include="Icons\x512\Eraser.png" />
+    <Resource Include="Icons\x512\Forklift.png" />
+    <Resource Include="Icons\x512\Hand.png" />
+    <Resource Include="Icons\x512\Lathe.png" />
+    <Resource Include="Icons\x512\Milling.png" />
+    <Resource Include="Icons\x512\Molecular.png" />
+    <Resource Include="Icons\x512\Path.png" />
+    <Resource Include="Icons\x512\Pencil.png" />
+    <Resource Include="Icons\x512\Press.png" />
+    <Resource Include="Icons\x512\Route.png" />
+    <Resource Include="Icons\x512\Square.png" />
+    <Resource Include="Icons\x512\Trolley.png" />
+    <Resource Include="Icons\x512\Way.png" />
+    <Resource Include="Icons\x512\Welding.png" />
+    <Resource Include="Icons\x512\Worker.png" />
   </ItemGroup>
 
 </Project>

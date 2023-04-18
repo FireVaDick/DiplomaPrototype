@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DiplomaProrotype"
              mc:Ignorable="d" 
-             Height="55" Width="75" Margin="10,10,0,10" VerticalAlignment="Center" HorizontalAlignment="Center">
+             Height="55" Width="60" Margin="10,10,0,10" VerticalAlignment="Center" HorizontalAlignment="Center">
     <Border>
         <Grid>
             <Rectangle Name="StopFigure" Fill="White" StrokeThickness="2" Stroke="Black" StrokeDashArray="2 1" Width="30" Height="30" RadiusX="5" RadiusY="5" Margin="5" VerticalAlignment="Top"/>

@@ -5,11 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DiplomaProrotype"
              mc:Ignorable="d" 
-             Height="70" Width="75" Margin="10,10,0,10" VerticalAlignment="Center" HorizontalAlignment="Center">
+             Height="70" Width="70" Margin="10,10,0,10" VerticalAlignment="Center" HorizontalAlignment="Center">
     <Border>
         <Grid>
             <Ellipse Name="MovableIndicator" Fill="White" StrokeThickness="2" Stroke="Black" Width="20" Height="20" VerticalAlignment="Top" Visibility="Hidden"/>
+            <TextBlock Name="MovableAmount" Text="{Binding Amount}" Margin="0, 0, 5, 0" VerticalAlignment="Top" FontSize="13" TextAlignment="Right" Visibility="Hidden"/>
             <Image Name="MovableImage" Source="{Binding Image}" Height="50" Width="50" Stretch="Uniform" VerticalAlignment="Top"/>
+            <TextBlock Name="MovablePLaces" Text="{Binding Places}"  Visibility="Hidden"/>
+            <Rectangle Name="ResourceFigure1" Fill="White" StrokeThickness="1.5" Stroke="Black" Width="10" Height="25" RadiusX="2" RadiusY="2" Visibility="Hidden"/>
+            <Rectangle Name="ResourceFigure2" Fill="White" StrokeThickness="1.5" Stroke="Black" Width="10" Height="25" RadiusX="2" RadiusY="2" Visibility="Hidden"/>
+            <Rectangle Name="ResourceFigure3" Fill="White" StrokeThickness="1.5" Stroke="Black" Width="10" Height="25" RadiusX="2" RadiusY="2" Visibility="Hidden"/>
             <TextBlock Name="MovableText" Text="{Binding Text}" VerticalAlignment="Bottom" FontSize="11" TextAlignment="Center"/>
             <TextBlock Name="MovableId" Text="{Binding Id}"  VerticalAlignment="Bottom" FontSize="11" TextAlignment="Center" Visibility="Hidden"/>
         </Grid>

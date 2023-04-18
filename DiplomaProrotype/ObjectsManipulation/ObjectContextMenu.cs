@@ -26,7 +26,7 @@ namespace DiplomaProrotype.ObjectsManipulation
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
         static private List<MovableTile> movableTiles = MainWindow.movableTiles;
-        static private List<Link> links = MainWindow.links;
+        static private List<Link> linksResourceMachine = MainWindow.linksResourceMachine;
 
         static private ResourceTile resourceTileFromContextMenu = MainWindow.resourceTileFromContextMenu;
         static private MachineTile machineTileFromContextMenu = MainWindow.machineTileFromContextMenu;
@@ -97,13 +97,13 @@ namespace DiplomaProrotype.ObjectsManipulation
 
             if (resourceTiles.Contains(resourceTileFromContextMenu))
             {
-                string[] tableRows = new string[links.Count + 4];
+                string[] tableRows = new string[linksResourceMachine.Count + 4];
                 tableRows[0] = $"Тип первого объекта: " + $"{resourceTileFromContextMenu.ResourceText.Text}";
                 tableRows[1] = $"Номер первого объекта: " + $"{resourceTileFromContextMenu.ResourceId.Text}";
 
-                for (int i = 0; i < links.Count; i++)
+                for (int i = 0; i < linksResourceMachine.Count; i++)
                 {
-                    if (links[i].FirstTargetListId == resourceTiles.IndexOf(resourceTileFromContextMenu))
+                    if (linksResourceMachine[i].FirstTargetListId == resourceTiles.IndexOf(resourceTileFromContextMenu))
                     {
                         tableRows[2] = $"";
                         tableRows[3] = $"{"Номер связи"}\t | " +
@@ -111,8 +111,8 @@ namespace DiplomaProrotype.ObjectsManipulation
                         $"{"Номер второго"} ";
 
                         tableRows[row++] = $"{++tileLinkAmount}\t\t | " +
-                            $"{machineTiles[links[i].LastTargetListId].MachineText.Text}\t | " +
-                            $"{machineTiles[links[i].LastTargetListId].MachineId.Text}";
+                            $"{machineTiles[linksResourceMachine[i].LastTargetListId].MachineText.Text}\t | " +
+                            $"{machineTiles[linksResourceMachine[i].LastTargetListId].MachineId.Text}";
                     }
                 }
                 string table = string.Join('\n', tableRows);
@@ -122,13 +122,13 @@ namespace DiplomaProrotype.ObjectsManipulation
 
             if (machineTiles.Contains(machineTileFromContextMenu))
             {
-                string[] tableRows = new string[links.Count + 4];
+                string[] tableRows = new string[linksResourceMachine.Count + 4];
                 tableRows[0] = $"Тип первого объекта: " + $"{machineTileFromContextMenu.MachineText.Text}";
                 tableRows[1] = $"Номер первого объекта: " + $"{machineTileFromContextMenu.MachineId.Text}";
 
-                for (int i = 0; i < links.Count; i++)
+                for (int i = 0; i < linksResourceMachine.Count; i++)
                 {
-                    if (links[i].FirstTargetListId == machineTiles.IndexOf(machineTileFromContextMenu))
+                    if (linksResourceMachine[i].FirstTargetListId == machineTiles.IndexOf(machineTileFromContextMenu))
                     {
                         tableRows[2] = $"";
                         tableRows[3] = $"{"Номер связи"}\t | " +
@@ -136,8 +136,8 @@ namespace DiplomaProrotype.ObjectsManipulation
                         $"{"Номер второго"} ";
 
                         tableRows[row++] = $"{++tileLinkAmount}\t\t | " +
-                            $"{resourceTiles[links[i].LastTargetListId].ResourceText.Text}\t\t | " +
-                            $"{resourceTiles[links[i].LastTargetListId].ResourceId.Text}";
+                            $"{resourceTiles[linksResourceMachine[i].LastTargetListId].ResourceText.Text}\t\t | " +
+                            $"{resourceTiles[linksResourceMachine[i].LastTargetListId].ResourceId.Text}";
                     }
                 }
                 string table = string.Join('\n', tableRows);
@@ -175,10 +175,17 @@ namespace DiplomaProrotype.ObjectsManipulation
                 worker.RunWorkerAsync();
             }
 
-            /*if (!(movableTileFromContextMenu is null))
+            if (!(movableTileFromContextMenu is null))
             {
-                movableTileContextMenu сделать анимацию движения
-            }*/
+                if (movableTileFromContextMenu.ResourceFigure1.Height == 25)
+                {
+                    ResourceAnimation.ResourceOnMovableHeightAnimation(25, 5, 3, -5, 15);
+                }
+                else
+                {
+                    ResourceAnimation.ResourceOnMovableHeightAnimation(5, 25, 3, 15, -5);
+                }
+            }
         }
 
         static private void CMChangeColor_Click(object sender, RoutedEventArgs e)
@@ -192,16 +199,16 @@ namespace DiplomaProrotype.ObjectsManipulation
             {
                 resourceTileFromContextMenu.ResourceFigure.Fill = dialog.SelectedBrush;
 
-                for (int i = 0; i < links.Count; i++)
+                for (int i = 0; i < linksResourceMachine.Count; i++)
                 {
-                    if (links[i].FirstTargetType == "resource" && links[i].FirstTargetListId == resourceTiles.IndexOf(resourceTileFromContextMenu))
+                    if (linksResourceMachine[i].FirstTargetType == "resource" && linksResourceMachine[i].FirstTargetListId == resourceTiles.IndexOf(resourceTileFromContextMenu))
                     {
-                        links[i].LineInfo.Stroke = dialog.SelectedBrush;
+                        linksResourceMachine[i].LineInfo.Stroke = dialog.SelectedBrush;
                     }
 
-                    if (links[i].LastTargetType == "resource" && links[i].LastTargetListId == resourceTiles.IndexOf(resourceTileFromContextMenu))
+                    if (linksResourceMachine[i].LastTargetType == "resource" && linksResourceMachine[i].LastTargetListId == resourceTiles.IndexOf(resourceTileFromContextMenu))
                     {
-                        links[i].LineInfo.Stroke = dialog.SelectedBrush;
+                        linksResourceMachine[i].LineInfo.Stroke = dialog.SelectedBrush;
                     }
                 }
             }

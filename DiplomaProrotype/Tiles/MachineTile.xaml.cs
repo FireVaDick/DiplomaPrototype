@@ -49,6 +49,15 @@ namespace DiplomaProrotype
             get { return (int)GetValue(IdProperty); }
             set { SetValue(IdProperty, value); }
         }
+
+        public static readonly DependencyProperty ProcessesProperty = DependencyProperty.Register("Processes",
+            typeof(int), typeof(MachineTile), new PropertyMetadata(null));
+
+        public int Processes
+        {
+            get { return (int)GetValue(ProcessesProperty); }
+            set { SetValue(ProcessesProperty, value); }
+        }
         #endregion
 
 

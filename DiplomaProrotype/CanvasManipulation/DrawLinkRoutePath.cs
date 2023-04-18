@@ -20,6 +20,7 @@ namespace DiplomaProrotype.CanvasManipulation
 
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
+        static private List<StopTile> stopTiles = MainWindow.stopTiles;
 
         static private Link link;
         static private Ellipse linkCircle;
@@ -46,41 +47,47 @@ namespace DiplomaProrotype.CanvasManipulation
             {
                 firstMarginLeft = targetMargin.X + target.Width / 2 - target.Margin.Left / 2 + 20; // 20 и 5 - отступы от центра
                 firstMarginTop = targetMargin.Y + target.Height / 2 - target.Margin.Top - 5;
+
+                for (int i = 0; i < resourceTiles.Count; i++)
+                {
+                    if (targetMargin == VisualTreeHelper.GetOffset(resourceTiles[i]))
+                    {
+                        link = new Link();
+                        link.FirstTargetType = "resource";
+                        link.FirstTargetListId = i;
+                    }
+                }
             }
 
             if (type == typeof(MachineTile))
             {
                 firstMarginLeft = targetMargin.X + target.Width / 2 - target.Margin.Left / 2 + 30; // 20 и 5 - отступы от центра
-                firstMarginTop = targetMargin.Y + target.Height / 2 - target.Margin.Top + 5;
-            }
+                firstMarginTop = targetMargin.Y + ((MachineTile)target).MachineIndicator.Height + ((MachineTile)target).MachineImage.Height / 2 + 7.5;
 
-            for (int i = 0; i < resourceTiles.Count; i++)
-            {
-                if (targetMargin == VisualTreeHelper.GetOffset(resourceTiles[i]))
+                for (int i = 0; i < machineTiles.Count; i++)
                 {
-                    link = new Link();
-
-                    if (type == typeof(ResourceTile))
+                    if (targetMargin == VisualTreeHelper.GetOffset(machineTiles[i]))
                     {
-                        link.FirstTargetType = "resource";
+                        link = new Link();
+                        link.FirstTargetType = "machine";
+                        link.FirstTargetListId = i;
                     }
-
-                    link.FirstTargetListId = i;
                 }
             }
 
-            for (int i = 0; i < machineTiles.Count; i++)
+            if (type == typeof(StopTile)) //---
             {
-                if (targetMargin == VisualTreeHelper.GetOffset(machineTiles[i]))
+                firstMarginLeft = targetMargin.X + target.Width / 2 - target.Margin.Left / 2 + 20; // 20 и 5 - отступы от центра
+                firstMarginTop = targetMargin.Y + target.Height / 2 - target.Margin.Top - 5;
+
+                for (int i = 0; i < stopTiles.Count; i++)
                 {
-                    link = new Link();
-
-                    if (type == typeof(MachineTile))
+                    if (targetMargin == VisualTreeHelper.GetOffset(stopTiles[i]))
                     {
-                        link.FirstTargetType = "machine";
+                        link = new Link();
+                        link.FirstTargetType = "stop";
+                        link.FirstTargetListId = i;
                     }
-
-                    link.FirstTargetListId = i;
                 }
             }
 
@@ -100,7 +107,7 @@ namespace DiplomaProrotype.CanvasManipulation
                 }
             }
 
-            if (type == typeof(MachineTile))
+            if (type == typeof(MachineTile) || type == typeof(StopTile))
             {
                 linkLine.Stroke = Brushes.Black;
             }
@@ -137,18 +144,18 @@ namespace DiplomaProrotype.CanvasManipulation
                         targetMargin = VisualTreeHelper.GetOffset(machineTiles[i]);
 
                         lastMarginLeft = targetMargin.X + machineTiles[i].Width / 2 - machineTiles[i].Margin.Left / 2;
-                        lastMarginTop = targetMargin.Y + machineTiles[i].Height / 2 - machineTiles[i].Margin.Top + 5; // 5 - отступ от центра
+                        lastMarginTop = targetMargin.Y + machineTiles[i].MachineIndicator.Height + machineTiles[i].MachineImage.Height / 2 + 7.5;
 
                         if (mousePos.X > targetMargin.X &&
                             mousePos.X < targetMargin.X + machineTiles[i].Width &&
                             mousePos.Y > targetMargin.Y &&
                             mousePos.Y < targetMargin.Y + machineTiles[i].Height)
                         {
-                            MainWindow.links.Add(link);
+                            MainWindow.linksResourceMachine.Add(link);
 
                             link.LastTargetType = "machine";
                             link.LastTargetListId = i;
-                            link.LinkId = MainWindow.links.Count;
+                            link.LinkId = MainWindow.linksResourceMachine.Count;
                             link.LineInfo = linkLine;
                             link.CircleInfo = linkCircle;
 
@@ -171,7 +178,7 @@ namespace DiplomaProrotype.CanvasManipulation
                 }
             }
 
-            if (!(link is null) && link.FirstTargetType == "machine")
+            if (!(link is null) && link.FirstTargetType == "machine" )
             {
                 if (resourceTiles.Count != 0)
                 {
@@ -187,11 +194,11 @@ namespace DiplomaProrotype.CanvasManipulation
                             mousePos.Y > targetMargin.Y &&
                             mousePos.Y < targetMargin.Y + resourceTiles[i].Height)
                         {
-                            MainWindow.links.Add(link);
+                            MainWindow.linksResourceMachine.Add(link);
 
                             link.LastTargetType = "resource";
                             link.LastTargetListId = i;
-                            link.LinkId = MainWindow.links.Count;
+                            link.LinkId = MainWindow.linksResourceMachine.Count;
                             link.LineInfo = linkLine;
                             link.CircleInfo = linkCircle;
 
@@ -236,7 +243,13 @@ namespace DiplomaProrotype.CanvasManipulation
                 {
                     MachineTile target = e.Source as MachineTile;
                     CreateLink(target);
-                }           
+                }
+
+                if (e.Source is StopTile)
+                {
+                    StopTile target = e.Source as StopTile;
+                    CreateLink(target);
+                }
             }
 
             if (MainWindow.currentMode == "route")

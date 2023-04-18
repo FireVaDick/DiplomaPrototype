@@ -20,7 +20,7 @@ namespace DiplomaProrotype.CanvasManipulation
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
         static private List<MovableTile> movableTiles = MainWindow.movableTiles;
-        static private List<Link> links = MainWindow.links;
+        static private List<Link> linksResourceMachine = MainWindow.linksResourceMachine;
 
 
         // Контекстное меню для очистки
@@ -84,10 +84,10 @@ namespace DiplomaProrotype.CanvasManipulation
                 movableTiles.Remove(movableTiles[i]);
             }
 
-            for (int i = 0; i < links.Count;)
+            for (int i = 0; i < linksResourceMachine.Count;)
             {
                 //mw.TargetCanvas.Children.Remove(links[i]);
-                links.Remove(links[i]);
+                linksResourceMachine.Remove(linksResourceMachine[i]);
             }
 
             MainWindow.matrixResourceMachine = (int[,])ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
@@ -112,9 +112,9 @@ namespace DiplomaProrotype.CanvasManipulation
                 movableTiles.Remove(movableTiles[i]);
             }
 
-            for (int i = 0; i < links.Count;)
+            for (int i = 0; i < linksResourceMachine.Count;)
             {
-                links.Remove(links[i]);
+                linksResourceMachine.Remove(linksResourceMachine[i]);
             }
 
             mw.TargetCanvas.Children.Clear();
