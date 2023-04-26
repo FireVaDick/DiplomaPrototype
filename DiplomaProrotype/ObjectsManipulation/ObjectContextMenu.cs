@@ -1,21 +1,16 @@
 ﻿using DiplomaProrotype.Animations;
+using DiplomaProrotype.Models;
 using DiplomaProrotype.Threads;
+using DiplomaPrototype;
 using Haley.Services;
-using Haley.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows;
 using System.Windows.Media.Imaging;
-using DiplomaProrotype.Models;
-using System.Drawing;
 using Image = System.Windows.Controls.Image;
-using Haley.Models;
 
 namespace DiplomaProrotype.ObjectsManipulation
 {
@@ -26,11 +21,13 @@ namespace DiplomaProrotype.ObjectsManipulation
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
         static private List<MovableTile> movableTiles = MainWindow.movableTiles;
+        static private List<StopTile> stopTiles = MainWindow.stopTiles;
         static private List<Link> linksResourceMachine = MainWindow.linksResourceMachine;
 
         static private ResourceTile resourceTileFromContextMenu = MainWindow.resourceTileFromContextMenu;
         static private MachineTile machineTileFromContextMenu = MainWindow.machineTileFromContextMenu;
         static private MovableTile movableTileFromContextMenu = MainWindow.movableTileFromContextMenu;
+        static private StopTile stopTileFromContextMenu = MainWindow.stopTileFromContextMenu;
 
 
         static public void CreateDefaultContextMenu(ContextMenu contextMenu)
@@ -48,6 +45,13 @@ namespace DiplomaProrotype.ObjectsManipulation
             menuItemAnimate.Icon = imageAnimate;
             menuItemAnimate.Click += new RoutedEventHandler(CMAnimate_Click);
             menuItemAnimate.Header = "Анимировать";
+
+            var menuItemEdit = new MenuItem();
+            Image imageEdit = new Image();
+            imageEdit.Source = new BitmapImage(new Uri("/Icons/x128/Pencil32.png", UriKind.Relative));
+            menuItemEdit.Icon = imageEdit;
+            menuItemEdit.Click += new RoutedEventHandler(CMEdit_Click);
+            menuItemEdit.Header = "Редактировать";
 
             var menuItemChangeColor = new MenuItem();
             Image imageChangeColor = new Image();
@@ -69,6 +73,7 @@ namespace DiplomaProrotype.ObjectsManipulation
 
             contextMenu.Items.Add(menuItemCheckLinks);
             contextMenu.Items.Add(menuItemAnimate);
+            contextMenu.Items.Add(menuItemEdit);
             contextMenu.Items.Add(menuItemChangeColor);
             contextMenu.Items.Add(menuItemDelete);
         }
@@ -86,10 +91,11 @@ namespace DiplomaProrotype.ObjectsManipulation
             resourceTileFromContextMenu = MainWindow.resourceTileFromContextMenu = contextMenu.PlacementTarget as ResourceTile;
             machineTileFromContextMenu = MainWindow.machineTileFromContextMenu = contextMenu.PlacementTarget as MachineTile;
             movableTileFromContextMenu = MainWindow.movableTileFromContextMenu = contextMenu.PlacementTarget as MovableTile;
+            stopTileFromContextMenu = MainWindow.stopTileFromContextMenu = contextMenu.PlacementTarget as StopTile;
         }
 
 
-        static private void CMCheckLinks_Click(object sender, RoutedEventArgs e)
+        static private void CMCheckLinks_Click(object sender, RoutedEventArgs e) //!!!!!!!!!!!!!!!!!!!!!
         {
             GetTileFromContextMenu(sender, e);
             int tileLinkAmount = 0;
@@ -179,11 +185,26 @@ namespace DiplomaProrotype.ObjectsManipulation
             {
                 if (movableTileFromContextMenu.ResourceFigure1.Height == 25)
                 {
-                    ResourceAnimation.ResourceOnMovableHeightAnimation(25, 5, 3, -5, 15);
+                    ResourceAnimation.ResourceOnMovableHeightAnimation(25, 6, 3, -35, -15);
                 }
                 else
                 {
-                    ResourceAnimation.ResourceOnMovableHeightAnimation(5, 25, 3, 15, -5);
+                    ResourceAnimation.ResourceOnMovableHeightAnimation(6, 25, 3, -15, -35);
+                }
+            }
+        }
+
+        static private void CMEdit_Click(object sender, RoutedEventArgs e)
+        {
+            GetTileFromContextMenu(sender, e);
+
+            if (stopTiles.Contains(stopTileFromContextMenu))
+            {
+                SelectWindow.CreateStopSelectWindow();
+                if (SelectWindow.currentNumber > 0 && SelectWindow.currentWord != "")
+                {
+                    stopTileFromContextMenu.Chain = SelectWindow.currentNumber;
+                    stopTileFromContextMenu.Text = SelectWindow.currentWord;
                 }
             }
         }
@@ -212,16 +233,6 @@ namespace DiplomaProrotype.ObjectsManipulation
                     }
                 }
             }
-
-            /*if (machineTiles.Contains(machineTileContextMenu))
-            {
-                machineTileContextMenu.Background = dialog.SelectedBrush;
-            }*/
-
-            /*if (mmovableTiles.Contains(movableTileContextMenu))
-            {
-                mmovableTileContextMenu.Background = dialog.SelectedBrush;
-            }*/
         }
 
         static private void CMDelete_Click(object sender, RoutedEventArgs e)
@@ -244,6 +255,12 @@ namespace DiplomaProrotype.ObjectsManipulation
             {
                 mw.TargetCanvas.Children.Remove(movableTileFromContextMenu);
                 movableTiles.Remove(movableTileFromContextMenu);
+            }
+
+            if (stopTiles.Contains(stopTileFromContextMenu))
+            {
+                mw.TargetCanvas.Children.Remove(stopTileFromContextMenu);
+                stopTiles.Remove(stopTileFromContextMenu);
             }
 
             MainWindow.matrixResourceMachine = (int[,])ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });

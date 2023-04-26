@@ -20,6 +20,7 @@ namespace DiplomaPrototype
     {
         static public int currentNumber;
         static public int currentPlaces;
+        static public string currentWord;
 
 
         public SelectWindow()
@@ -36,26 +37,46 @@ namespace DiplomaPrototype
         }
 
 
-        static public void CreateMovableSelectWindow()
+        static private void SetZeroValues()
         {
             currentNumber = 0;
             currentPlaces = 0;
-
-            MainWindow.selectWindow = new SelectWindow();
-            MainWindow.selectWindow.NumberLabel.Content = "[1+] Количество техники:";
-            MainWindow.selectWindow.PlacesLabel.Content = "[1-3] Количество мест:";
-            MainWindow.selectWindow.ShowDialog();
+            currentWord = "";
         }
 
         static public void CreateMachineSelectWindow()
         {
-            currentNumber = 0;
-            currentPlaces = 0;
+            SetZeroValues();
 
             MainWindow.selectWindow = new SelectWindow();
-            MainWindow.selectWindow.NumberLabel.Content = "[1-5] Количество процессов:";
-            MainWindow.selectWindow.PlacesLabel.Opacity = 0;
-            MainWindow.selectWindow.PlacesTextBox.Opacity = 0;
+            MainWindow.selectWindow.FirstLabel.Content = "[1-5] Количество процессов:";
+            MainWindow.selectWindow.SecondLabel.Visibility = Visibility.Hidden;
+
+            MainWindow.selectWindow.PlacesTextBox.Visibility = Visibility.Hidden;
+            MainWindow.selectWindow.PlacesTextBox.IsEnabled = false;
+            MainWindow.selectWindow.ShowDialog();
+        }
+
+        static public void CreateMovableSelectWindow()
+        {
+            SetZeroValues();
+
+            MainWindow.selectWindow = new SelectWindow();
+            MainWindow.selectWindow.FirstLabel.Content = "[1+] Количество техники:";
+            MainWindow.selectWindow.SecondLabel.Content = "[1-3] Количество мест:";
+            MainWindow.selectWindow.ShowDialog();
+        }
+
+        static public void CreateStopSelectWindow()
+        {
+            SetZeroValues();
+
+            MainWindow.selectWindow = new SelectWindow();
+            MainWindow.selectWindow.FirstLabel.Content = "Технологическая цепь №:";
+            MainWindow.selectWindow.SecondLabel.Content = "Вид операции на стоянке:";
+            MainWindow.selectWindow.WordComboBox.Visibility = Visibility.Visible;
+
+            MainWindow.selectWindow.PlacesTextBox.Visibility = Visibility.Hidden;
             MainWindow.selectWindow.PlacesTextBox.IsEnabled = false;
             MainWindow.selectWindow.ShowDialog();
         }
@@ -72,6 +93,7 @@ namespace DiplomaPrototype
         {
             if (NumberTextBox.Text != "") currentNumber = Convert.ToInt32(NumberTextBox.Text);
             if (PlacesTextBox.Text != "") currentPlaces = Convert.ToInt32(PlacesTextBox.Text);
+            currentWord = WordComboBox.Text;
             this.Close();
         }
 

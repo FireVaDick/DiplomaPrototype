@@ -14,6 +14,9 @@
             <Style TargetType="{x:Type TextBox}">
                 <Setter Property="Width" Value="130" />
             </Style>
+            <Style TargetType="{x:Type ComboBox}">
+                <Setter Property="Width" Value="130" />
+            </Style>
             <Style TargetType="{x:Type Button}">
                 <Setter Property="Width" Value="155" />
                 <Setter Property="Height" Value="25" />
@@ -21,11 +24,16 @@
             </Style>
         </Grid.Resources>
 
-        <Label Name="NumberLabel" Margin="10, 10, 5, 5" HorizontalAlignment="Left" VerticalAlignment="Top">1</Label>
+        <Label Name="FirstLabel" Margin="10, 10, 5, 5" HorizontalAlignment="Left" VerticalAlignment="Top">1</Label>
         <TextBox Name="NumberTextBox" Margin="10, 15, 15, 10" HorizontalAlignment="Right" VerticalAlignment="Top" />
 
-        <Label Name="PlacesLabel" Margin="10, 35, 5, 5" HorizontalAlignment="Left" VerticalAlignment="Top">2</Label>
+        <Label Name="SecondLabel" Margin="10, 35, 5, 5" HorizontalAlignment="Left" VerticalAlignment="Top">2</Label>
         <TextBox Name="PlacesTextBox" Margin="10, 40, 15, 10" HorizontalAlignment="Right" VerticalAlignment="Top" />
+
+        <ComboBox Name="WordComboBox" Margin="10, 40, 15, 10" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="Hidden" >
+            <ComboBoxItem Content="Погрузка"/>
+            <ComboBoxItem Content="Разгрузка"/>
+        </ComboBox>
 
         <Button Name="OkButton" 
                 Click="OkButton_Click" 
@@ -38,7 +46,8 @@
                     <GradientStop Color="#84A98C" Offset="0"/>
                     <GradientStop Color="#E5E9EC" Offset="0.8"/>
                 </LinearGradientBrush>
-            </Button.Background> Подтвердить</Button>
+            </Button.Background> Подтвердить
+        </Button>
         <Button Name="CancelButton" 
                 Click="CancelButton_Click" 
                 IsCancel="True" 
@@ -50,6 +59,7 @@
                     <GradientStop Color="#E5E9EC" Offset="0.2"/>
                     <GradientStop Color="#84A98C" Offset="1"/>
                 </LinearGradientBrush>
-            </Button.Background> Отменить</Button>
+            </Button.Background> Отменить
+        </Button>
     </Grid>
 </Window>

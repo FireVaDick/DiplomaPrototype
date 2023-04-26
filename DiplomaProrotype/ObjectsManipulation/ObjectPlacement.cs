@@ -2,7 +2,6 @@
 using DiplomaPrototype;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -121,6 +120,11 @@ namespace DiplomaProrotype.ObjectsManipulation
 
                         Canvas.SetLeft(stopData, dropPosition.X - stopData.Width / 2 - 10);
                         Canvas.SetTop(stopData, dropPosition.Y - stopData.Height / 2 + 2.5);
+
+                        dropPosition.X -= 9;
+                        dropPosition.Y -= 5;
+
+                        StopLinkMoving(dropPosition, stopData);
                     }
                 }
             }
@@ -152,29 +156,27 @@ namespace DiplomaProrotype.ObjectsManipulation
 
         static public void ResourceLinkMoving(Point dropPosition, ResourceTile resourceData)
         {
+            double marginTop = dropPosition.Y + 2.5;
+
             for (int i = 0; i < linksResourceMachine.Count; i++)
             {
                 if (linksResourceMachine[i].FirstTargetType == "resource" && linksResourceMachine[i].FirstTargetListId == resourceTiles.IndexOf(resourceData))
                 {
                     double firstMarginLeft = dropPosition.X + resourceData.Width / 2 - 20;
-                    double firstMarginTop = dropPosition.Y + 2.5;
 
                     linksResourceMachine[i].LineInfo.X1 = firstMarginLeft;
-                    linksResourceMachine[i].LineInfo.Y1 = firstMarginTop;
+                    linksResourceMachine[i].LineInfo.Y1 = marginTop;
 
                     linksResourceMachine[i].CircleInfo.Margin = new Thickness(linksResourceMachine[i].LineInfo.X1 - 5, linksResourceMachine[i].LineInfo.Y1 - 5, 0, 0);
                 }
-            }
 
-            for (int i = 0; i < linksResourceMachine.Count; i++)
-            {
                 if (linksResourceMachine[i].LastTargetType == "resource" && linksResourceMachine[i].LastTargetListId == resourceTiles.IndexOf(resourceData))
                 {
-                    double lastMarginLeft = dropPosition.X - resourceData.Width / 2 + 25;
+                    double lastMarginLeft = dropPosition.X - resourceData.Width / 2 + 24;
                     double lastMarginTop = dropPosition.Y + 2.5;
 
                     linksResourceMachine[i].LineInfo.X2 = lastMarginLeft;
-                    linksResourceMachine[i].LineInfo.Y2 = lastMarginTop;
+                    linksResourceMachine[i].LineInfo.Y2 = marginTop;
 
                     //links[i].CircleInfo.Margin = new Thickness(links[i].LineInfo.X1 - 5, links[i].LineInfo.Y1 - 5, 0, 0);
                 }
@@ -183,26 +185,24 @@ namespace DiplomaProrotype.ObjectsManipulation
 
         static public void MachineLinkMoving(Point dropPosition, MachineTile machineData)
         {
+            double marginTop = dropPosition.Y + 2.5;
+
             for (int i = 0; i < linksResourceMachine.Count; i++)
             {
                 if (linksResourceMachine[i].FirstTargetType == "machine" && linksResourceMachine[i].FirstTargetListId == machineTiles.IndexOf(machineData))
                 {
                     double firstMarginLeft = dropPosition.X + machineData.Width / 2 - 10;
-                    double firstMarginTop = dropPosition.Y + 2.5;
+
 
                     linksResourceMachine[i].LineInfo.X1 = firstMarginLeft;
-                    linksResourceMachine[i].LineInfo.Y1 = firstMarginTop;
+                    linksResourceMachine[i].LineInfo.Y1 = marginTop;
 
                     linksResourceMachine[i].CircleInfo.Margin = new Thickness(linksResourceMachine[i].LineInfo.X1 - 5, linksResourceMachine[i].LineInfo.Y1 - 5, 0, 0);
                 }
-            }
 
-            for (int i = 0; i < linksResourceMachine.Count; i++)
-            {
                 if (linksResourceMachine[i].LastTargetType == "machine" && linksResourceMachine[i].LastTargetListId == machineTiles.IndexOf(machineData))
                 {
                     double lastMarginLeft = dropPosition.X - machineData.Width / 2;
-                    double lastMarginTop = dropPosition.Y + 2.5;
 
                     switch (machineData.MachineText.Text)
                     {
@@ -212,7 +212,35 @@ namespace DiplomaProrotype.ObjectsManipulation
                     }
 
                     linksResourceMachine[i].LineInfo.X2 = lastMarginLeft;
-                    linksResourceMachine[i].LineInfo.Y2 = lastMarginTop;
+                    linksResourceMachine[i].LineInfo.Y2 = marginTop;
+
+                    //links[i].CircleInfo.Margin = new Thickness(links[i].LineInfo.X1 - 5, links[i].LineInfo.Y1 - 5, 0, 0);
+                }
+            }
+        }
+
+        static public void StopLinkMoving(Point dropPosition, StopTile stopData)
+        {
+            double marginTop = dropPosition.Y + 2.5;
+
+            for (int i = 0; i < linksResourceMachine.Count; i++)
+            {
+                if (linksResourceMachine[i].FirstTargetType == "stop" && linksResourceMachine[i].FirstTargetListId == stopTiles.IndexOf(stopData))
+                {
+                    double firstMarginLeft = dropPosition.X + stopData.Width / 2 - 5;
+
+                    linksResourceMachine[i].LineInfo.X1 = firstMarginLeft;
+                    linksResourceMachine[i].LineInfo.Y1 = marginTop;
+
+                    linksResourceMachine[i].CircleInfo.Margin = new Thickness(linksResourceMachine[i].LineInfo.X1 - 5, linksResourceMachine[i].LineInfo.Y1 - 5, 0, 0);
+                }
+
+                if (linksResourceMachine[i].LastTargetType == "stop" && linksResourceMachine[i].LastTargetListId == stopTiles.IndexOf(stopData))
+                {
+                    double lastMarginLeft = dropPosition.X - stopData.Width / 2 + 24;
+
+                    linksResourceMachine[i].LineInfo.X2 = lastMarginLeft;
+                    linksResourceMachine[i].LineInfo.Y2 = marginTop;
 
                     //links[i].CircleInfo.Margin = new Thickness(links[i].LineInfo.X1 - 5, links[i].LineInfo.Y1 - 5, 0, 0);
                 }
@@ -224,17 +252,15 @@ namespace DiplomaProrotype.ObjectsManipulation
         {
             var resourceTile = new ResourceTile();
 
-            CreateResourceContextMenu(resourceTile);
+            CreateContextMenu(resourceTile);
             MainWindow.resourceTiles.Add(resourceTile);
-
             MainWindow.matrixResourceMachine = (int[,]) ResizeArray(MainWindow.matrixResourceMachine, new int[] {machineTiles.Count, resourceTiles.Count});
-
-            resourceTile.Text = "Задел";
-            resourceTile.Id = MainWindow.resourceTiles.Count;
-
+            
             Canvas.SetLeft(resourceTile, dropPosition.X - resourceTile.Width / 2 - 7.5);
             Canvas.SetTop(resourceTile, dropPosition.Y - resourceTile.Height / 2);
-
+            
+            resourceTile.Text = "Задел";
+            resourceTile.Id = MainWindow.resourceTiles.Count;
             resourceTile.ResourceText.Margin = new Thickness(0, 0, 0, 15);
             resourceTile.ResourceId.Visibility = Visibility.Visible;
             resourceTile.Height = 85;
@@ -245,26 +271,20 @@ namespace DiplomaProrotype.ObjectsManipulation
                 resourceTile.ResourceFigure.Margin = new Thickness(0, 40, 0, 0);
             }
 
-            MainWindow.lastTileType = "resource";
-            mw.TargetCanvas.Children.Add(resourceTile);
-
             resourceTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
             MainWindow.chosenOneObject = resourceTile;
+            MainWindow.lastTileType = "resource";
+            mw.TargetCanvas.Children.Add(resourceTile);                 
         }
 
         static public void CreateMachineTile(MachineTile machineData, Point dropPosition)
         {
             var machineTile = new MachineTile();
 
-            CreateMachineContextMenu(machineTile);
+            CreateContextMenu(machineTile);
             MainWindow.machineTiles.Add(machineTile);
-
             MainWindow.matrixResourceMachine = (int[,]) ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
-
-            machineTile.Image = machineData.Image;
-            machineTile.Text = machineData.Text;
-            machineTile.Id = MainWindow.machineTiles.Count;
-
+            
             Canvas.SetLeft(machineTile, dropPosition.X - machineTile.Width / 2 - 7.5);
             Canvas.SetTop(machineTile, dropPosition.Y - machineData.MachineIndicator.Height - machineData.MachineImage.Height + 5);
 
@@ -297,21 +317,21 @@ namespace DiplomaProrotype.ObjectsManipulation
                     machineTile.MachineProgress1.Visibility = Visibility.Visible;
                 }
 
-                machineTile.Height = 110 + SelectWindow.currentNumber * 10;
-
+                machineTile.Image = machineData.Image;
+                machineTile.Text = machineData.Text;
+                machineTile.Id = MainWindow.machineTiles.Count;
                 machineTile.MachineImage.Margin = new Thickness(0, 25, 0, 0);
                 machineTile.MachineText.Margin = new Thickness(0, 0, 0, 15);
-
                 machineTile.MachineIndicator.Visibility = Visibility.Visible;
                 machineTile.MachineId.Visibility = Visibility.Visible;
-
-                MainWindow.lastTileType = "machine";
-                mw.TargetCanvas.Children.Add(machineTile);
+                machineTile.Height = 110 + SelectWindow.currentNumber * 10;
 
                 machineTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = machineTile;
+                MainWindow.lastTileType = "machine";              
+                mw.TargetCanvas.Children.Add(machineTile);
 
-
+                // Добавление пустого задела рядом
                 MainWindow.resourceNearMachineIsEmpty = true;
 
                 dropPosition.X += 70;
@@ -339,47 +359,42 @@ namespace DiplomaProrotype.ObjectsManipulation
            
             if (movableTile.Amount > 0 && movableTile.Places > 0 && movableTile.Places <= 3)
             {
-                CreateMovableContextMenu(movableTile);
+                CreateContextMenu(movableTile);
                 MainWindow.movableTiles.Add(movableTile);
-
-                movableTile.Image = movableData.Image;
-                movableTile.Text = movableData.Text;
-                movableTile.Id = MainWindow.movableTiles.Count;
 
                 Canvas.SetLeft(movableTile, dropPosition.X - movableTile.Width / 2 - 10);
                 Canvas.SetTop(movableTile, dropPosition.Y - movableTile.Height / 2 - 22.5);
 
                 if (movableTile.Places > 0 && movableTile.Places <= 3)
                 {
-                    movableTile.ResourceFigure1.Margin = new Thickness(0, -5, 10, 0);
+                    movableTile.ResourceFigure1.Margin = new Thickness(0, -35, 10, 0);
                     movableTile.ResourceFigure1.Visibility = Visibility.Visible;
 
                     if (movableTile.Places > 1)
                     {
-                        movableTile.ResourceFigure2.Margin = new Thickness(0, -5, -12, 0);
+                        movableTile.ResourceFigure2.Margin = new Thickness(0, -35, -12, 0);
                         movableTile.ResourceFigure2.Visibility = Visibility.Visible;
                     }
 
                     if (movableTile.Places > 2)
                     {
-                        movableTile.ResourceFigure3.Margin = new Thickness(0, -5, -34, 0);
+                        movableTile.ResourceFigure3.Margin = new Thickness(0, -35, -34, 0);
                         movableTile.ResourceFigure3.Visibility = Visibility.Visible;
                     }
                 }
 
-                movableTile.MovableImage.Margin = new Thickness(0, 25, 0, 0);
+                movableTile.Image = movableData.Image;
+                movableTile.Text = movableData.Text;
+                movableTile.Id = MainWindow.movableTiles.Count;
                 movableTile.MovableText.Margin = new Thickness(0, 0, 0, 15);
-
-                movableTile.MovableIndicator.Visibility = Visibility.Visible;
                 movableTile.MovableAmount.Visibility = Visibility.Visible;
                 movableTile.MovableId.Visibility = Visibility.Visible;
-                movableTile.Height = 105;
-
-                MainWindow.lastTileType = "movable";
-                mw.TargetCanvas.Children.Add(movableTile);
+                movableTile.Height = 85;
 
                 movableTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = movableTile;
+                MainWindow.lastTileType = "movable";
+                mw.TargetCanvas.Children.Add(movableTile);
             }         
         }
 
@@ -387,47 +402,37 @@ namespace DiplomaProrotype.ObjectsManipulation
         {
             var stopTile = new StopTile();
 
+            CreateContextMenu(stopTile);
             MainWindow.stopTiles.Add(stopTile);
-
-            stopTile.Text = "Стоянка";
-            stopTile.Id = MainWindow.stopTiles.Count;
 
             Canvas.SetLeft(stopTile, dropPosition.X - stopTile.Width / 2 - 10);
             Canvas.SetTop(stopTile, dropPosition.Y - stopTile.Height / 2 - 5);
 
-            stopTile.StopText.Margin = new Thickness(0, 0, 0, 15);
-            stopTile.StopId.Visibility = Visibility.Visible;
-            stopTile.Height = 70;
+            SelectWindow.CreateStopSelectWindow();
+            if (SelectWindow.currentNumber > 0 && SelectWindow.currentWord != "")
+            {
+                stopTile.Chain = SelectWindow.currentNumber;
+                stopTile.Text = SelectWindow.currentWord;
+                stopTile.Id = MainWindow.stopTiles.Count;
+                stopTile.StopText.Margin = new Thickness(0, 0, 0, 15);
+                stopTile.StopChain.Visibility = Visibility.Visible;
+                stopTile.StopId.Visibility = Visibility.Visible;
+                stopTile.Height = 70;
 
-            MainWindow.lastTileType = "stop";
-            mw.TargetCanvas.Children.Add(stopTile);
-
-            stopTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
-            MainWindow.chosenOneObject = stopTile;
+                stopTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
+                MainWindow.chosenOneObject = stopTile;
+                MainWindow.lastTileType = "stop";
+                mw.TargetCanvas.Children.Add(stopTile);
+            }
         }
 
 
-        static private void CreateResourceContextMenu(ResourceTile resourceTile)
+        static private void CreateContextMenu(UserControl tile)
         {
             var contextMenu = new ContextMenu();
-            resourceTile.ContextMenu = contextMenu;
+            tile.ContextMenu = contextMenu;
             ObjectContextMenu.CreateDefaultContextMenu(contextMenu);
         }
-
-        static private void CreateMachineContextMenu(MachineTile machineTile)
-        {
-            var contextMenu = new ContextMenu();
-            machineTile.ContextMenu = contextMenu;
-            ObjectContextMenu.CreateDefaultContextMenu(contextMenu);
-        }
-
-        static private void CreateMovableContextMenu(MovableTile movableTile)
-        {
-            var contextMenu = new ContextMenu();
-            movableTile.ContextMenu = contextMenu;
-            ObjectContextMenu.CreateDefaultContextMenu(contextMenu);
-        }
-
 
         public static Array ResizeArray(Array arr, int[] newSizes)
         {

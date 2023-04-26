@@ -9,6 +9,7 @@
     <Border>
         <Grid>
             <Rectangle Name="StopFigure" Fill="White" StrokeThickness="2" Stroke="Black" StrokeDashArray="2 1" Width="30" Height="30" RadiusX="5" RadiusY="5" Margin="5" VerticalAlignment="Top"/>
+            <TextBlock Name="StopChain" Text="{Binding Chain}" Margin="0, -30, 0, 0" VerticalAlignment="Center" FontSize="12" TextAlignment="Center" Visibility="Hidden"/>
             <TextBlock Name="StopText" Text="{Binding Text}" VerticalAlignment="Bottom" FontSize="11" TextAlignment="Center"/>
             <TextBlock Name="StopId" Text="{Binding Id}"  VerticalAlignment="Bottom" FontSize="11" TextAlignment="Center" Visibility="Hidden"/>
         </Grid>

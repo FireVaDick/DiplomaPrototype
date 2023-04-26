@@ -20,6 +20,7 @@ namespace DiplomaProrotype.CanvasManipulation
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
         static private List<MovableTile> movableTiles = MainWindow.movableTiles;
+        static private List<StopTile> stopTiles = MainWindow.stopTiles;
         static private List<Link> linksResourceMachine = MainWindow.linksResourceMachine;
 
 
@@ -84,6 +85,12 @@ namespace DiplomaProrotype.CanvasManipulation
                 movableTiles.Remove(movableTiles[i]);
             }
 
+            for (int i = 0; i < stopTiles.Count;)
+            {
+                mw.TargetCanvas.Children.Remove(stopTiles[i]);
+                stopTiles.Remove(stopTiles[i]);
+            }
+
             for (int i = 0; i < linksResourceMachine.Count;)
             {
                 //mw.TargetCanvas.Children.Remove(links[i]);
@@ -96,26 +103,12 @@ namespace DiplomaProrotype.CanvasManipulation
         }
 
         static private void CMDeleteAll_Click(object sender, RoutedEventArgs e)
-        {
-            for (int i = 0; i < resourceTiles.Count;)
-            {
-                resourceTiles.Remove(resourceTiles[i]);
-            }
-
-            for (int i = 0; i < machineTiles.Count;)
-            {
-                machineTiles.Remove(machineTiles[i]);
-            }
-
-            for (int i = 0; i < movableTiles.Count;)
-            {
-                movableTiles.Remove(movableTiles[i]);
-            }
-
-            for (int i = 0; i < linksResourceMachine.Count;)
-            {
-                linksResourceMachine.Remove(linksResourceMachine[i]);
-            }
+        { 
+            for (int i = 0; i < resourceTiles.Count;) resourceTiles.Remove(resourceTiles[i]);
+            for (int i = 0; i < machineTiles.Count;) machineTiles.Remove(machineTiles[i]);
+            for (int i = 0; i < movableTiles.Count;) movableTiles.Remove(movableTiles[i]);
+            for (int i = 0; i < stopTiles.Count;) stopTiles.Remove(stopTiles[i]);
+            for (int i = 0; i < linksResourceMachine.Count;) linksResourceMachine.Remove(linksResourceMachine[i]);
 
             mw.TargetCanvas.Children.Clear();
 

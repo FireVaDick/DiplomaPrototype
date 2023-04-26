@@ -25,6 +25,7 @@ namespace DiplomaProrotype
         static public List<MovableTile> movableTiles = new List<MovableTile>();
         static public List<StopTile> stopTiles = new List<StopTile>();
         static public List<Link> linksResourceMachine = new List<Link>();
+        static public List<Link> linksResourceStop = new List<Link>();
 
         static public ResourceTile resourceTileFromContextMenu;
         static public MachineTile machineTileFromContextMenu;
@@ -276,6 +277,13 @@ namespace DiplomaProrotype
                 targetMargin.X += chosenOneObject.Width / 2 - 2.5;
                 targetMargin.Y += ((MachineTile)chosenOneObject).MachineIndicator.Height + ((MachineTile)chosenOneObject).MachineImage.Height / 2 + 5;
                 ObjectPlacement.MachineLinkMoving((Point)targetMargin, (MachineTile)chosenOneObject);
+            }
+
+            if (type == typeof(StopTile))
+            {
+                targetMargin.X += chosenOneObject.Width / 2 - 8.5;
+                targetMargin.Y += ((StopTile)chosenOneObject).StopFigure.Height / 2 + 2.5;
+                ObjectPlacement.StopLinkMoving((Point)targetMargin, (StopTile)chosenOneObject);
             }
         }
 
