@@ -606,37 +606,7 @@ namespace DiplomaProrotype
         #region Анимация объекта на холсте
 
         private List<Point> coordinates = new List<Point>();
-        public void Animation()
-        {
-            List<Point> points = coordinates; //Список координат по которым будет двигаться объект
-
-
-            PathFigure pFigure = new PathFigure(); //Создание фигуры,описывающей движение анимации
-            pFigure.StartPoint = new Point(35, 0); //Стартовая точка анимации
-
-            for (int i = 0; i < points.Count; i++)
-            {
-
-                int X = (int)points[i].X;
-                int Y = (int)points[i].Y;
-                LineSegment lineSegment = new() //Создание линии с координатами конечной точки
-                {
-                    Point = new Point(X, Y)
-                };
-                pFigure.Segments.Add(lineSegment); //Добавление линии к фигуре,описывающей движение
-            }
-
-
-            TargetPathGeometry.Figures.Clear(); //Очистка массива фигур на случай предыдущих данных
-
-            TargetPathGeometry.Figures.Add(pFigure); //Добавление фигуры в качестве пути движения
-
-            TargetPathGeometry.Figures.Clear();
-
-            TargetPathGeometry.Figures.Add(pFigure);
-            TargetStoryboard.Begin(this);
-
-        }
+        
 
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -696,7 +666,8 @@ namespace DiplomaProrotype
             // Здесь происходит завершение работы и возвращение массива координат
             coordinates.Add(e.GetPosition(TargetCanvas));
 
-            Animation();
+            AnimationOfObject animationOfObject = new AnimationOfObject(TargetCanvas, TargetPathGeometry, TargetStoryboard);
+            animationOfObject.Animation(coordinates);
 
         }
         #endregion
