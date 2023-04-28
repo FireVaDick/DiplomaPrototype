@@ -1,0 +1,99 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Icons\BlackOutline\**" />
+    <Compile Remove="Icons\Default\**" />
+    <EmbeddedResource Remove="Icons\BlackOutline\**" />
+    <EmbeddedResource Remove="Icons\Default\**" />
+    <None Remove="Icons\BlackOutline\**" />
+    <None Remove="Icons\Default\**" />
+    <Page Remove="Icons\BlackOutline\**" />
+    <Page Remove="Icons\Default\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Icons\x128\Animate128.png" />
+    <None Remove="Icons\x128\Animate32.png" />
+    <None Remove="Icons\x128\Arrow128.png" />
+    <None Remove="Icons\x128\Back128.png" />
+    <None Remove="Icons\x128\Book128.png" />
+    <None Remove="Icons\x128\Brush128.png" />
+    <None Remove="Icons\x128\Brush32.png" />
+    <None Remove="Icons\x128\Canvas128.png" />
+    <None Remove="Icons\x128\CheckLinks128.png" />
+    <None Remove="Icons\x128\CheckLinks32.png" />
+    <None Remove="Icons\x128\Circle128.png" />
+    <None Remove="Icons\x128\Clock128.png" />
+    <None Remove="Icons\x128\Delete128.png" />
+    <None Remove="Icons\x128\Delete32.png" />
+    <None Remove="Icons\x128\Drilling128.png" />
+    <None Remove="Icons\x128\Eraser128.png" />
+    <None Remove="Icons\x128\Forklift128.png" />
+    <None Remove="Icons\x128\Hand128.png" />
+    <None Remove="Icons\x128\Lathe128.png" />
+    <None Remove="Icons\x128\Milling128.png" />
+    <None Remove="Icons\x128\Molecular128.png" />
+    <None Remove="Icons\x128\Molecular32.png" />
+    <None Remove="Icons\x128\Path128.png" />
+    <None Remove="Icons\x128\Pencil128.png" />
+    <None Remove="Icons\x128\Pencil32.png" />
+    <None Remove="Icons\x128\Press128.png" />
+    <None Remove="Icons\x128\Route128.png" />
+    <None Remove="Icons\x128\Square128.png" />
+    <None Remove="Icons\x128\Trolley128.png" />
+    <None Remove="Icons\x128\Way128.png" />
+    <None Remove="Icons\x128\Welding128.png" />
+    <None Remove="Icons\x128\Worker128.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Haley.Extensions" Version="2.1.15.2" />
+    <PackageReference Include="Haley.Helpers" Version="2.1.9" />
+    <PackageReference Include="Haley.IOC" Version="3.0.13" />
+    <PackageReference Include="Haley.MVVM" Version="6.3.3" />
+    <PackageReference Include="Haley.WPF" Version="5.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icons\x128\Animate128.png" />
+    <Resource Include="Icons\x128\Animate32.png" />
+    <Resource Include="Icons\x128\Arrow128.png" />
+    <Resource Include="Icons\x128\Back128.png" />
+    <Resource Include="Icons\x128\Book128.png" />
+    <Resource Include="Icons\x128\Brush128.png" />
+    <Resource Include="Icons\x128\Brush32.png" />
+    <Resource Include="Icons\x128\Canvas128.png" />
+    <Resource Include="Icons\x128\CheckLinks128.png" />
+    <Resource Include="Icons\x128\CheckLinks32.png" />
+    <Resource Include="Icons\x128\Circle128.png" />
+    <Resource Include="Icons\x128\Clock128.png" />
+    <Resource Include="Icons\x128\Delete128.png" />
+    <Resource Include="Icons\x128\Delete32.png" />
+    <Resource Include="Icons\x128\Drilling128.png" />
+    <Resource Include="Icons\x128\Eraser128.png" />
+    <Resource Include="Icons\x128\Forklift128.png" />
+    <Resource Include="Icons\x128\Hand128.png" />
+    <Resource Include="Icons\x128\Lathe128.png" />
+    <Resource Include="Icons\x128\Milling128.png" />
+    <Resource Include="Icons\x128\Molecular128.png" />
+    <Resource Include="Icons\x128\Molecular32.png" />
+    <Resource Include="Icons\x128\Path128.png" />
+    <Resource Include="Icons\x128\Pencil128.png" />
+    <Resource Include="Icons\x128\Pencil32.png" />
+    <Resource Include="Icons\x128\Press128.png" />
+    <Resource Include="Icons\x128\Route128.png" />
+    <Resource Include="Icons\x128\Square128.png" />
+    <Resource Include="Icons\x128\Trolley128.png" />
+    <Resource Include="Icons\x128\Way128.png" />
+    <Resource Include="Icons\x128\Welding128.png" />
+    <Resource Include="Icons\x128\Worker128.png" />
+  </ItemGroup>
+
+</Project>

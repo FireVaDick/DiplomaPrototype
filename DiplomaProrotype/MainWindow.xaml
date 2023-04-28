@@ -6,18 +6,16 @@
         xmlns:hw="http://schemas.hpod9.com/haley/wpf"
         xmlns:hm="http://schemas.hpod9.com/haley/mvvm"
         xmlns:local="clr-namespace:DiplomaProrotype"
+        xmlns:canvas="using:clr-namespace:DiplomaProrotype.CanvasManipulation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="735" Width="1100">
+        KeyDown="MainWindow_KeyDown"
+        Title="Основа" Height="735" Width="1100">
     <Window.Resources>
-
         <Style TargetType="Border" x:Key="PaleBorder">
             <Setter Property="Background" Value="#FFFBFDFF" />
             <Setter Property="CornerRadius" Value="10" />
             <Setter Property="BorderBrush" Value="#ced4da" />
             <Setter Property="BorderThickness" Value="1" />
-            <!--<Setter Property="FontFamily" Value="laCartoonerie(RUS BY LYAJKA)"
-            <Setter Property="FontFamily" Value="laCartoonerie(RUS BY LYAJKA)" />
-            <Setter Property="FontSize" Value="13" /> />-->
         </Style>
 
         <Style TargetType="Panel" x:Key="SquarePanel">
@@ -25,26 +23,17 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-
-        <Style TargetType="Button" x:Key="buttonTrigger">
-            <Setter Property="Margin" Value="3,0" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="BorderBrush" Value="Black" />
-            <!--<Setter Property="FontFamily" Value="laCartoonerie(RUS BY LYAJKA)" />-->
-            <Setter Property="FontFamily" Value="laCartoonerie(RUS BY LYAJKA)" />
-            <Setter Property="FontSize" Value="13" />
-        </Style>
     </Window.Resources>
 
     <Grid Name="MyGrid"
           AllowDrop="True" >
         <Grid.Background>
-            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.75,1" >
-                <GradientStop Color="#FFC6E6FF" Offset="0"/>
-                <GradientStop Color="#FFFF9C9C" Offset="1"/>
+            <LinearGradientBrush StartPoint="0.0, 0.0" EndPoint="0.9, 1" >
+                <GradientStop Color="#84A98C" Offset="0"/>
+                <GradientStop Color="#E5E9EC" Offset="0.45"/>
+                <GradientStop Color="#84A98C" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-
 
         <!-- Целевой холст -->
         <Border Name="TargetBorder"
@@ -56,34 +45,16 @@
                     AllowDrop="True" 
                     DragOver="TargetCanvas_DragOver" 
                     Drop="TargetCanvas_Drop" 
-                    Background="Transparent"
-                MouseMove="Canvas_MouseMove"
-                PreviewMouseLeftButtonDown="Canvas_MouseLeftButtonDown" 
-                PreviewMouseRightButtonDown="Canvas_MouseRightButtonDown">
-                <Image x:Name="image" Source="/Forklift128.png" Width="80" Height="60">
-                    <Image.RenderTransform>
-                        <MatrixTransform x:Name="ImageMatrixTransform" />
-                    </Image.RenderTransform>
-                    <Image.Triggers>
-                        <EventTrigger RoutedEvent="Image.Loaded">
-                            <BeginStoryboard>
-                                <Storyboard Name="TargetStoryboard">
-                                    <MatrixAnimationUsingPath
-                                    Name="TargetAnimation"
-                Storyboard.TargetName="ImageMatrixTransform"
-                Storyboard.TargetProperty="Matrix"
-                Duration="0:0:10" 
-                RepeatBehavior="Forever" >
-                                        <MatrixAnimationUsingPath.PathGeometry>
-                                            <PathGeometry x:Name="TargetPathGeometry"  
-                    Figures=""/>
-                                        </MatrixAnimationUsingPath.PathGeometry>
-                                    </MatrixAnimationUsingPath>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Image.Triggers>
-                </Image>
+                    MouseLeftButtonDown="TargetCanvas_MouseLeftButtonDown"
+                    MouseMove="TargetCanvas_MouseMove"
+                    MouseLeftButtonUp="TargetCanvas_MouseLeftButtonUp"
+                    MouseRightButtonDown="TargetCanvas_MouseRightButtonUp"
+                    Background="Transparent" >
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="{Binding ElementName=SliderAllInterface, Path=Value}" ScaleY="{Binding ElementName=SliderAllInterface, Path=Value}"/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
             </Canvas>
         </Border>
 
@@ -97,11 +68,44 @@
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="ModePanel" 
                         Orientation="Vertical" 
-                        Background="Transparent">
-                <local:ModeTile Text="Перемещение" Image="Icons/x128/Hand128.png"/>
-                <local:ModeTile Text="Связи" Image="Icons/x128/Arrow128.png"/>
-                <local:ModeTile Text="Маршруты" Image="Icons/x128/Route128.png"/>
-                <local:ModeTile Text="Холсты" Image="Icons/x128/Canvas128.png"/>
+                        Background="Transparent" Cursor="Hand">
+                <local:ModeTile x:Name="ModeMove" Text="Перемещение" Image="Icons/x128/Hand128.png" MouseLeftButtonDown="ModeTile_Move_MouseLeftButtonDown" Foreground="Crimson">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Режим, позволяющий перемещать заделы, станки и транспортные средства по холсту. Перещать можно зажав ЛКМ.
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
+                <local:ModeTile x:Name="ModeLink" Text="Связи" Image="Icons/x128/Arrow128.png" MouseLeftButtonDown="ModeTile_Link_MouseLeftButtonDown">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Режим, позволяющий создавать связи между размещёнными объектами. Для этого нужно зажать ЛКМ на первом объекте, переместить 
+                            мышь и отпустить на втором объекте, с которым нужно создать связь.
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
+                <local:ModeTile x:Name="ModeRoute" Text="Маршруты" Image="Icons/x128/Route128.png" MouseLeftButtonDown="ModeTile_Route_MouseLeftButtonDown">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Режим, позволяющий рисовать маршруты транспортных средств. Для этого нужно зажать ЛКМ на холсте, переместить мышь и отпустить, появится 
+                            линия. В следующий раз будет создана линия из той точки, где закончилась предыдущая. Для завершения маршрута нажмите ПКМ.                         
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
+                <local:ModeTile x:Name="ModePath" Text="Пути" Image="Icons/x128/Path128.png" MouseLeftButtonDown="ModeTile_Path_MouseLeftButtonDown">
+                    <local:ModeTile.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Сплошные линии" Click="CMChooseSolidPath_Click"></MenuItem>
+                            <MenuItem Header="Прерывистые линии" Click="CMChooseDiscontinuousPath_Click"></MenuItem>
+                        </ContextMenu>
+                    </local:ModeTile.ContextMenu>
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Режим, позволяющий рисовать транспортные пути/места размещения станков и заделов. Для этого нужно зажать ЛКМ на холсте, переместить 
+                            мышь и отпустить, появится прямоугольник.
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
             </StackPanel>
         </Border>
 
@@ -117,42 +121,54 @@
                         Orientation="Horizontal" 
                         AllowDrop="True" 
                         Drop="ObjectPanel_Drop"
-                        Background="Transparent">
-                <local:ResourceTile Text="Задел"/>
-                <local:ObjectTile Text="Сотрудник" Image="Icons/x128/Worker128.png"/>
-                <local:ObjectTile Text="Токарный" Image="Icons/x128/Lathe128.png"/>
-                <local:ObjectTile Text="Сварочный" Image="Icons/x128/Welding128.png"/>
-                <local:ObjectTile Text="Фрезерный" Image="Icons/x128/Milling128.png"/>
-                <local:ObjectTile Text="Тележка" Image="Icons/x128/Trolley128.png"/>
-                <local:ObjectTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/>
+                        Background="Transparent" Cursor="Hand">
+                <local:ResourceTile Text="Задел" AutomationProperties.IsOffscreenBehavior="Offscreen"/>
+                <local:MachineTile Text="Токарный" Image="Icons/x128/Lathe128.png"/>
+                <local:MachineTile Text="Сварочный" Image="Icons/x128/Welding128.png"/>
+                <local:MachineTile Text="Фрезерный" Image="Icons/x128/Milling128.png"/>
+                <local:MovableTile Text="Тележка" Image="Icons/x128/Trolley128.png"/>
+                <local:MovableTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/>
+                <local:StopTile Text="Стоянка" AutomationProperties.IsOffscreenBehavior="Offscreen"/>
             </StackPanel>
         </Border>
 
-        <!-- Меню очистки в углу -->
+        <!-- Меню матрицы -->
+        <Border Name="MatrixBorder" 
+                Width="100" 
+                Height="100" 
+                Margin="10" 
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Right"
+                MouseWheel="MatrixBorder_MouseWheel" 
+                Style="{StaticResource ResourceKey=PaleBorder}" >
+            <StackPanel Name="MatrixPanel" Style="{StaticResource ResourceKey=SquarePanel}">
+                <local:ModeTile Margin="0,0,0,0" Text="Матрица" Image="Icons/x128/CheckLinks128.png" MouseLeftButtonDown="ModeTile_CheckAllLinks_MouseLeftButtonDown">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Позволяет просмотреть матрицу связей.
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
+            </StackPanel>
+        </Border>
+
+        <!-- Меню очистки -->
         <Border Name="ClearBorder" 
                 Width="100" 
                 Height="100" 
                 Margin="10" 
                 VerticalAlignment="Bottom" 
                 HorizontalAlignment="Left"
+                MouseWheel="ClearBorder_MouseWheel" 
                 Style="{StaticResource ResourceKey=PaleBorder}" >
-            <StackPanel Name="ClearPanel"          
-                        Style="{StaticResource ResourceKey=SquarePanel}" >
-                <local:ModeTile Text="Очистить" Image="Icons/x128/Eraser128.png" MouseLeftButtonDown="ModeTile_MouseLeftButtonDown"/>
-            </StackPanel>
-        </Border>
-        
-        <!-- Меню информации в углу -->
-        <Border Name="InfoBorder" 
-                Width="100" 
-                Height="100" 
-                Margin="10" 
-                VerticalAlignment="Top" 
-                HorizontalAlignment="Right"
-                Style="{StaticResource ResourceKey=PaleBorder}" >
-            <StackPanel Name="InfoPanel"
-                        Style="{StaticResource ResourceKey=SquarePanel}">
-                <local:ModeTile Text="Документация" Image="Icons/x128/Book128.png"/>
+            <StackPanel Name="ClearPanel" Style="{StaticResource ResourceKey=SquarePanel}" >
+                <local:ModeTile Margin="0,0,0,0" x:Name="Eraser" Text="Очистить" Image="Icons/x128/Eraser128.png" MouseDown="ModeTile_Erase_MouseDown">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Нажав правую кнопку, появится контекстное меню, которое позволит очистить разные элементы холста или его целиком.
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
             </StackPanel>
         </Border>
 
@@ -176,8 +192,10 @@
                                 ShowMiniInfo="True" 
                                 MouseLeftButtonUp="ColorPicker_MouseLeftButtonUp"/>
             </StackPanel>
-
-
         </Border>
+
+        <Slider Name="SliderAllInterface" Width="400" Margin="0,0,0,15" Minimum="0.5" Maximum="1.5" Value="1" 
+                VerticalAlignment="Bottom" HorizontalAlignment="Center" LargeChange="0.1" Cursor="Hand" Focusable="False"/>
+
     </Grid>
 </Window>
