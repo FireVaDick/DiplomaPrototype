@@ -15,7 +15,7 @@ namespace DiplomaProrotype.ColorsManipulation
         static private MainWindow mw = (MainWindow)Application.Current.MainWindow;
 
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
-        static private List<Link> links = MainWindow.links;
+        static private List<Link> linksResourceMachine = MainWindow.linksResourceMachine;
 
 
         static public void DynamicChooseColorFromPalette()
@@ -27,16 +27,16 @@ namespace DiplomaProrotype.ColorsManipulation
             {
                 ((ResourceTile)MainWindow.chosenOneObject).ResourceFigure.Fill = mw.ColorPalette.SelectedBrush;
 
-                for (int i = 0; i < links.Count; i++)
+                for (int i = 0; i < linksResourceMachine.Count; i++)
                 {
-                    if (links[i].FirstTargetType == "resource" && links[i].FirstTargetListId == resourceTiles.IndexOf((ResourceTile)MainWindow.chosenOneObject))
+                    if (linksResourceMachine[i].FirstTargetType == "resource" && linksResourceMachine[i].FirstTargetListId == resourceTiles.IndexOf((ResourceTile)MainWindow.chosenOneObject))
                     {
-                        links[i].LineInfo.Stroke = mw.ColorPalette.SelectedBrush;
+                        linksResourceMachine[i].LineInfo.Stroke = mw.ColorPalette.SelectedBrush;
                     }
 
-                    if (links[i].LastTargetType == "resource" && links[i].LastTargetListId == resourceTiles.IndexOf((ResourceTile)MainWindow.chosenOneObject))
+                    if (linksResourceMachine[i].LastTargetType == "resource" && linksResourceMachine[i].LastTargetListId == resourceTiles.IndexOf((ResourceTile)MainWindow.chosenOneObject))
                     {
-                        links[i].LineInfo.Stroke = mw.ColorPalette.SelectedBrush;
+                        linksResourceMachine[i].LineInfo.Stroke = mw.ColorPalette.SelectedBrush;
                     }
                 }
             }

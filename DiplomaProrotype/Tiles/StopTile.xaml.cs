@@ -30,6 +30,14 @@ namespace DiplomaProrotype
             set { SetValue(TextProperty, value); }
         }
 
+        public static readonly DependencyProperty ChainProperty = DependencyProperty.Register("Chain",
+            typeof(int), typeof(StopTile), new PropertyMetadata(null));
+
+        public int Chain
+        {
+            get { return (int)GetValue(ChainProperty); }
+            set { SetValue(ChainProperty, value); }
+        }
 
         public static readonly DependencyProperty IdProperty = DependencyProperty.Register("Id",
             typeof(int), typeof(StopTile), new PropertyMetadata(null));

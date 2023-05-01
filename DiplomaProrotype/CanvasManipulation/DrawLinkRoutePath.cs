@@ -1,16 +1,12 @@
 ﻿using DiplomaProrotype.Models;
 using DiplomaProrotype.ObjectsManipulation;
-using Haley.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Windows;
-using System.Windows.Input;
 
 namespace DiplomaProrotype.CanvasManipulation
 {
@@ -20,6 +16,7 @@ namespace DiplomaProrotype.CanvasManipulation
 
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
+        static private List<StopTile> stopTiles = MainWindow.stopTiles;
 
         static private Link link;
         static private Ellipse linkCircle;
@@ -46,41 +43,47 @@ namespace DiplomaProrotype.CanvasManipulation
             {
                 firstMarginLeft = targetMargin.X + target.Width / 2 - target.Margin.Left / 2 + 20; // 20 и 5 - отступы от центра
                 firstMarginTop = targetMargin.Y + target.Height / 2 - target.Margin.Top - 5;
+
+                for (int i = 0; i < resourceTiles.Count; i++)
+                {
+                    if (targetMargin == VisualTreeHelper.GetOffset(resourceTiles[i]))
+                    {
+                        link = new Link();
+                        link.FirstTargetType = "resource";
+                        link.FirstTargetListId = i;
+                    }
+                }
             }
 
             if (type == typeof(MachineTile))
             {
-                firstMarginLeft = targetMargin.X + target.Width / 2 - target.Margin.Left / 2 + 30; // 20 и 5 - отступы от центра
-                firstMarginTop = targetMargin.Y + target.Height / 2 - target.Margin.Top + 5;
-            }
+                firstMarginLeft = targetMargin.X + target.Width / 2 - target.Margin.Left / 2 + 30; // 30 и 5 - отступы от центра
+                firstMarginTop = targetMargin.Y + ((MachineTile)target).MachineIndicator.Height + ((MachineTile)target).MachineImage.Height / 2 + 7.5;
 
-            for (int i = 0; i < resourceTiles.Count; i++)
-            {
-                if (targetMargin == VisualTreeHelper.GetOffset(resourceTiles[i]))
+                for (int i = 0; i < machineTiles.Count; i++)
                 {
-                    link = new Link();
-
-                    if (type == typeof(ResourceTile))
+                    if (targetMargin == VisualTreeHelper.GetOffset(machineTiles[i]))
                     {
-                        link.FirstTargetType = "resource";
+                        link = new Link();
+                        link.FirstTargetType = "machine";
+                        link.FirstTargetListId = i;
                     }
-
-                    link.FirstTargetListId = i;
                 }
             }
 
-            for (int i = 0; i < machineTiles.Count; i++)
+            if (type == typeof(StopTile)) //---
             {
-                if (targetMargin == VisualTreeHelper.GetOffset(machineTiles[i]))
+                firstMarginLeft = targetMargin.X + target.Width / 2 - target.Margin.Left / 2 + 20; // 20 и 5 - отступы от центра
+                firstMarginTop = targetMargin.Y + target.Height / 2 - target.Margin.Top - 5;
+
+                for (int i = 0; i < stopTiles.Count; i++)
                 {
-                    link = new Link();
-
-                    if (type == typeof(MachineTile))
+                    if (targetMargin == VisualTreeHelper.GetOffset(stopTiles[i]))
                     {
-                        link.FirstTargetType = "machine";
+                        link = new Link();
+                        link.FirstTargetType = "stop";
+                        link.FirstTargetListId = i;
                     }
-
-                    link.FirstTargetListId = i;
                 }
             }
 
@@ -88,6 +91,7 @@ namespace DiplomaProrotype.CanvasManipulation
 
             linkLine = new Line();
 
+            // Цвет линии связи
             if (type == typeof(ResourceTile))
             {
                 if (((ResourceTile)target).ResourceFigure.Fill == Brushes.White)
@@ -100,12 +104,23 @@ namespace DiplomaProrotype.CanvasManipulation
                 }
             }
 
-            if (type == typeof(MachineTile))
+            if (type == typeof(MachineTile) || type == typeof(StopTile))
             {
                 linkLine.Stroke = Brushes.Black;
-            }
-            linkLine.StrokeThickness = 3;
+            }         
 
+            if (type == typeof(StopTile))
+            {
+                linkLine.StrokeDashArray = new DoubleCollection() { 1, 1 };
+            }
+
+            linkLine.StrokeThickness = 3;
+            linkLine.X2 = linkLine.X1 = firstMarginLeft; // Точки конца там же, где и начала
+            linkLine.Y2 = linkLine.Y1 = firstMarginTop;
+
+            mw.TargetCanvas.Children.Add(linkLine);
+
+            // Кружок начала линии
             linkCircle = new Ellipse
             {
                 Fill = Brushes.White,
@@ -116,10 +131,11 @@ namespace DiplomaProrotype.CanvasManipulation
                 Margin = new Thickness(firstMarginLeft - 5, firstMarginTop - 5, 0, 0)
             };
 
-            linkLine.X2 = linkLine.X1 = firstMarginLeft; // Точки конца там же, где и начала
-            linkLine.Y2 = linkLine.Y1 = firstMarginTop;
+            if (type == typeof(StopTile))
+            {
+                linkCircle.StrokeDashArray = new DoubleCollection() { 2, 1 };
+            }
 
-            mw.TargetCanvas.Children.Add(linkLine);
             mw.TargetCanvas.Children.Add(linkCircle);
         }
 
@@ -130,25 +146,23 @@ namespace DiplomaProrotype.CanvasManipulation
 
             if (!(link is null) && link.FirstTargetType == "resource")
             {
-                if (machineTiles.Count != 0)
+                if (machineTiles.Count != 0) // Задел o-- станок
                 {
                     for (int i = 0; i < machineTiles.Count; i++)
                     {
                         targetMargin = VisualTreeHelper.GetOffset(machineTiles[i]);
 
                         lastMarginLeft = targetMargin.X + machineTiles[i].Width / 2 - machineTiles[i].Margin.Left / 2;
-                        lastMarginTop = targetMargin.Y + machineTiles[i].Height / 2 - machineTiles[i].Margin.Top + 5; // 5 - отступ от центра
+                        lastMarginTop = targetMargin.Y + machineTiles[i].MachineIndicator.Height + machineTiles[i].MachineImage.Height / 2 + 7.5;
 
-                        if (mousePos.X > targetMargin.X &&
-                            mousePos.X < targetMargin.X + machineTiles[i].Width &&
-                            mousePos.Y > targetMargin.Y &&
-                            mousePos.Y < targetMargin.Y + machineTiles[i].Height)
+                        if (mousePos.X > targetMargin.X && mousePos.X < targetMargin.X + machineTiles[i].Width &&
+                            mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + machineTiles[i].Height)
                         {
-                            MainWindow.links.Add(link);
+                            MainWindow.linksResourceMachine.Add(link);
 
                             link.LastTargetType = "machine";
                             link.LastTargetListId = i;
-                            link.LinkId = MainWindow.links.Count;
+                            link.LinkId = MainWindow.linksResourceMachine.Count;
                             link.LineInfo = linkLine;
                             link.CircleInfo = linkCircle;
 
@@ -169,11 +183,44 @@ namespace DiplomaProrotype.CanvasManipulation
                         }
                     }
                 }
+
+                if (stopTiles.Count != 0) // Задел o-- стоянка
+                {
+                    for (int i = 0; i < stopTiles.Count; i++)
+                    {
+                        targetMargin = VisualTreeHelper.GetOffset(stopTiles[i]);
+
+                        lastMarginLeft = targetMargin.X + stopTiles[i].Width / 2 - stopTiles[i].Margin.Left / 2 - 10;
+                        lastMarginTop = targetMargin.Y + stopTiles[i].StopFigure.Height / 2 + 5;
+
+                        if (mousePos.X > targetMargin.X && mousePos.X < targetMargin.X + stopTiles[i].Width &&
+                            mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + stopTiles[i].Height)
+                        {
+                            MainWindow.linksResourceMachine.Add(link);
+
+                            link.LastTargetType = "stop";
+                            link.LastTargetListId = i;
+                            link.LinkId = MainWindow.linksResourceStop.Count;
+                            link.LineInfo = linkLine;
+                            link.CircleInfo = linkCircle;
+
+                            linkLine.StrokeDashArray = new DoubleCollection() { 1, 1 };
+                            linkCircle.StrokeDashArray = new DoubleCollection() { 2, 1 };
+                            linkLine.X2 = lastMarginLeft;
+                            linkLine.Y2 = lastMarginTop;
+                            linkLine = null;
+
+                            //MainWindow.matrixResourceMachine[link.LastTargetListId, link.FirstTargetListId] = -1;
+
+                            EnableObjectsOrNot.SetAllObjectsToEnabled();
+                        }
+                    }
+                }
             }
 
-            if (!(link is null) && link.FirstTargetType == "machine")
+            if (!(link is null) && link.FirstTargetType == "machine" )
             {
-                if (resourceTiles.Count != 0)
+                if (resourceTiles.Count != 0)  // Станок o-- задел
                 {
                     for (int i = 0; i < resourceTiles.Count; i++)
                     {
@@ -182,16 +229,14 @@ namespace DiplomaProrotype.CanvasManipulation
                         lastMarginLeft = targetMargin.X + resourceTiles[i].Width / 2 - resourceTiles[i].Margin.Left / 2 - 10;
                         lastMarginTop = targetMargin.Y + resourceTiles[i].Height / 2 - resourceTiles[i].Margin.Top - 5; // 5 - отступ от центра
 
-                        if (mousePos.X > targetMargin.X &&
-                            mousePos.X < targetMargin.X + resourceTiles[i].Width &&
-                            mousePos.Y > targetMargin.Y &&
-                            mousePos.Y < targetMargin.Y + resourceTiles[i].Height)
+                        if (mousePos.X > targetMargin.X && mousePos.X < targetMargin.X + resourceTiles[i].Width &&
+                            mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + resourceTiles[i].Height)
                         {
-                            MainWindow.links.Add(link);
+                            MainWindow.linksResourceMachine.Add(link);
 
                             link.LastTargetType = "resource";
                             link.LastTargetListId = i;
-                            link.LinkId = MainWindow.links.Count;
+                            link.LinkId = MainWindow.linksResourceMachine.Count;
                             link.LineInfo = linkLine;
                             link.CircleInfo = linkCircle;
 
@@ -216,7 +261,84 @@ namespace DiplomaProrotype.CanvasManipulation
                 }
             }
 
+            if (!(link is null) && link.FirstTargetType == "stop")
+            {
+                if (resourceTiles.Count != 0)  // Стоянка o-- задел
+                {
+                    for (int i = 0; i < resourceTiles.Count; i++)
+                    {
+                        targetMargin = VisualTreeHelper.GetOffset(resourceTiles[i]);
 
+                        lastMarginLeft = targetMargin.X + resourceTiles[i].Width / 2 - resourceTiles[i].Margin.Left / 2 - 10;
+                        lastMarginTop = targetMargin.Y + resourceTiles[i].Height / 2 - resourceTiles[i].Margin.Top - 5; // 5 - отступ от центра
+
+                        if (mousePos.X > targetMargin.X && mousePos.X < targetMargin.X + resourceTiles[i].Width &&
+                            mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + resourceTiles[i].Height)
+                        {
+                            MainWindow.linksResourceMachine.Add(link);
+
+                            link.LastTargetType = "resource";
+                            link.LastTargetListId = i;
+                            link.LinkId = MainWindow.linksResourceMachine.Count;
+                            link.LineInfo = linkLine;
+                            link.CircleInfo = linkCircle;
+
+                            if (resourceTiles[i].ResourceFigure.Fill == Brushes.White) // Для раскрашивания связи от станка к ресурсу, если ресурс уже цветной
+                            {
+                                linkLine.Stroke = Brushes.Black;
+                            }
+                            else
+                            {
+                                linkLine.Stroke = resourceTiles[i].ResourceFigure.Fill;
+                            }
+
+                            linkLine.X2 = lastMarginLeft;
+                            linkLine.Y2 = lastMarginTop;
+                            linkLine = null;
+
+                            //MainWindow.matrixResourceMachine[link.FirstTargetListId, link.LastTargetListId] = 1;
+
+                            EnableObjectsOrNot.SetAllObjectsToEnabled();
+                        }
+                    }
+                }
+
+                if (stopTiles.Count != 0) // Стоянка o-- стоянка
+                {
+                    for (int i = 0; i < stopTiles.Count; i++)
+                    {
+                        targetMargin = VisualTreeHelper.GetOffset(stopTiles[i]);
+
+                        lastMarginLeft = targetMargin.X + stopTiles[i].Width / 2 - stopTiles[i].Margin.Left / 2 - 10;
+                        lastMarginTop = targetMargin.Y + stopTiles[i].StopFigure.Height / 2 + 5;
+
+                        if (mousePos.X > targetMargin.X && mousePos.X < targetMargin.X + stopTiles[i].Width &&
+                            mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + stopTiles[i].Height &&
+                            stopTiles[link.FirstTargetListId].StopChain.Text == stopTiles[i].StopChain.Text &&
+                            stopTiles[link.FirstTargetListId].StopText.Text == "Погрузка" &&
+                            stopTiles[i].StopText.Text == "Разгрузка")
+                        {
+                            MainWindow.linksResourceMachine.Add(link);
+
+                            link.LastTargetType = "stop";
+                            link.LastTargetListId = i;
+                            link.LinkId = MainWindow.linksResourceStop.Count;
+                            link.LineInfo = linkLine;
+                            link.CircleInfo = linkCircle;
+
+                            linkLine.StrokeDashArray = new DoubleCollection() { 1, 1 };
+                            linkCircle.StrokeDashArray = new DoubleCollection() { 2, 1 };
+                            linkLine.X2 = lastMarginLeft;
+                            linkLine.Y2 = lastMarginTop;
+                            linkLine = null;
+
+                            //MainWindow.matrixResourceMachine[link.LastTargetListId, link.FirstTargetListId] = -1;
+
+                            EnableObjectsOrNot.SetAllObjectsToEnabled();
+                        }
+                    }
+                }
+            }
         }
 
 
@@ -236,7 +358,13 @@ namespace DiplomaProrotype.CanvasManipulation
                 {
                     MachineTile target = e.Source as MachineTile;
                     CreateLink(target);
-                }           
+                }
+
+                if (e.Source is StopTile)
+                {
+                    StopTile target = e.Source as StopTile;
+                    CreateLink(target);
+                }
             }
 
             if (MainWindow.currentMode == "route")

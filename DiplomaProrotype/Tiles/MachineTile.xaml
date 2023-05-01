@@ -10,10 +10,14 @@
         <Grid>
             <Ellipse Name="MachineIndicator" Fill="White" StrokeThickness="2" Stroke="Black" Width="20" Height="20" VerticalAlignment="Top" Visibility="Hidden"/>
             <Image Name="MachineImage" Source="{Binding Image}" Height="50" Width="50" Stretch="Uniform" VerticalAlignment="Top"/>
-            <ProgressBar Name="MachineProgress" Height="5" Minimum="0" Maximum="100" VerticalAlignment="Bottom" Visibility="Hidden"/>
+            <TextBlock Name="MachineProcesses" Text="{Binding Processes}" Visibility="Hidden"/>
+            <ProgressBar Name="MachineProgress1" Height="5" Minimum="0" Maximum="100" VerticalAlignment="Bottom" Visibility="Hidden" Foreground="#FFFF8080"/>
+            <ProgressBar Name="MachineProgress2" Height="5" Minimum="0" Maximum="100" VerticalAlignment="Bottom" Visibility="Hidden" Foreground="#FFFFC680"/>
+            <ProgressBar Name="MachineProgress3" Height="5" Minimum="0" Maximum="100" VerticalAlignment="Bottom" Visibility="Hidden" Foreground="#FFFFF266"/>
+            <ProgressBar Name="MachineProgress4" Height="5" Minimum="0" Maximum="100" VerticalAlignment="Bottom" Visibility="Hidden" Foreground="#FF80FF93"/>
+            <ProgressBar Name="MachineProgress5" Height="5" Minimum="0" Maximum="100" VerticalAlignment="Bottom" Visibility="Hidden" Foreground="#FF80D3FF"/>
             <TextBlock Name="MachineText" Text="{Binding Text}" VerticalAlignment="Bottom" FontSize="11" TextAlignment="Center"/>
             <TextBlock Name="MachineId" Text="{Binding Id}"  VerticalAlignment="Bottom" FontSize="11" TextAlignment="Center" Visibility="Hidden"/>
-
         </Grid>
     </Border>
 </UserControl>

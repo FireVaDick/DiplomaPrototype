@@ -9,7 +9,7 @@
         xmlns:canvas="using:clr-namespace:DiplomaProrotype.CanvasManipulation"
         mc:Ignorable="d"
         KeyDown="MainWindow_KeyDown"
-        Title="Основа" Height="735" Width="1100">
+        Title="Основа" Height="735" Width="1100" MinHeight="600" MinWidth="860"> 
     <Window.Resources>
         <Style TargetType="Border" x:Key="PaleBorder">
             <Setter Property="Background" Value="#FFFBFDFF" />
@@ -37,8 +37,8 @@
 
         <!-- Целевой холст -->
         <Border Name="TargetBorder"
-                Height="500"
-                Width="770"        
+                Height="350"
+                Width="550"        
                 Margin="0,100,0,0" 
                 Style="{StaticResource ResourceKey=PaleBorder}">
             <Canvas Name="TargetCanvas" 
@@ -111,7 +111,7 @@
 
         <!-- Меню объектов сверху -->
         <Border Name="ObjectBorder" 
-                Width="610" 
+                Width="500" 
                 Height="100" 
                 Margin="10" 
                 VerticalAlignment="Top"
@@ -123,12 +123,12 @@
                         Drop="ObjectPanel_Drop"
                         Background="Transparent" Cursor="Hand">
                 <local:ResourceTile Text="Задел" AutomationProperties.IsOffscreenBehavior="Offscreen"/>
+                <local:StopTile Margin="0, 15, 0, 0" Text="Стоянка" AutomationProperties.IsOffscreenBehavior="Offscreen"/>
                 <local:MachineTile Text="Токарный" Image="Icons/x128/Lathe128.png"/>
                 <local:MachineTile Text="Сварочный" Image="Icons/x128/Welding128.png"/>
                 <local:MachineTile Text="Фрезерный" Image="Icons/x128/Milling128.png"/>
                 <local:MovableTile Text="Тележка" Image="Icons/x128/Trolley128.png"/>
-                <local:MovableTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/>
-                <local:StopTile Text="Стоянка" AutomationProperties.IsOffscreenBehavior="Offscreen"/>
+                <!-- <local:MovableTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/> -->               
             </StackPanel>
         </Border>
 
