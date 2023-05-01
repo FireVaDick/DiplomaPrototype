@@ -1,23 +1,21 @@
-﻿using System;
+﻿using DiplomaProrotype;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace DiplomaPrototype.ImitationalModelDataAnalysing
 {
     internal class RoutesCreating
     {
-        PathFigure figure  = new PathFigure();
-        PathGeometry routeFrom1To2;
+        private List<StopTile> stopTiles = MainWindow.stopTiles;
+        private List<MovableTile> movableTiles = MainWindow.movableTiles;
 
-       
-        PathGeometry routeFrom2To4;
-        PathGeometry routeFrom6To2;
-        PathGeometry routeFrom6To3;
-        PathGeometry routeFrom7To2;
         public RoutesCreating() 
         {
             DataReading.Read();
@@ -42,12 +40,35 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 
             //    }
             //}
-            LineSegment lineSegment = new() //Создание линии с координатами конечной точки
-            {
-                Point = new Point(0, 0)
-            };
-            figure.Segments.Add(lineSegment);
 
+        }
+
+        public PathGeometry Relocate(string operationName) 
+        {
+
+            Point startPoint = new Point(stopTiles[((int)operationName[9] + 1)].X, stopTiles[((int)operationName[9] + 1)]);
+            PathGeometry pathGeometry = new PathGeometry();
+            PathFigure pathFigure = new PathFigure();
+            pathFigure.StartPoint = new Point(0, 0);
+            pathFigure.Segments.Add(new LineSegment(new Point(100, 0), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(100, 100), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(0, 100), true));
+            pathGeometry.Figures.Add(pathFigure);
+
+            // Создание DoubleAnimationUsingPath, содержащего анимацию движения объекта по траектории
+            DoubleAnimationUsingPath animation = new DoubleAnimationUsingPath();
+            animation.PathGeometry = pathGeometry;
+            animation.Duration = TimeSpan.FromSeconds(5);
+            animation.Source = PathAnimationSource.X;
+
+            // Создание Storyboard и добавление в него анимации
+            Storyboard storyboard = new Storyboard();
+            Storyboard.SetTarget(animation, yourObject);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
+            storyboard.Children.Add(animation);
+
+            // Запуск анимации
+            storyboard.Begin();
         }
     }
 }
