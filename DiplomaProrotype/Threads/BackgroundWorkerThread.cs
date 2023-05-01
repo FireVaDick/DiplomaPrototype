@@ -22,7 +22,11 @@ namespace DiplomaProrotype.Threads
 
         static public void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            MainWindow.machineTileFromContextMenu.MachineProgress.Value = e.ProgressPercentage;
+            MainWindow.machineTileFromContextMenu.MachineProgress1.Value = e.ProgressPercentage;
+            MainWindow.machineTileFromContextMenu.MachineProgress2.Value = e.ProgressPercentage;
+            MainWindow.machineTileFromContextMenu.MachineProgress3.Value = e.ProgressPercentage;
+            MainWindow.machineTileFromContextMenu.MachineProgress4.Value = e.ProgressPercentage;
+            MainWindow.machineTileFromContextMenu.MachineProgress5.Value = e.ProgressPercentage;
         }
 
         static public void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

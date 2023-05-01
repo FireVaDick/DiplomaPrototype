@@ -49,6 +49,24 @@ namespace DiplomaProrotype
             get { return (int)GetValue(IdProperty); }
             set { SetValue(IdProperty, value); }
         }
+
+        public static readonly DependencyProperty AmountProperty = DependencyProperty.Register("Amount",
+            typeof(int), typeof(MovableTile), new PropertyMetadata(null));
+
+        public int Amount
+        {
+            get { return (int)GetValue(AmountProperty); }
+            set { SetValue(AmountProperty, value); }
+        }
+
+        public static readonly DependencyProperty PlacesProperty = DependencyProperty.Register("Places",
+            typeof(int), typeof(MovableTile), new PropertyMetadata(null));
+
+        public int Places
+        {
+            get { return (int)GetValue(PlacesProperty); }
+            set { SetValue(PlacesProperty, value); }
+        }
         #endregion
 
 
