@@ -4,6 +4,7 @@ using DiplomaProrotype.ColorsManipulation;
 using DiplomaProrotype.Models;
 using DiplomaProrotype.ObjectsManipulation;
 using DiplomaPrototype;
+using DiplomaPrototype.Animations;
 using DiplomaPrototype.ImitationalModelDataAnalysing;
 using System;
 using System.Collections.Generic;
@@ -78,6 +79,7 @@ namespace DiplomaProrotype
         private void ModeTile_Animation_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             RoutesCreating routesCreating = new RoutesCreating();
+            TransportTileAnimation transportTileAnimation = new TransportTileAnimation(routesCreating.stories);
         }
 
         private void CMChooseSolidPath_Click(object sender, RoutedEventArgs e)
