@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -24,7 +25,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 
             foreach (string operation in DataReading.routes)
             {
-                if (operation.Contains("Переезд 1-2"))
+                if (operation.Contains("Переезд"))
                 {
                     stories.Add(Relocate(operation));
                 }
@@ -46,8 +47,12 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 
         public Storyboard Relocate(string operationName)
         {
-            Vector startTargetMargin = VisualTreeHelper.GetOffset(stopTiles[((int)operationName[8] - 1)]);
-            Vector endTargetMargin = VisualTreeHelper.GetOffset(stopTiles[((int)operationName[10] - 1)]);
+            int startStopTileIndex = int.Parse(operationName[8].ToString()) - 1;
+            int endStopTileIndex = int.Parse(operationName[10].ToString()) - 1;
+            char sym = operationName[8];
+
+            Vector startTargetMargin = VisualTreeHelper.GetOffset(stopTiles[(startStopTileIndex)]);
+            Vector endTargetMargin = VisualTreeHelper.GetOffset(stopTiles[(endStopTileIndex)]);
             Vector lastInputTargetMargin = VisualTreeHelper.GetOffset(stopTiles[2]);
 
             Point startPoint = new Point(startTargetMargin.X, startTargetMargin.Y);
@@ -58,7 +63,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 
             pathFigure.StartPoint = startPoint;
 
-            if (((int)operationName[10] - 1) >= 4)
+            if ((int.Parse(operationName[10].ToString()) - 1) >= 4)
             {
                 pathFigure.Segments.Add(new LineSegment(new Point(startPoint.X, lastInputTargetMargin.Y), true));
                 pathFigure.Segments.Add(new LineSegment(new Point(endPoint.X, lastInputTargetMargin.Y), true));
@@ -69,6 +74,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
                 pathFigure.Segments.Add(new LineSegment(new Point(endPoint.X, startPoint.Y), true));
                 pathFigure.Segments.Add(new LineSegment(endPoint, true));
             }
+
            
             pathGeometry.Figures.Add(pathFigure);
 
@@ -90,7 +96,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 
         public Storyboard Input(string operationName)
         {
-            Vector startTargetMargin = VisualTreeHelper.GetOffset(stopTiles[(Convert.ToInt32(operationName[9..]) - 1)]);
+            Vector startTargetMargin = VisualTreeHelper.GetOffset(stopTiles[(int.Parse(operationName[9].ToString()) - 1)]);
            
             Point startPoint = new Point(startTargetMargin.X, startTargetMargin.Y);
            
@@ -106,7 +112,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             // Создание DoubleAnimationUsingPath, содержащего анимацию движения объекта по траектории
             DoubleAnimationUsingPath animation = new DoubleAnimationUsingPath();
             animation.PathGeometry = pathGeometry;
-            animation.Duration = TimeSpan.FromSeconds(Convert.ToDouble(operationName[11..]));
+            animation.Duration = TimeSpan.FromSeconds(double.Parse(operationName[11..]));
             animation.Source = PathAnimationSource.X;
 
             // Создание Storyboard и добавление в него анимации
@@ -121,7 +127,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 
         public Storyboard Output(string operationName)
         {
-            Vector startTargetMargin = VisualTreeHelper.GetOffset(stopTiles[((3 + Convert.ToInt32(operationName[10..])) - 1)]);
+            Vector startTargetMargin = VisualTreeHelper.GetOffset(stopTiles[((3 + int.Parse(operationName[10].ToString())) - 1)]);
 
             Point startPoint = new Point(startTargetMargin.X, startTargetMargin.Y);
 
@@ -137,7 +143,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             // Создание DoubleAnimationUsingPath, содержащего анимацию движения объекта по траектории
             DoubleAnimationUsingPath animation = new DoubleAnimationUsingPath();
             animation.PathGeometry = pathGeometry;
-            animation.Duration = TimeSpan.FromSeconds(Convert.ToDouble(operationName[12..]));
+            animation.Duration = TimeSpan.FromSeconds(double.Parse(operationName[12..]));
             animation.Source = PathAnimationSource.X;
 
             // Создание Storyboard и добавление в него анимации

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiplomaProrotype;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,10 @@ namespace DiplomaPrototype.Animations
     {
         private List<Storyboard> storyboards; // список Storyboard
 
+
         private int currentStoryboardIndex = 0; // индекс текущего Storyboard
 
-        public TransportTileAnimation(List<Storyboard> storyboards)
+        public TransportTileAnimation(List<Storyboard> storyboards, MovableTile movableTile)
         {
             this.storyboards = storyboards;
         }

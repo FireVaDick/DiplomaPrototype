@@ -9,7 +9,7 @@
         xmlns:canvas="using:clr-namespace:DiplomaProrotype.CanvasManipulation"
         mc:Ignorable="d"
         KeyDown="MainWindow_KeyDown"
-        Title="Основа" Height="735" Width="1100" MinHeight="600" MinWidth="860"> 
+        Title="Основа" Height="735" Width="1100" MinHeight="600" MinWidth="860">
     <Window.Resources>
         <Style TargetType="Border" x:Key="PaleBorder">
             <Setter Property="Background" Value="#FFFBFDFF" />
@@ -61,8 +61,7 @@
         <!-- Меню режимов слева -->
         <Border Name="ModeBorder" 
                 Width="100" 
-                Height="330" 
-                Margin="10" 
+                Margin="10,195,0,115" 
                 HorizontalAlignment="Left" 
                 MouseWheel="ModeBorder_MouseWheel" 
                 Style="{StaticResource ResourceKey=PaleBorder}" >
@@ -88,7 +87,7 @@
                     <UserControl.ToolTip>
                         <ToolTip>
                             Режим, позволяющий рисовать маршруты транспортных средств. Для этого нужно зажать ЛКМ на холсте, переместить мышь и отпустить, появится 
-                            линия. В следующий раз будет создана линия из той точки, где закончилась предыдущая. Для завершения маршрута нажмите ПКМ.                         
+                            линия. В следующий раз будет создана линия из той точки, где закончилась предыдущая. Для завершения маршрута нажмите ПКМ.
                         </ToolTip>
                     </UserControl.ToolTip>
                 </local:ModeTile>
@@ -105,6 +104,8 @@
                             мышь и отпустить, появится прямоугольник.
                         </ToolTip>
                     </UserControl.ToolTip>
+                </local:ModeTile>
+                <local:ModeTile x:Name="ModeAnimation" Text="Пути" Image="Icons/x128/Path128.png" MouseLeftButtonDown="ModeTile_Animation_MouseLeftButtonDown">
                 </local:ModeTile>
             </StackPanel>
         </Border>
@@ -128,7 +129,7 @@
                 <local:MachineTile Text="Сварочный" Image="Icons/x128/Welding128.png"/>
                 <local:MachineTile Text="Фрезерный" Image="Icons/x128/Milling128.png"/>
                 <local:MovableTile Text="Тележка" Image="Icons/x128/Trolley128.png"/>
-                <!-- <local:MovableTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/> -->               
+                <!-- <local:MovableTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/> -->
             </StackPanel>
         </Border>
 
