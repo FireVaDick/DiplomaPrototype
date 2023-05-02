@@ -9,14 +9,13 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 {
     internal class DataReading
     {
-        public static string routes = string.Empty;
+        public static List<string> routes = new List<string>();
         public static void Read()
         {
             StreamReader streamReader = new StreamReader("Model.txt");
             while (!streamReader.EndOfStream)
             {
-                routes += streamReader.ReadLine();
-                routes += '\n';
+                routes.Add(streamReader.ReadLine());
             }
             streamReader.Close();
         }
