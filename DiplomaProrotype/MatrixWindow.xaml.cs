@@ -23,67 +23,76 @@ namespace DiplomaProrotype
     {
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
+        static private List<StopTile> stopTiles = MainWindow.stopTiles;
 
 
         public MatrixWindow()
         {
             InitializeComponent();
 
+            FlowDoc = new FlowDocument();
+
             if (resourceTiles.Count != 0 && machineTiles.Count != 0)
             {
-                CreateMatrixTable();
+                CreateMatrixResourceMachine();
             }
-     
+
+            if (resourceTiles.Count != 0 && stopTiles.Count != 0)
+            {
+                CreateMatrixResourcePlaceStop();
+            }
+
+            FlowDocumentReader myFlowDocumentReader = new FlowDocumentReader();
+            myFlowDocumentReader.Document = FlowDoc;
+
+            this.Content = myFlowDocumentReader;
+
             double screenWidth = SystemParameters.FullPrimaryScreenWidth;
             double screenHeight = SystemParameters.FullPrimaryScreenHeight;
-            this.Left = (screenWidth - this.Width) - 15;
+            this.Left = (screenWidth - this.Width) - 65;
             this.Top = (screenHeight - this.Height) / 2 - 30;
         }
 
-        private void CreateMatrixTable()
+
+        private void CreateMatrixResourceMachine()
         {
-            FlowDoc = new FlowDocument();
+            MatrixResourceMachineTable = new Table();
+            MatrixResourceMachineTable.CellSpacing = 10;
+            MatrixResourceMachineTable.FontFamily = new FontFamily("Cambria");
 
-            MatrixTable = new Table();
-            MatrixTable.CellSpacing = 10;
-            MatrixTable.FontFamily = new FontFamily("Cambria");
-
-            FlowDoc.Blocks.Add(MatrixTable);
+            FlowDoc.Blocks.Add(MatrixResourceMachineTable);
 
             // Визуальное оформление колонок
             for (int x = 0; x < resourceTiles.Count + 1; x++)
             {
-                MatrixTable.Columns.Add(new TableColumn());
+                MatrixResourceMachineTable.Columns.Add(new TableColumn());
                 
                 if (x % 2 == 0)
-                    MatrixTable.Columns[x].Background = new SolidColorBrush(Color.FromArgb(255, (byte)229, (byte)233, (byte)236));
+                    MatrixResourceMachineTable.Columns[x].Background = new SolidColorBrush(Color.FromArgb(255, (byte)229, (byte)233, (byte)236));
                 else
-                    MatrixTable.Columns[x].Background = new SolidColorBrush(Color.FromArgb(255, (byte)132, (byte)169, (byte)140));
+                    MatrixResourceMachineTable.Columns[x].Background = new SolidColorBrush(Color.FromArgb(255, (byte)132, (byte)169, (byte)140));
             }
 
-            MatrixTable.RowGroups.Add(new TableRowGroup());
-            MatrixTable.RowGroups[0].Rows.Add(new TableRow());
+            MatrixResourceMachineTable.RowGroups.Add(new TableRowGroup());
+            MatrixResourceMachineTable.RowGroups[0].Rows.Add(new TableRow());
 
-            TableRow currentRow = MatrixTable.RowGroups[0].Rows[0];
+            TableRow currentRow = MatrixResourceMachineTable.RowGroups[0].Rows[0];
 
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run(""))));
-
             currentRow.FontSize = 16;
             currentRow.FontWeight = FontWeights.Bold;
 
             // Оформление заголовков
             for (int j = 0; j < resourceTiles.Count; j++)
             {
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(j + 1)))));
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Задел " + Convert.ToString(j + 1)))));
             }
 
             for (int i = 0; i < machineTiles.Count; i++)
             {
-
-                MatrixTable.RowGroups[0].Rows.Add(new TableRow());
-                currentRow = MatrixTable.RowGroups[0].Rows[i + 1];
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(i + 1)))));
-
+                MatrixResourceMachineTable.RowGroups[0].Rows.Add(new TableRow());
+                currentRow = MatrixResourceMachineTable.RowGroups[0].Rows[i + 1];
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Станок " + Convert.ToString(i + 1)))));
                 currentRow.Cells[0].FontSize = 16;
                 currentRow.Cells[0].FontWeight = FontWeights.Bold;
             }
@@ -91,19 +100,92 @@ namespace DiplomaProrotype
             // Данные самой матрицы
             for (int i = 0; i < machineTiles.Count; i++)
             {                           
-                currentRow = MatrixTable.RowGroups[0].Rows[i + 1];
+                currentRow = MatrixResourceMachineTable.RowGroups[0].Rows[i + 1]; // Вторая строка
 
                 for (int j = 0; j < resourceTiles.Count; j++)
                 {
                     currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(MainWindow.matrixResourceMachine[i, j])))));
                 }
             }
+        }
 
+        private void CreateMatrixResourcePlaceStop()
+        {
+            MatrixResourcePlaceStopTable = new Table();
+            MatrixResourcePlaceStopTable.CellSpacing = 10;
+            MatrixResourcePlaceStopTable.FontFamily = new FontFamily("Cambria");
 
-            FlowDocumentReader myFlowDocumentReader = new FlowDocumentReader();
-            myFlowDocumentReader.Document = FlowDoc;
+            FlowDoc.Blocks.Add(MatrixResourcePlaceStopTable);
 
-            this.Content = myFlowDocumentReader;
+            // Визуальное оформление колонок
+            for (int x = 0; x < resourceTiles.Count + 1 + MainWindow.amountPlaces; x++)
+            {
+                MatrixResourcePlaceStopTable.Columns.Add(new TableColumn());
+
+                if (x % 2 == 0)
+                    MatrixResourcePlaceStopTable.Columns[x].Background = new SolidColorBrush(Color.FromArgb(255, (byte)229, (byte)233, (byte)236));
+                else
+                    MatrixResourcePlaceStopTable.Columns[x].Background = new SolidColorBrush(Color.FromArgb(255, (byte)132, (byte)169, (byte)140));
+            }
+
+            MatrixResourcePlaceStopTable.RowGroups.Add(new TableRowGroup());
+            MatrixResourcePlaceStopTable.RowGroups[0].Rows.Add(new TableRow());
+
+            TableRow currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[0];
+
+            currentRow.Cells.Add(new TableCell(new Paragraph(new Run(""))));
+            currentRow.FontSize = 16;
+            currentRow.FontWeight = FontWeights.Bold;
+
+            // Оформление заголовков
+            for (int j = 0; j < resourceTiles.Count; j++)
+            {
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Задел " + Convert.ToString(j + 1)))));
+            }
+
+            for (int j = 0; j < MainWindow.amountPlaces; j++)
+            {
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Место " + Convert.ToString(j + 1)))));
+            }
+
+            for (int i = 0; i < MainWindow.amountLoading; i++)
+            {
+                MatrixResourcePlaceStopTable.RowGroups[0].Rows.Add(new TableRow());
+                currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[i + 1];
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Погрузка " + Convert.ToString(i + 1)))));
+                currentRow.Cells[0].FontSize = 16;
+                currentRow.Cells[0].FontWeight = FontWeights.Bold;
+            }
+
+            for (int i = 0; i < MainWindow.amountUnloading; i++)
+            {
+                MatrixResourcePlaceStopTable.RowGroups[0].Rows.Add(new TableRow());
+                currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[i + 1];
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Разгрузка " + Convert.ToString(i + 1)))));
+                currentRow.Cells[0].FontSize = 16;
+                currentRow.Cells[0].FontWeight = FontWeights.Bold;
+            }
+
+            // Данные самой матрицы
+            for (int i = 0; i < MainWindow.amountLoading; i++)
+            {
+                currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[i + 1]; // Вторая строка
+
+                for (int j = 0; j < resourceTiles.Count + MainWindow.amountPlaces; j++)
+                {
+                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(MainWindow.matrixResourcePlaceLoading[i, j])))));
+                }
+            }
+
+            for (int i = 0; i < MainWindow.amountUnloading; i++)
+            {
+                currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[i + 1]; // Вторая строка
+
+                for (int j = 0; j < resourceTiles.Count + MainWindow.amountPlaces; j++)
+                {
+                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(MainWindow.matrixResourcePlaceUnloading[i, j])))));
+                }
+            }
         }
 
         static public void CreateMatrixWindow()

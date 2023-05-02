@@ -17,8 +17,7 @@ namespace DiplomaProrotype
     public partial class MainWindow : Window
     {
         static public MatrixWindow matrixWindow;
-        static public SelectWindow selectWindow;
-        static public int[,] matrixResourceMachine = new int[0, 0];
+        static public SelectWindow selectWindow;       
 
         static public List<ResourceTile> resourceTiles = new List<ResourceTile>();
         static public List<MachineTile> machineTiles = new List<MachineTile>();
@@ -31,6 +30,13 @@ namespace DiplomaProrotype
         static public MachineTile machineTileFromContextMenu;
         static public MovableTile movableTileFromContextMenu;
         static public StopTile stopTileFromContextMenu;
+
+        static public int[,] matrixResourceMachine = new int[0, 0];
+        static public int[,] matrixResourcePlaceLoading = new int[0, 0];
+        static public int[,] matrixResourcePlaceUnloading = new int[0, 0];
+        static public int amountPlaces = 0;
+        static public int amountLoading = 0;
+        static public int amountUnloading = 0;
 
         static public UserControl chosenOneObject;
         static public string lastTileType = "";

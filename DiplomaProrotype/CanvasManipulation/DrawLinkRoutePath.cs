@@ -184,7 +184,7 @@ namespace DiplomaProrotype.CanvasManipulation
                     }
                 }
 
-                if (stopTiles.Count != 0) // Задел o-- стоянка
+                if (stopTiles.Count != 0) // Задел o-- стоянка (Погрузка)
                 {
                     for (int i = 0; i < stopTiles.Count; i++)
                     {
@@ -210,7 +210,7 @@ namespace DiplomaProrotype.CanvasManipulation
                             linkLine.Y2 = lastMarginTop;
                             linkLine = null;
 
-                            //MainWindow.matrixResourceMachine[link.LastTargetListId, link.FirstTargetListId] = -1;
+                            MainWindow.matrixResourcePlaceLoading[link.LastTargetListId, link.FirstTargetListId] = -1;
 
                             EnableObjectsOrNot.SetAllObjectsToEnabled();
                         }
@@ -263,7 +263,7 @@ namespace DiplomaProrotype.CanvasManipulation
 
             if (!(link is null) && link.FirstTargetType == "stop")
             {
-                if (resourceTiles.Count != 0)  // Стоянка o-- задел
+                if (resourceTiles.Count != 0)  // Стоянка o-- задел (Разгрузка)
                 {
                     for (int i = 0; i < resourceTiles.Count; i++)
                     {
@@ -296,7 +296,7 @@ namespace DiplomaProrotype.CanvasManipulation
                             linkLine.Y2 = lastMarginTop;
                             linkLine = null;
 
-                            //MainWindow.matrixResourceMachine[link.FirstTargetListId, link.LastTargetListId] = 1;
+                            MainWindow.matrixResourcePlaceUnloading[link.FirstTargetListId, link.LastTargetListId] = 1;
 
                             EnableObjectsOrNot.SetAllObjectsToEnabled();
                         }

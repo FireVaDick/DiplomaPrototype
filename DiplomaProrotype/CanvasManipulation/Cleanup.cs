@@ -97,7 +97,9 @@ namespace DiplomaProrotype.CanvasManipulation
                 linksResourceMachine.Remove(linksResourceMachine[i]);
             }
 
-            MainWindow.matrixResourceMachine = (int[,])ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
+            MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count, resourceTiles.Count);
+            MainWindow.matrixResourcePlaceLoading = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceLoading, MainWindow.amountLoading, resourceTiles.Count + MainWindow.amountPlaces);
+            MainWindow.matrixResourcePlaceUnloading = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceUnloading, MainWindow.amountUnloading, resourceTiles.Count + MainWindow.amountPlaces);
 
             EnableObjectsOrNot.SetAllObjectsToEnabled();
         }
@@ -112,7 +114,9 @@ namespace DiplomaProrotype.CanvasManipulation
 
             mw.TargetCanvas.Children.Clear();
 
-            MainWindow.matrixResourceMachine = (int[,])ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
+            MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count, resourceTiles.Count);
+            MainWindow.matrixResourcePlaceLoading = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceLoading, MainWindow.amountLoading, resourceTiles.Count + MainWindow.amountPlaces);
+            MainWindow.matrixResourcePlaceUnloading = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceUnloading, MainWindow.amountUnloading, resourceTiles.Count + MainWindow.amountPlaces);
 
             EnableObjectsOrNot.SetAllObjectsToEnabled();
         }

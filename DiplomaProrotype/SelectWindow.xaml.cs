@@ -49,6 +49,7 @@ namespace DiplomaPrototype
             SetZeroValues();
 
             MainWindow.selectWindow = new SelectWindow();
+            MainWindow.selectWindow.NumberTextBox.Focus();
             MainWindow.selectWindow.FirstLabel.Content = "[1-5] Количество процессов:";
             MainWindow.selectWindow.SecondLabel.Visibility = Visibility.Hidden;
 
@@ -62,6 +63,7 @@ namespace DiplomaPrototype
             SetZeroValues();
 
             MainWindow.selectWindow = new SelectWindow();
+            MainWindow.selectWindow.NumberTextBox.Focus();
             MainWindow.selectWindow.FirstLabel.Content = "[1+] Количество техники:";
             MainWindow.selectWindow.SecondLabel.Content = "[1-3] Количество мест:";
             MainWindow.selectWindow.ShowDialog();
@@ -72,6 +74,7 @@ namespace DiplomaPrototype
             SetZeroValues();
 
             MainWindow.selectWindow = new SelectWindow();
+            MainWindow.selectWindow.NumberTextBox.Focus();
             MainWindow.selectWindow.FirstLabel.Content = "Технологическая цепь №:";
             MainWindow.selectWindow.SecondLabel.Content = "Вид операции на стоянке:";
             MainWindow.selectWindow.WordComboBox.Visibility = Visibility.Visible;

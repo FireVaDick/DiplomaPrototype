@@ -203,8 +203,14 @@ namespace DiplomaProrotype.ObjectsManipulation
                 SelectWindow.CreateStopSelectWindow();
                 if (SelectWindow.currentNumber > 0 && SelectWindow.currentWord != "")
                 {
+                    if (stopTileFromContextMenu.Text == "Погрузка") MainWindow.amountLoading--;
+                    if (stopTileFromContextMenu.Text == "Разгрузка") MainWindow.amountUnloading--;
+
                     stopTileFromContextMenu.Chain = SelectWindow.currentNumber;
                     stopTileFromContextMenu.Text = SelectWindow.currentWord;
+
+                    if (stopTileFromContextMenu.Text == "Погрузка") MainWindow.amountLoading++;
+                    if (stopTileFromContextMenu.Text == "Разгрузка") MainWindow.amountUnloading++;
                 }
             }
         }
@@ -263,7 +269,9 @@ namespace DiplomaProrotype.ObjectsManipulation
                 stopTiles.Remove(stopTileFromContextMenu);
             }
 
-            MainWindow.matrixResourceMachine = (int[,])ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
+            MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count, resourceTiles.Count);
+            MainWindow.matrixResourcePlaceLoading = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceLoading, MainWindow.amountLoading, resourceTiles.Count + MainWindow.amountPlaces);
+            MainWindow.matrixResourcePlaceUnloading = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceUnloading, MainWindow.amountUnloading, resourceTiles.Count + MainWindow.amountPlaces);
         }
     }
 }
