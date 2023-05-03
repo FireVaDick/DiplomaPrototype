@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,7 +18,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
         private List<StopTile> stopTiles = MainWindow.stopTiles;
         private List<MovableTile> movableTiles = MainWindow.movableTiles;
 
-        public List<Storyboard> stories = new List<Storyboard>();
+        public Queue<Storyboard> stories = new Queue<Storyboard>();
 
         public RoutesCreating() 
         {
@@ -27,15 +28,15 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             {
                 if (operation.Contains("Переезд"))
                 {
-                    stories.Add(Relocate(operation));
+                    stories.Enqueue(Relocate(operation));
                 }
                 else if (operation.Contains("Погрузка"))
                 {
-                    stories.Add(Input(operation));
+                    stories.Enqueue(Input(operation));
                 }
                 else if (operation.Contains("Разгрузка"))
                 {
-                    stories.Add(Output(operation));
+                    stories.Enqueue(Output(operation));
                 }
                 else
                 {
@@ -45,13 +46,60 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 
         }
 
+        public Storyboard CreateStory()
+        {
+            Vector movableTile = VisualTreeHelper.GetOffset(movableTiles[0]);
+            Vector stopTile1 = VisualTreeHelper.GetOffset(stopTiles[0]);
+            Vector stopTile2 = VisualTreeHelper.GetOffset(stopTiles[1]);
+            Vector stopTile3 = VisualTreeHelper.GetOffset(stopTiles[2]);
+            Vector stopTile4 = VisualTreeHelper.GetOffset(stopTiles[3]);
+
+            PathGeometry pathGeometry = new PathGeometry();
+            PathFigure pathFigure = new PathFigure();
+
+            pathFigure.StartPoint = new Point(movableTile.X, movableTile.Y);
+
+            pathFigure.Segments.Add(new LineSegment(new Point(movableTile.X, stopTile1.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X, stopTile1.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X, stopTile1.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X, stopTile2.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X, stopTile2.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X, stopTile3.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X, stopTile3.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X, stopTile4.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X, stopTile1.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X, stopTile1.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X, stopTile1.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X, stopTile1.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X, stopTile2.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X, stopTile2.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X, stopTile3.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X, stopTile3.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X, stopTile4.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X, stopTile1.Y), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X, stopTile1.Y), true));
+
+            pathGeometry.Figures.Add(pathFigure);
+
+            MatrixAnimationUsingPath animation = new MatrixAnimationUsingPath();
+            animation.PathGeometry = pathGeometry;
+            animation.Duration = TimeSpan.FromSeconds(35);
+
+
+            Storyboard storyboard = new Storyboard();
+            Storyboard.SetTarget(animation, movableTiles[0]);
+            Storyboard.SetTargetProperty(animation, new PropertyPath("(RenderTransform).(MatrixTransform.Matrix)"));
+            storyboard.Children.Add(animation);
+
+            return storyboard;
+        }
+
         public Storyboard Relocate(string operationName)
         {
             int startStopTileIndex = int.Parse(operationName[8].ToString()) - 1;
             int endStopTileIndex = int.Parse(operationName[10].ToString()) - 1;
-            char sym = operationName[8];
 
-            Vector startTargetMargin = VisualTreeHelper.GetOffset(stopTiles[(startStopTileIndex)]);
+            Vector startTargetMargin = VisualTreeHelper.GetOffset(movableTiles[0]);
             Vector endTargetMargin = VisualTreeHelper.GetOffset(stopTiles[(endStopTileIndex)]);
             Vector lastInputTargetMargin = VisualTreeHelper.GetOffset(stopTiles[2]);
 
@@ -79,17 +127,18 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             pathGeometry.Figures.Add(pathFigure);
 
             // Создание DoubleAnimationUsingPath, содержащего анимацию движения объекта по траектории
-            DoubleAnimationUsingPath animation = new DoubleAnimationUsingPath();
+            MatrixAnimationUsingPath animation = new MatrixAnimationUsingPath();
+
+
             animation.PathGeometry = pathGeometry;
-            animation.Duration = TimeSpan.FromSeconds(Convert.ToDouble(operationName[12..]));
-            animation.Source = PathAnimationSource.X;
+            animation.Duration = TimeSpan.FromSeconds(35);
 
             // Создание Storyboard и добавление в него анимации
             Storyboard storyboard = new Storyboard();
             Storyboard.SetTarget(animation, movableTiles[0]);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
+            Storyboard.SetTargetProperty(animation, new PropertyPath("(RenderTransform).(MatrixTransform.Matrix)"));
             storyboard.Children.Add(animation);
-
+             
             // Запуск анимации
             return storyboard;
         }
@@ -110,10 +159,9 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             pathGeometry.Figures.Add(pathFigure);
 
             // Создание DoubleAnimationUsingPath, содержащего анимацию движения объекта по траектории
-            DoubleAnimationUsingPath animation = new DoubleAnimationUsingPath();
+            MatrixAnimationUsingPath animation = new MatrixAnimationUsingPath();
             animation.PathGeometry = pathGeometry;
             animation.Duration = TimeSpan.FromSeconds(double.Parse(operationName[11..]));
-            animation.Source = PathAnimationSource.X;
 
             // Создание Storyboard и добавление в него анимации
             Storyboard storyboard = new Storyboard();
@@ -141,10 +189,9 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             pathGeometry.Figures.Add(pathFigure);
 
             // Создание DoubleAnimationUsingPath, содержащего анимацию движения объекта по траектории
-            DoubleAnimationUsingPath animation = new DoubleAnimationUsingPath();
+            MatrixAnimationUsingPath animation = new MatrixAnimationUsingPath();
             animation.PathGeometry = pathGeometry;
             animation.Duration = TimeSpan.FromSeconds(double.Parse(operationName[12..]));
-            animation.Source = PathAnimationSource.X;
 
             // Создание Storyboard и добавление в него анимации
             Storyboard storyboard = new Storyboard();

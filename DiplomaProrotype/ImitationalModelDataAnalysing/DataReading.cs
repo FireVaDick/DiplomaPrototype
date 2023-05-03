@@ -12,6 +12,8 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
         public static List<string> routes = new List<string>();
         public static void Read()
         {
+            routes.Clear();
+
             StreamReader streamReader = new StreamReader("Model.txt");
             while (!streamReader.EndOfStream)
             {

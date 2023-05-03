@@ -79,8 +79,7 @@ namespace DiplomaProrotype
         private void ModeTile_Animation_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             RoutesCreating routesCreating = new RoutesCreating();
-            TransportTileAnimation transportTileAnimation = new TransportTileAnimation(routesCreating.stories, movableTiles[0]);
-            transportTileAnimation.StartAnimation();
+            TransportTileAnimation transportTileAnimation = new TransportTileAnimation(routesCreating.CreateStory(), movableTiles[0]);
         }
 
         private void CMChooseSolidPath_Click(object sender, RoutedEventArgs e)
