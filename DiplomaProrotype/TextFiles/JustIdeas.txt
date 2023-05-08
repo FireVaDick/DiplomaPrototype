@@ -35,12 +35,37 @@
 
 
 
-// Контекстное меню
+// int matrixResourceMachine
 
-            var menuItemEdit = new MenuItem();
-            Image imageEdit = new Image();
-            imageEdit.Source = new BitmapImage(new Uri("/Icons/x128/Pencil32.png", UriKind.Relative));
-            menuItemEdit.Icon = imageEdit;
-            menuItemEdit.Header = "Редактировать";
+            TableRow currentRow = MatrixResourceMachineTable.RowGroups[0].Rows[0];
 
+            currentRow.Cells.Add(new TableCell(new Paragraph(new Run(""))));
+            currentRow.FontSize = 16;
+            currentRow.FontWeight = FontWeights.Bold;
+
+            // Оформление заголовков
+            for (int j = 0; j < resourceTiles.Count; j++)
+            {
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Задел " + Convert.ToString(j + 1)))));
+            }
+
+            for (int i = 0; i < machineTiles.Count; i++)
+            {
+                MatrixResourceMachineTable.RowGroups[0].Rows.Add(new TableRow());
+                currentRow = MatrixResourceMachineTable.RowGroups[0].Rows[i + 1];
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Станок " + Convert.ToString(i + 1)))));
+                currentRow.Cells[0].FontSize = 16;
+                currentRow.Cells[0].FontWeight = FontWeights.Bold;
+            }
+
+            // Данные самой матрицы
+            for (int i = 0; i < machineTiles.Count; i++)
+            {                           
+                currentRow = MatrixResourceMachineTable.RowGroups[0].Rows[i + 1]; // Вторая строка
+
+                for (int j = 0; j < resourceTiles.Count; j++)
+                {
+                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(MainWindow.matrixResourceMachine[i, j])))));
+                }
+            }
 

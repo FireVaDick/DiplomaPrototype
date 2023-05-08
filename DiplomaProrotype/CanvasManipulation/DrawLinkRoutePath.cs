@@ -71,7 +71,7 @@ namespace DiplomaProrotype.CanvasManipulation
                 }
             }
 
-            if (type == typeof(StopTile)) //---
+            if (type == typeof(StopTile))
             {
                 firstMarginLeft = targetMargin.X + target.Width / 2 - target.Margin.Left / 2 + 20; // 20 и 5 - отступы от центра
                 firstMarginTop = targetMargin.Y + target.Height / 2 - target.Margin.Top - 5;
@@ -178,7 +178,9 @@ namespace DiplomaProrotype.CanvasManipulation
                             linkLine.Y2 = lastMarginTop;
                             linkLine = null;
 
-                            MainWindow.matrixResourceMachine[link.LastTargetListId, link.FirstTargetListId] = -1;
+                            MainWindow.matrixResourceMachine[0, link.FirstTargetListId + 1] = "Задел " + (link.FirstTargetListId + 1);
+                            MainWindow.matrixResourceMachine[link.LastTargetListId + 1, 0] = "Станок " + machineTiles[i].MachineId.Text;
+                            MainWindow.matrixResourceMachine[link.LastTargetListId + 1, link.FirstTargetListId + 1] = "-1";
 
                             EnableObjectsOrNot.SetAllObjectsToEnabled();
                         }
@@ -256,7 +258,9 @@ namespace DiplomaProrotype.CanvasManipulation
                             linkLine.Y2 = lastMarginTop;
                             linkLine = null;
 
-                            MainWindow.matrixResourceMachine[link.FirstTargetListId, link.LastTargetListId] = 1;
+                            MainWindow.matrixResourceMachine[0, link.LastTargetListId + 1] = "Задел " + resourceTiles[i].ResourceId.Text;
+                            MainWindow.matrixResourceMachine[link.FirstTargetListId + 1, 0] = "Станок " + (link.FirstTargetListId + 1);
+                            MainWindow.matrixResourceMachine[link.FirstTargetListId + 1, link.LastTargetListId + 1] = "1";
 
                             EnableObjectsOrNot.SetAllObjectsToEnabled();
                         }
@@ -320,8 +324,7 @@ namespace DiplomaProrotype.CanvasManipulation
                         if (mousePos.X > targetMargin.X && mousePos.X < targetMargin.X + stopTiles[i].Width &&
                             mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + stopTiles[i].Height &&
                             stopTiles[link.FirstTargetListId].StopChain.Text == stopTiles[i].StopChain.Text &&
-                            stopTiles[link.FirstTargetListId].StopText.Text == "Погрузка" &&
-                            stopTiles[i].StopText.Text == "Разгрузка")
+                            stopTiles[link.FirstTargetListId].StopText.Text == "Погрузка" && stopTiles[i].StopText.Text == "Разгрузка")
                         {
                             MainWindow.linksResourceMachine.Add(link); //
 

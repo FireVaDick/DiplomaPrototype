@@ -74,37 +74,28 @@ namespace DiplomaProrotype
             }
 
             MatrixResourceMachineTable.RowGroups.Add(new TableRowGroup());
-            MatrixResourceMachineTable.RowGroups[0].Rows.Add(new TableRow());
+            TableRow currentRow;
 
-            TableRow currentRow = MatrixResourceMachineTable.RowGroups[0].Rows[0];
-
-            currentRow.Cells.Add(new TableCell(new Paragraph(new Run(""))));
-            currentRow.FontSize = 16;
-            currentRow.FontWeight = FontWeights.Bold;
-
-            // Оформление заголовков
-            for (int j = 0; j < resourceTiles.Count; j++)
-            {
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Задел " + Convert.ToString(j + 1)))));
-            }
-
-            for (int i = 0; i < machineTiles.Count; i++)
+            for (int i = 0; i < machineTiles.Count + 1; i++)
             {
                 MatrixResourceMachineTable.RowGroups[0].Rows.Add(new TableRow());
-                currentRow = MatrixResourceMachineTable.RowGroups[0].Rows[i + 1];
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Станок " + Convert.ToString(i + 1)))));
-                currentRow.Cells[0].FontSize = 16;
-                currentRow.Cells[0].FontWeight = FontWeights.Bold;
-            }
+                currentRow = MatrixResourceMachineTable.RowGroups[0].Rows[i];
 
-            // Данные самой матрицы
-            for (int i = 0; i < machineTiles.Count; i++)
-            {                           
-                currentRow = MatrixResourceMachineTable.RowGroups[0].Rows[i + 1]; // Вторая строка
-
-                for (int j = 0; j < resourceTiles.Count; j++)
+                for (int j = 0; j < resourceTiles.Count + 1; j++)
                 {
-                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(MainWindow.matrixResourceMachine[i, j])))));
+                    if (MainWindow.matrixResourceMachine[i, j] == null && i > 0 && j > 0)
+                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run("0"))));
+                    else
+                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourceMachine[i, j]))));
+
+                    if (i == 0)
+                    {
+                        currentRow.FontSize = 16;
+                        currentRow.FontWeight = FontWeights.Bold;
+                    }
+
+                    currentRow.Cells[0].FontSize = 16;
+                    currentRow.Cells[0].FontWeight = FontWeights.Bold;
                 }
             }
         }
@@ -141,10 +132,9 @@ namespace DiplomaProrotype
                 for (int j = 0; j < resourceTiles.Count + MainWindow.amountPlaces + 1; j++)
                 {
                     if (MainWindow.matrixResourcePlaceStop[i, j] == null && i > 0 && j > 0)
-                    {
                         currentRow.Cells.Add(new TableCell(new Paragraph(new Run("0"))));
-                    }
-                    else currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourcePlaceStop[i, j]))));
+                    else 
+                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourcePlaceStop[i, j]))));
 
                     if (i == 0)
                     {

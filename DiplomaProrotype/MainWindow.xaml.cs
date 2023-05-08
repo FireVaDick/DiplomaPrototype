@@ -31,7 +31,7 @@ namespace DiplomaProrotype
         static public MovableTile movableTileFromContextMenu;
         static public StopTile stopTileFromContextMenu;
 
-        static public int[,] matrixResourceMachine = new int[0, 0];
+        static public string[,] matrixResourceMachine = new string[1, 1];
         static public string[,] matrixResourcePlaceStop = new string[1, 1];
         static public int amountPlaces = 0;
         static public int amountLoading = 0;
