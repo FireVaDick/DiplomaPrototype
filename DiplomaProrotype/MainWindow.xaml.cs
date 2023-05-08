@@ -23,8 +23,7 @@ namespace DiplomaProrotype
         static public List<MachineTile> machineTiles = new List<MachineTile>();
         static public List<MovableTile> movableTiles = new List<MovableTile>();
         static public List<StopTile> stopTiles = new List<StopTile>();
-        static public List<Link> linksResourceMachine = new List<Link>();
-        static public List<Link> linksResourceStop = new List<Link>();
+        static public List<Link> links = new List<Link>();
 
         static public ResourceTile resourceTileFromContextMenu;
         static public MachineTile machineTileFromContextMenu;

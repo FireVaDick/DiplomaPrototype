@@ -17,7 +17,7 @@ namespace DiplomaProrotype.ObjectsManipulation
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
         static private List<MovableTile> movableTiles = MainWindow.movableTiles;
         static private List<StopTile> stopTiles = MainWindow.stopTiles;
-        static private List<Link> linksResourceMachine = MainWindow.linksResourceMachine;
+        static private List<Link> linksResourceMachine = MainWindow.links;
 
 
         static public void ObjectMovingFromPanelOrCanvas(DragEventArgs e)
@@ -276,7 +276,9 @@ namespace DiplomaProrotype.ObjectsManipulation
             MainWindow.chosenOneObject = resourceTile;
             MainWindow.lastTileType = "resource";
             MainWindow.matrixResourceMachine = ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
-            MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1); 
+            MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1);
+            MainWindow.matrixResourceMachine[0, resourceTile.Id] = resourceTile.Text + " " + resourceTile.Id;
+            MainWindow.matrixResourcePlaceStop[0, resourceTile.Id] = resourceTile.Text + " " + resourceTile.Id;
             mw.TargetCanvas.Children.Add(resourceTile);                 
         }
 
@@ -331,7 +333,8 @@ namespace DiplomaProrotype.ObjectsManipulation
                 machineTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = machineTile;
                 MainWindow.lastTileType = "machine";
-                MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
+                MainWindow.matrixResourceMachine = ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
+                MainWindow.matrixResourceMachine[machineTile.Id, 0] = machineTile.Text + " " + machineTile.Id;
                 mw.TargetCanvas.Children.Add(machineTile);
 
                 // Добавление пустого задела рядом
@@ -395,7 +398,7 @@ namespace DiplomaProrotype.ObjectsManipulation
                 movableTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = movableTile;
                 MainWindow.lastTileType = "movable";
-                MainWindow.matrixResourcePlaceStop = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1);
+                MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1);
                 mw.TargetCanvas.Children.Add(movableTile);
             }         
         }
@@ -429,6 +432,7 @@ namespace DiplomaProrotype.ObjectsManipulation
                 MainWindow.chosenOneObject = stopTile;
                 MainWindow.lastTileType = "stop";
                 MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1);
+                MainWindow.matrixResourcePlaceStop[stopTile.Id, 0] = stopTile.Text + " " + stopTile.Id;
                 mw.TargetCanvas.Children.Add(stopTile);
             }
         }

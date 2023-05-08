@@ -159,11 +159,11 @@ namespace DiplomaProrotype.CanvasManipulation
                         if (mousePos.X > targetMargin.X && mousePos.X < targetMargin.X + machineTiles[i].Width &&
                             mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + machineTiles[i].Height)
                         {
-                            MainWindow.linksResourceMachine.Add(link);
+                            MainWindow.links.Add(link);
 
                             link.LastTargetType = "machine";
                             link.LastTargetListId = i;
-                            link.LinkId = MainWindow.linksResourceMachine.Count;
+                            link.LinkId = MainWindow.links.Count;
                             link.LineInfo = linkLine;
                             link.CircleInfo = linkCircle;
 
@@ -177,9 +177,9 @@ namespace DiplomaProrotype.CanvasManipulation
                             linkLine.X2 = lastMarginLeft;
                             linkLine.Y2 = lastMarginTop;
                             linkLine = null;
-
+/*
                             MainWindow.matrixResourceMachine[0, link.FirstTargetListId + 1] = "Задел " + (link.FirstTargetListId + 1);
-                            MainWindow.matrixResourceMachine[link.LastTargetListId + 1, 0] = "Станок " + machineTiles[i].MachineId.Text;
+                            MainWindow.matrixResourceMachine[link.LastTargetListId + 1, 0] = "Станок " + machineTiles[i].MachineId.Text;*/
                             MainWindow.matrixResourceMachine[link.LastTargetListId + 1, link.FirstTargetListId + 1] = "-1";
 
                             EnableObjectsOrNot.SetAllObjectsToEnabled();
@@ -199,11 +199,11 @@ namespace DiplomaProrotype.CanvasManipulation
                         if (mousePos.X > targetMargin.X && mousePos.X < targetMargin.X + stopTiles[i].Width &&
                             mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + stopTiles[i].Height && stopTiles[i].StopText.Text == "Погрузка")
                         {
-                            MainWindow.linksResourceMachine.Add(link); //
+                            MainWindow.links.Add(link); //
 
                             link.LastTargetType = "loading";
                             link.LastTargetListId = i;
-                            link.LinkId = MainWindow.linksResourceStop.Count;
+                            link.LinkId = MainWindow.links.Count;
                             link.LineInfo = linkLine;
                             link.CircleInfo = linkCircle;
 
@@ -213,8 +213,8 @@ namespace DiplomaProrotype.CanvasManipulation
                             linkLine.Y2 = lastMarginTop;
                             linkLine = null;
 
-                            MainWindow.matrixResourcePlaceStop[0, link.FirstTargetListId + 1] = "Задел " + (link.FirstTargetListId + 1);
-                            MainWindow.matrixResourcePlaceStop[link.LastTargetListId + 1, 0] = "Погрузка " + stopTiles[i].StopId.Text;
+/*                            MainWindow.matrixResourcePlaceStop[0, link.FirstTargetListId + 1] = "Задел " + (link.FirstTargetListId + 1);
+                            MainWindow.matrixResourcePlaceStop[link.LastTargetListId + 1, 0] = "Погрузка " + stopTiles[i].StopId.Text;*/
                             MainWindow.matrixResourcePlaceStop[link.LastTargetListId + 1, link.FirstTargetListId + 1] = "-1";
 
                             EnableObjectsOrNot.SetAllObjectsToEnabled();
@@ -237,11 +237,11 @@ namespace DiplomaProrotype.CanvasManipulation
                         if (mousePos.X > targetMargin.X && mousePos.X < targetMargin.X + resourceTiles[i].Width &&
                             mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + resourceTiles[i].Height)
                         {
-                            MainWindow.linksResourceMachine.Add(link);
+                            MainWindow.links.Add(link);
 
                             link.LastTargetType = "resource";
                             link.LastTargetListId = i;
-                            link.LinkId = MainWindow.linksResourceMachine.Count;
+                            link.LinkId = MainWindow.links.Count;
                             link.LineInfo = linkLine;
                             link.CircleInfo = linkCircle;
 
@@ -257,9 +257,9 @@ namespace DiplomaProrotype.CanvasManipulation
                             linkLine.X2 = lastMarginLeft;
                             linkLine.Y2 = lastMarginTop;
                             linkLine = null;
-
+/*
                             MainWindow.matrixResourceMachine[0, link.LastTargetListId + 1] = "Задел " + resourceTiles[i].ResourceId.Text;
-                            MainWindow.matrixResourceMachine[link.FirstTargetListId + 1, 0] = "Станок " + (link.FirstTargetListId + 1);
+                            MainWindow.matrixResourceMachine[link.FirstTargetListId + 1, 0] = "Станок " + (link.FirstTargetListId + 1);*/
                             MainWindow.matrixResourceMachine[link.FirstTargetListId + 1, link.LastTargetListId + 1] = "1";
 
                             EnableObjectsOrNot.SetAllObjectsToEnabled();
@@ -282,11 +282,11 @@ namespace DiplomaProrotype.CanvasManipulation
                         if (mousePos.X > targetMargin.X && mousePos.X < targetMargin.X + resourceTiles[i].Width &&
                             mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + resourceTiles[i].Height)
                         {
-                            MainWindow.linksResourceMachine.Add(link); //
+                            MainWindow.links.Add(link); //
 
                             link.LastTargetType = "resource";
                             link.LastTargetListId = i;
-                            link.LinkId = MainWindow.linksResourceMachine.Count;
+                            link.LinkId = MainWindow.links.Count;
                             link.LineInfo = linkLine;
                             link.CircleInfo = linkCircle;
 
@@ -303,15 +303,18 @@ namespace DiplomaProrotype.CanvasManipulation
                             linkLine.Y2 = lastMarginTop;
                             linkLine = null;
 
-                            MainWindow.matrixResourcePlaceStop[0, link.LastTargetListId + 1] = "Задел " + resourceTiles[i].ResourceId.Text;
-                            MainWindow.matrixResourcePlaceStop[link.FirstTargetListId + 1, 0] = "Разгрузка " + (link.FirstTargetListId + 1);
+/*                            MainWindow.matrixResourcePlaceStop[0, link.LastTargetListId + 1] = "Задел " + resourceTiles[i].ResourceId.Text;
+                            MainWindow.matrixResourcePlaceStop[link.FirstTargetListId + 1, 0] = "Разгрузка " + (link.FirstTargetListId + 1);*/
                             MainWindow.matrixResourcePlaceStop[link.FirstTargetListId + 1, link.LastTargetListId + 1] = "1";
 
                             EnableObjectsOrNot.SetAllObjectsToEnabled();
                         }
                     }
                 }
+            }
 
+            if (!(link is null) && link.FirstTargetType == "loading")
+            {
                 if (stopTiles.Count != 0) // Стоянка o-- стоянка
                 {
                     for (int i = 0; i < stopTiles.Count; i++)
@@ -326,11 +329,11 @@ namespace DiplomaProrotype.CanvasManipulation
                             stopTiles[link.FirstTargetListId].StopChain.Text == stopTiles[i].StopChain.Text &&
                             stopTiles[link.FirstTargetListId].StopText.Text == "Погрузка" && stopTiles[i].StopText.Text == "Разгрузка")
                         {
-                            MainWindow.linksResourceMachine.Add(link); //
+                            MainWindow.links.Add(link); //
 
-                            link.LastTargetType = "stop";
+                            link.LastTargetType = "unloading";
                             link.LastTargetListId = i;
-                            link.LinkId = MainWindow.linksResourceStop.Count;
+                            link.LinkId = MainWindow.links.Count;
                             link.LineInfo = linkLine;
                             link.CircleInfo = linkCircle;
 
