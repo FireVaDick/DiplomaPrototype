@@ -225,7 +225,8 @@ namespace DiplomaProrotype.ObjectsManipulation
 
             for (int i = 0; i < linksResourceMachine.Count; i++)
             {
-                if (linksResourceMachine[i].FirstTargetType == "stop" && linksResourceMachine[i].FirstTargetListId == stopTiles.IndexOf(stopData))
+                if ((linksResourceMachine[i].FirstTargetType == "loading" || linksResourceMachine[i].FirstTargetType == "unloading") 
+                    && linksResourceMachine[i].FirstTargetListId == stopTiles.IndexOf(stopData))
                 {
                     double firstMarginLeft = dropPosition.X + stopData.Width / 2 - 5;
 
@@ -235,7 +236,8 @@ namespace DiplomaProrotype.ObjectsManipulation
                     linksResourceMachine[i].CircleInfo.Margin = new Thickness(linksResourceMachine[i].LineInfo.X1 - 5, linksResourceMachine[i].LineInfo.Y1 - 5, 0, 0);
                 }
 
-                if (linksResourceMachine[i].LastTargetType == "stop" && linksResourceMachine[i].LastTargetListId == stopTiles.IndexOf(stopData))
+                if ((linksResourceMachine[i].LastTargetType == "loading" || linksResourceMachine[i].LastTargetType == "unloading") 
+                    && linksResourceMachine[i].LastTargetListId == stopTiles.IndexOf(stopData))
                 {
                     double lastMarginLeft = dropPosition.X - stopData.Width / 2 + 24;
 
@@ -273,9 +275,8 @@ namespace DiplomaProrotype.ObjectsManipulation
             resourceTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
             MainWindow.chosenOneObject = resourceTile;
             MainWindow.lastTileType = "resource";
-            MainWindow.matrixResourceMachine = ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count, resourceTiles.Count);
-            MainWindow.matrixResourcePlaceLoading = ResizeArray(MainWindow.matrixResourcePlaceLoading, MainWindow.amountLoading, resourceTiles.Count + MainWindow.amountPlaces);
-            MainWindow.matrixResourcePlaceUnloading = ResizeArray(MainWindow.matrixResourcePlaceUnloading, MainWindow.amountUnloading, resourceTiles.Count + MainWindow.amountPlaces);
+            MainWindow.matrixResourceMachine = ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
+            MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1); 
             mw.TargetCanvas.Children.Add(resourceTile);                 
         }
 
@@ -283,17 +284,17 @@ namespace DiplomaProrotype.ObjectsManipulation
         {
             var machineTile = new MachineTile();
 
-            CreateContextMenu(machineTile);
-            MainWindow.machineTiles.Add(machineTile);           
-
-            Canvas.SetLeft(machineTile, dropPosition.X - machineTile.Width / 2 - 7.5);
-            Canvas.SetTop(machineTile, dropPosition.Y - machineData.MachineIndicator.Height - machineData.MachineImage.Height + 5);
-
             SelectWindow.CreateMachineSelectWindow();
-
             machineTile.Processes = SelectWindow.currentNumber;
+
             if (machineTile.Processes > 0 && machineTile.Processes <= 5)
             {
+                CreateContextMenu(machineTile);
+                MainWindow.machineTiles.Add(machineTile);
+
+                Canvas.SetLeft(machineTile, dropPosition.X - machineTile.Width / 2 - 7.5);
+                Canvas.SetTop(machineTile, dropPosition.Y - machineData.MachineIndicator.Height - machineData.MachineImage.Height + 5);
+
                 machineTile.MachineProgress5.Margin = new Thickness(10, 0, 10, 35);
                 machineTile.MachineProgress5.Visibility = Visibility.Visible;
 
@@ -330,7 +331,7 @@ namespace DiplomaProrotype.ObjectsManipulation
                 machineTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = machineTile;
                 MainWindow.lastTileType = "machine";
-                MainWindow.matrixResourceMachine = ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count, resourceTiles.Count);
+                MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
                 mw.TargetCanvas.Children.Add(machineTile);
 
                 // Добавление пустого задела рядом
@@ -394,8 +395,7 @@ namespace DiplomaProrotype.ObjectsManipulation
                 movableTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = movableTile;
                 MainWindow.lastTileType = "movable";
-                MainWindow.matrixResourcePlaceLoading = ResizeArray(MainWindow.matrixResourcePlaceLoading, MainWindow.amountLoading, resourceTiles.Count + MainWindow.amountPlaces);
-                MainWindow.matrixResourcePlaceUnloading = ResizeArray(MainWindow.matrixResourcePlaceUnloading, MainWindow.amountUnloading, resourceTiles.Count + MainWindow.amountPlaces);
+                MainWindow.matrixResourcePlaceStop = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1);
                 mw.TargetCanvas.Children.Add(movableTile);
             }         
         }
@@ -404,20 +404,21 @@ namespace DiplomaProrotype.ObjectsManipulation
         {
             var stopTile = new StopTile();
 
-            CreateContextMenu(stopTile);
-            MainWindow.stopTiles.Add(stopTile);
-
-            Canvas.SetLeft(stopTile, dropPosition.X - stopTile.Width / 2 - 10);
-            Canvas.SetTop(stopTile, dropPosition.Y - stopTile.Height / 2 - 5);
-
             SelectWindow.CreateStopSelectWindow();
-            if (SelectWindow.currentNumber > 0 && SelectWindow.currentWord != "")
-            {
-                if (SelectWindow.currentWord == "Погрузка") MainWindow.amountLoading++;
-                if (SelectWindow.currentWord == "Разгрузка") MainWindow.amountUnloading++;
+            stopTile.Chain = SelectWindow.currentNumber;
+            stopTile.Text = SelectWindow.currentWord;
 
-                stopTile.Chain = SelectWindow.currentNumber;
-                stopTile.Text = SelectWindow.currentWord;
+            if (stopTile.Chain > 0 && stopTile.Text != "")
+            {
+                CreateContextMenu(stopTile);
+                MainWindow.stopTiles.Add(stopTile);
+
+                Canvas.SetLeft(stopTile, dropPosition.X - stopTile.Width / 2 - 10);
+                Canvas.SetTop(stopTile, dropPosition.Y - stopTile.Height / 2 - 5);
+
+                if (stopTile.Text == "Погрузка") MainWindow.amountLoading++;
+                if (stopTile.Text == "Разгрузка") MainWindow.amountUnloading++;
+
                 stopTile.Id = MainWindow.stopTiles.Count;
                 stopTile.StopText.Margin = new Thickness(0, 0, 0, 15);
                 stopTile.StopChain.Visibility = Visibility.Visible;
@@ -427,8 +428,7 @@ namespace DiplomaProrotype.ObjectsManipulation
                 stopTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = stopTile;
                 MainWindow.lastTileType = "stop";
-                MainWindow.matrixResourcePlaceLoading = ResizeArray(MainWindow.matrixResourcePlaceLoading, MainWindow.amountLoading, resourceTiles.Count + MainWindow.amountPlaces);
-                MainWindow.matrixResourcePlaceUnloading = ResizeArray(MainWindow.matrixResourcePlaceUnloading, MainWindow.amountUnloading, resourceTiles.Count + MainWindow.amountPlaces);
+                MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1);
                 mw.TargetCanvas.Children.Add(stopTile);
             }
         }

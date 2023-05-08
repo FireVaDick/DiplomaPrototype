@@ -81,7 +81,8 @@ namespace DiplomaProrotype.CanvasManipulation
                     if (targetMargin == VisualTreeHelper.GetOffset(stopTiles[i]))
                     {
                         link = new Link();
-                        link.FirstTargetType = "stop";
+                        if (stopTiles[i].StopText.Text == "Погрузка") link.FirstTargetType = "loading";
+                        if (stopTiles[i].StopText.Text == "Разгрузка") link.FirstTargetType = "unloading";
                         link.FirstTargetListId = i;
                     }
                 }
@@ -194,11 +195,11 @@ namespace DiplomaProrotype.CanvasManipulation
                         lastMarginTop = targetMargin.Y + stopTiles[i].StopFigure.Height / 2 + 5;
 
                         if (mousePos.X > targetMargin.X && mousePos.X < targetMargin.X + stopTiles[i].Width &&
-                            mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + stopTiles[i].Height)
+                            mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + stopTiles[i].Height && stopTiles[i].StopText.Text == "Погрузка")
                         {
-                            MainWindow.linksResourceMachine.Add(link);
+                            MainWindow.linksResourceMachine.Add(link); //
 
-                            link.LastTargetType = "stop";
+                            link.LastTargetType = "loading";
                             link.LastTargetListId = i;
                             link.LinkId = MainWindow.linksResourceStop.Count;
                             link.LineInfo = linkLine;
@@ -210,7 +211,9 @@ namespace DiplomaProrotype.CanvasManipulation
                             linkLine.Y2 = lastMarginTop;
                             linkLine = null;
 
-                            MainWindow.matrixResourcePlaceLoading[link.LastTargetListId, link.FirstTargetListId] = -1;
+                            MainWindow.matrixResourcePlaceStop[0, link.FirstTargetListId + 1] = "Задел " + (link.FirstTargetListId + 1);
+                            MainWindow.matrixResourcePlaceStop[link.LastTargetListId + 1, 0] = "Погрузка " + stopTiles[i].StopId.Text;
+                            MainWindow.matrixResourcePlaceStop[link.LastTargetListId + 1, link.FirstTargetListId + 1] = "-1";
 
                             EnableObjectsOrNot.SetAllObjectsToEnabled();
                         }
@@ -261,7 +264,7 @@ namespace DiplomaProrotype.CanvasManipulation
                 }
             }
 
-            if (!(link is null) && link.FirstTargetType == "stop")
+            if (!(link is null) && link.FirstTargetType == "unloading")
             {
                 if (resourceTiles.Count != 0)  // Стоянка o-- задел (Разгрузка)
                 {
@@ -275,7 +278,7 @@ namespace DiplomaProrotype.CanvasManipulation
                         if (mousePos.X > targetMargin.X && mousePos.X < targetMargin.X + resourceTiles[i].Width &&
                             mousePos.Y > targetMargin.Y && mousePos.Y < targetMargin.Y + resourceTiles[i].Height)
                         {
-                            MainWindow.linksResourceMachine.Add(link);
+                            MainWindow.linksResourceMachine.Add(link); //
 
                             link.LastTargetType = "resource";
                             link.LastTargetListId = i;
@@ -296,7 +299,9 @@ namespace DiplomaProrotype.CanvasManipulation
                             linkLine.Y2 = lastMarginTop;
                             linkLine = null;
 
-                            MainWindow.matrixResourcePlaceUnloading[link.FirstTargetListId, link.LastTargetListId] = 1;
+                            MainWindow.matrixResourcePlaceStop[0, link.LastTargetListId + 1] = "Задел " + resourceTiles[i].ResourceId.Text;
+                            MainWindow.matrixResourcePlaceStop[link.FirstTargetListId + 1, 0] = "Разгрузка " + (link.FirstTargetListId + 1);
+                            MainWindow.matrixResourcePlaceStop[link.FirstTargetListId + 1, link.LastTargetListId + 1] = "1";
 
                             EnableObjectsOrNot.SetAllObjectsToEnabled();
                         }
@@ -318,7 +323,7 @@ namespace DiplomaProrotype.CanvasManipulation
                             stopTiles[link.FirstTargetListId].StopText.Text == "Погрузка" &&
                             stopTiles[i].StopText.Text == "Разгрузка")
                         {
-                            MainWindow.linksResourceMachine.Add(link);
+                            MainWindow.linksResourceMachine.Add(link); //
 
                             link.LastTargetType = "stop";
                             link.LastTargetListId = i;

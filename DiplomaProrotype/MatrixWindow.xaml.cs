@@ -109,6 +109,7 @@ namespace DiplomaProrotype
             }
         }
 
+
         private void CreateMatrixResourcePlaceStop()
         {
             MatrixResourcePlaceStopTable = new Table();
@@ -129,61 +130,30 @@ namespace DiplomaProrotype
             }
 
             MatrixResourcePlaceStopTable.RowGroups.Add(new TableRowGroup());
-            MatrixResourcePlaceStopTable.RowGroups[0].Rows.Add(new TableRow());
-
-            TableRow currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[0];
-
-            currentRow.Cells.Add(new TableCell(new Paragraph(new Run(""))));
-            currentRow.FontSize = 16;
-            currentRow.FontWeight = FontWeights.Bold;
-
-            // Оформление заголовков
-            for (int j = 0; j < resourceTiles.Count; j++)
-            {
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Задел " + Convert.ToString(j + 1)))));
-            }
-
-            for (int j = 0; j < MainWindow.amountPlaces; j++)
-            {
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Место " + Convert.ToString(j + 1)))));
-            }
-
-            for (int i = 0; i < MainWindow.amountLoading; i++)
-            {
-                MatrixResourcePlaceStopTable.RowGroups[0].Rows.Add(new TableRow());
-                currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[i + 1];
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Погрузка " + Convert.ToString(i + 1)))));
-                currentRow.Cells[0].FontSize = 16;
-                currentRow.Cells[0].FontWeight = FontWeights.Bold;
-            }
-
-            for (int i = 0; i < MainWindow.amountUnloading; i++)
-            {
-                MatrixResourcePlaceStopTable.RowGroups[0].Rows.Add(new TableRow());
-                currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[i + 1];
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Разгрузка " + Convert.ToString(i + 1)))));
-                currentRow.Cells[0].FontSize = 16;
-                currentRow.Cells[0].FontWeight = FontWeights.Bold;
-            }
+            TableRow currentRow;
 
             // Данные самой матрицы
-            for (int i = 0; i < MainWindow.amountLoading; i++)
+            for (int i = 0; i < stopTiles.Count + 1; i++)
             {
-                currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[i + 1]; // Вторая строка
+                MatrixResourcePlaceStopTable.RowGroups[0].Rows.Add(new TableRow());
+                currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[i];
 
-                for (int j = 0; j < resourceTiles.Count + MainWindow.amountPlaces; j++)
+                for (int j = 0; j < resourceTiles.Count + MainWindow.amountPlaces + 1; j++)
                 {
-                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(MainWindow.matrixResourcePlaceLoading[i, j])))));
-                }
-            }
+                    if (MainWindow.matrixResourcePlaceStop[i, j] == null && i > 0 && j > 0)
+                    {
+                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run("0"))));
+                    }
+                    else currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourcePlaceStop[i, j]))));
 
-            for (int i = 0; i < MainWindow.amountUnloading; i++)
-            {
-                currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[i + 1]; // Вторая строка
+                    if (i == 0)
+                    {
+                        currentRow.FontSize = 16;
+                        currentRow.FontWeight = FontWeights.Bold;
+                    }
 
-                for (int j = 0; j < resourceTiles.Count + MainWindow.amountPlaces; j++)
-                {
-                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(MainWindow.matrixResourcePlaceUnloading[i, j])))));
+                    currentRow.Cells[0].FontSize = 16;
+                    currentRow.Cells[0].FontWeight = FontWeights.Bold;
                 }
             }
         }

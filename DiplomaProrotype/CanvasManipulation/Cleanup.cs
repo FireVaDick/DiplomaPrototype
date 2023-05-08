@@ -97,9 +97,8 @@ namespace DiplomaProrotype.CanvasManipulation
                 linksResourceMachine.Remove(linksResourceMachine[i]);
             }
 
-            MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count, resourceTiles.Count);
-            MainWindow.matrixResourcePlaceLoading = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceLoading, MainWindow.amountLoading, resourceTiles.Count + MainWindow.amountPlaces);
-            MainWindow.matrixResourcePlaceUnloading = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceUnloading, MainWindow.amountUnloading, resourceTiles.Count + MainWindow.amountPlaces);
+            MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
+            MainWindow.matrixResourcePlaceStop = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1);
 
             EnableObjectsOrNot.SetAllObjectsToEnabled();
         }
@@ -114,9 +113,8 @@ namespace DiplomaProrotype.CanvasManipulation
 
             mw.TargetCanvas.Children.Clear();
 
-            MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count, resourceTiles.Count);
-            MainWindow.matrixResourcePlaceLoading = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceLoading, MainWindow.amountLoading, resourceTiles.Count + MainWindow.amountPlaces);
-            MainWindow.matrixResourcePlaceUnloading = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceUnloading, MainWindow.amountUnloading, resourceTiles.Count + MainWindow.amountPlaces);
+            MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
+            MainWindow.matrixResourcePlaceStop = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1);
 
             EnableObjectsOrNot.SetAllObjectsToEnabled();
         }
