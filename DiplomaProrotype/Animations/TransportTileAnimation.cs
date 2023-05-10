@@ -1,4 +1,5 @@
 ﻿using DiplomaProrotype;
+using DiplomaProrotype.Animations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace DiplomaPrototype.Animations
             Task.Delay(TimeSpan.FromSeconds(2)).ContinueWith((t) =>
             {
                 storyboard.Pause();
+                ResourceAnimation.ResourceOnMovableHeightAnimation(6, 25, 3, -15, -35);
             });
 
             // Продолжение выполнения Storyboard через 10 секунд
@@ -45,24 +47,36 @@ namespace DiplomaPrototype.Animations
             });
 
 
-            Task.Delay(TimeSpan.FromSeconds(14)).ContinueWith((t) =>
+            Task.Delay(TimeSpan.FromSeconds(14.75)).ContinueWith((t) =>
             {
                 storyboard.Pause();
+                ResourceAnimation.ResourceOnMovableHeightAnimation(25, 6, 3, -35, -15);
             });
 
             // Продолжение выполнения Storyboard через 10 секунд
-            Task.Delay(TimeSpan.FromSeconds(19)).ContinueWith((t) =>
+            Task.Delay(TimeSpan.FromSeconds(20)).ContinueWith((t) =>
             {
                 storyboard.Resume();
             });
 
-            Task.Delay(TimeSpan.FromSeconds(28)).ContinueWith((t) =>
+            Task.Delay(TimeSpan.FromSeconds(29.75)).ContinueWith((t) =>
             {
                 storyboard.Pause();
             });
 
             // Продолжение выполнения Storyboard через 10 секунд
-            Task.Delay(TimeSpan.FromSeconds(33)).ContinueWith((t) =>
+            Task.Delay(TimeSpan.FromSeconds(35)).ContinueWith((t) =>
+            {
+                storyboard.Resume();
+            });
+
+            Task.Delay(TimeSpan.FromSeconds(42.75)).ContinueWith((t) =>
+            {
+                storyboard.Pause();
+            });
+
+            // Продолжение выполнения Storyboard через 10 секунд
+            Task.Delay(TimeSpan.FromSeconds(46)).ContinueWith((t) =>
             {
                 storyboard.Resume();
             });

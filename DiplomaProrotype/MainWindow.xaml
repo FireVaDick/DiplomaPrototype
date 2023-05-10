@@ -105,12 +105,17 @@
                         </ToolTip>
                     </UserControl.ToolTip>
                 </local:ModeTile>
-                <local:ModeTile x:Name="ModeAnimation" Text="Пути" Image="Icons/x128/Path128.png" MouseLeftButtonDown="ModeTile_Animation_MouseLeftButtonDown">
+                <local:ModeTile x:Name="ModeAnimation" Text="" Image="Icons/x128/Square128.png" MouseLeftButtonDown="ModeTile_Animation_MouseLeftButtonDown">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Нажмите чтобы запустить анимацию.
+                        </ToolTip>
+                    </UserControl.ToolTip>
                 </local:ModeTile>
             </StackPanel>
         </Border>
 
-        <!-- Меню объектов сверху -->
+        <!-- Меню объектов сверху --> 
         <Border Name="ObjectBorder" 
                 Width="500" 
                 Height="100" 

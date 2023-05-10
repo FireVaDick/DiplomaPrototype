@@ -6,6 +6,7 @@ using DiplomaProrotype.ObjectsManipulation;
 using DiplomaPrototype;
 using DiplomaPrototype.Animations;
 using DiplomaPrototype.ImitationalModelDataAnalysing;
+using Haley.Utils;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -28,6 +29,8 @@ namespace DiplomaProrotype
         static public List<StopTile> stopTiles = new List<StopTile>();
         static public List<Link> linksResourceMachine = new List<Link>();
         static public List<Link> linksResourceStop = new List<Link>();
+
+        static public List<Point> stopTilesCoordinates = new List<Point>();
 
         static public ResourceTile resourceTileFromContextMenu;
         static public MachineTile machineTileFromContextMenu;
@@ -129,6 +132,7 @@ namespace DiplomaProrotype
             if (!(stopData is null) && stopData.Parent is StackPanel == false)
             {
                 ((Canvas)(stopData.Parent)).Children.Remove(stopData);
+                stopTilesCoordinates.Add(new Point(e.GetPosition(TargetCanvas).X, e.GetPosition(TargetCanvas).Y));
             }
         }
         #endregion

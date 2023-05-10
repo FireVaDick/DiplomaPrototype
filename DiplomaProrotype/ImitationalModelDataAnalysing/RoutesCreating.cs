@@ -1,4 +1,5 @@
 ﻿using DiplomaProrotype;
+using DiplomaProrotype.ObjectsManipulation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
     {
         private List<StopTile> stopTiles = MainWindow.stopTiles;
         private List<MovableTile> movableTiles = MainWindow.movableTiles;
+
+        private List<Point> coordinates = MainWindow.stopTilesCoordinates;
 
         public Queue<Storyboard> stories = new Queue<Storyboard>();
 
@@ -48,6 +51,9 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 
         public Storyboard CreateStory()
         {
+
+            
+
             Vector movableTile = VisualTreeHelper.GetOffset(movableTiles[0]);
             Vector stopTile1 = VisualTreeHelper.GetOffset(stopTiles[0]);
             Vector stopTile2 = VisualTreeHelper.GetOffset(stopTiles[1]);
@@ -57,28 +63,37 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             PathGeometry pathGeometry = new PathGeometry();
             PathFigure pathFigure = new PathFigure();
 
-            pathFigure.StartPoint = new Point(movableTile.X, movableTile.Y);
+            pathFigure.StartPoint = new Point(stopTile1.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2));
 
-            pathFigure.Segments.Add(new LineSegment(new Point(movableTile.X, stopTile1.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X, stopTile1.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X, stopTile1.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X, stopTile2.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X, stopTile2.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X, stopTile3.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X, stopTile3.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X, stopTile4.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X, stopTile1.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X, stopTile1.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X, stopTile1.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X, stopTile1.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X, stopTile2.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X, stopTile2.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X, stopTile3.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X, stopTile3.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X, stopTile4.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X, stopTile1.Y), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X, stopTile1.Y), true));
 
+            //for (int j = 0; j < 2; j++)
+            //{
+            //    for (int i = 1; i < coordinates.Count; i++)
+            //    {
+            //        pathFigure.Segments.Add(new LineSegment(new Point(coordinates[i - 1].X, coordinates[i - 1].Y), true));
+            //        pathFigure.Segments.Add(new LineSegment(new Point(coordinates[i].X, coordinates[i - 1].Y), true));
+            //    }
+            //}
+
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X - (movableTiles[0].Width - 50), stopTile2.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X - (movableTiles[0].Width - 50), stopTile2.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X - (movableTiles[0].Width - 50), stopTile3.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X - (movableTiles[0].Width - 50), stopTile3.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X - (movableTiles[0].Width - 50), stopTile4.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X - (movableTiles[0].Width - 50), stopTile2.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X - (movableTiles[0].Width - 50), stopTile2.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X - (movableTiles[0].Width - 50), stopTile3.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X - (movableTiles[0].Width - 50), stopTile3.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X - (movableTiles[0].Width - 50), stopTile4.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
+            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
+                
             pathGeometry.Figures.Add(pathFigure);
 
             MatrixAnimationUsingPath animation = new MatrixAnimationUsingPath();

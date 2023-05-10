@@ -152,7 +152,7 @@ namespace DiplomaProrotype.ObjectsManipulation
             }
         }
 
-        static private void CMAnimate_Click(object sender, RoutedEventArgs e)
+        static public void CMAnimate_Click(object sender, RoutedEventArgs e)
         {
             GetTileFromContextMenu(sender, e);
 
