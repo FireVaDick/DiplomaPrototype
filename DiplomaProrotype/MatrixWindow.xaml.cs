@@ -50,7 +50,7 @@ namespace DiplomaProrotype
             double screenWidth = SystemParameters.FullPrimaryScreenWidth;
             double screenHeight = SystemParameters.FullPrimaryScreenHeight;
             this.Left = (screenWidth - this.Width) - 65;
-            this.Top = (screenHeight - this.Height) / 2 - 30;
+            this.Top = (screenHeight - this.Height) / 2 - 25;
         }
 
 
@@ -76,6 +76,7 @@ namespace DiplomaProrotype
             MatrixResourceMachineTable.RowGroups.Add(new TableRowGroup());
             TableRow currentRow;
 
+            // Данные самой матрицы
             for (int i = 0; i < machineTiles.Count + 1; i++)
             {
                 MatrixResourceMachineTable.RowGroups[0].Rows.Add(new TableRow());
@@ -110,7 +111,7 @@ namespace DiplomaProrotype
             FlowDoc.Blocks.Add(MatrixResourcePlaceStopTable);
 
             // Визуальное оформление колонок
-            for (int x = 0; x < resourceTiles.Count + 1 + MainWindow.amountPlaces; x++)
+            for (int x = 0; x < resourceTiles.Count + 1 + MainWindow.vectorChain.Count; x++)
             {
                 MatrixResourcePlaceStopTable.Columns.Add(new TableColumn());
 
@@ -129,7 +130,7 @@ namespace DiplomaProrotype
                 MatrixResourcePlaceStopTable.RowGroups[0].Rows.Add(new TableRow());
                 currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[i];
 
-                for (int j = 0; j < resourceTiles.Count + MainWindow.amountPlaces + 1; j++)
+                for (int j = 0; j < resourceTiles.Count + MainWindow.vectorChain.Count + 1; j++)
                 {
                     if (MainWindow.matrixResourcePlaceStop[i, j] == null && i > 0 && j > 0)
                         currentRow.Cells.Add(new TableCell(new Paragraph(new Run("0"))));

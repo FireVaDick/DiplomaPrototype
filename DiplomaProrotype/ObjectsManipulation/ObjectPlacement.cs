@@ -276,9 +276,9 @@ namespace DiplomaProrotype.ObjectsManipulation
             MainWindow.chosenOneObject = resourceTile;
             MainWindow.lastTileType = "resource";
             MainWindow.matrixResourceMachine = ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
-            MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1);
-            MainWindow.matrixResourceMachine[0, resourceTile.Id] = resourceTile.Text + " " + resourceTile.Id;
-            MainWindow.matrixResourcePlaceStop[0, resourceTile.Id] = resourceTile.Text + " " + resourceTile.Id;
+            MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.vectorChain.Count + 1);
+            MainWindow.matrixResourceMachine[0, MainWindow.matrixResourceMachine.GetLength(1) - 1] = resourceTile.Text + " " + resourceTile.Id;
+            MainWindow.matrixResourcePlaceStop[0, MainWindow.matrixResourcePlaceStop.GetLength(1) - 1] = resourceTile.Text + " " + resourceTile.Id;
             mw.TargetCanvas.Children.Add(resourceTile);                 
         }
 
@@ -287,7 +287,7 @@ namespace DiplomaProrotype.ObjectsManipulation
             var machineTile = new MachineTile();
 
             SelectWindow.CreateMachineSelectWindow();
-            machineTile.Processes = SelectWindow.currentNumber;
+            machineTile.Processes = SelectWindow.currentNumber1;
 
             if (machineTile.Processes > 0 && machineTile.Processes <= 5)
             {
@@ -328,13 +328,13 @@ namespace DiplomaProrotype.ObjectsManipulation
                 machineTile.MachineText.Margin = new Thickness(0, 0, 0, 15);
                 machineTile.MachineIndicator.Visibility = Visibility.Visible;
                 machineTile.MachineId.Visibility = Visibility.Visible;
-                machineTile.Height = 110 + SelectWindow.currentNumber * 10;
+                machineTile.Height = 110 + SelectWindow.currentNumber1 * 10;
 
                 machineTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = machineTile;
                 MainWindow.lastTileType = "machine";
                 MainWindow.matrixResourceMachine = ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
-                MainWindow.matrixResourceMachine[machineTile.Id, 0] = machineTile.Text + " " + machineTile.Id;
+                MainWindow.matrixResourceMachine[MainWindow.matrixResourceMachine.GetLength(0) - 1, 0] = machineTile.Text + " " + machineTile.Id;
                 mw.TargetCanvas.Children.Add(machineTile);
 
                 // Добавление пустого задела рядом
@@ -354,8 +354,8 @@ namespace DiplomaProrotype.ObjectsManipulation
             if (movableData.Amount == 0) // Создание из панели
             {
                 SelectWindow.CreateMovableSelectWindow();
-                movableTile.Amount = SelectWindow.currentNumber;
-                movableTile.Places = SelectWindow.currentPlaces;
+                movableTile.Amount = SelectWindow.currentNumber1;
+                movableTile.Places = SelectWindow.currentNumber2;
             }
             else // Перемещение одной из группы, где > 1
             {
@@ -371,6 +371,17 @@ namespace DiplomaProrotype.ObjectsManipulation
                 Canvas.SetLeft(movableTile, dropPosition.X - movableTile.Width / 2 - 10);
                 Canvas.SetTop(movableTile, dropPosition.Y - movableTile.Height / 2 - 22.5);
 
+                SelectWindow.AddMovableToMatrixParticipation(movableTile.Places);
+                MainWindow.matrixParticipation = ResizeArray(MainWindow.matrixParticipation, MainWindow.vectorChain.Count, movableTiles.Count);
+
+                try
+                {
+                    MainWindow.matrixParticipation[SelectWindow.currentNumber1 - 1, movableTiles.Count - 1] = 1;
+                    MainWindow.matrixParticipation[SelectWindow.currentNumber2 - 1, movableTiles.Count - 1] = 1;
+                    MainWindow.matrixParticipation[SelectWindow.currentNumber3 - 1, movableTiles.Count - 1] = 1;
+                }
+                catch { };
+
                 movableTile.ResourceFigure1.Margin = new Thickness(0, -35, 10, 0);
                 movableTile.ResourceFigure1.Visibility = Visibility.Visible;
 
@@ -383,9 +394,7 @@ namespace DiplomaProrotype.ObjectsManipulation
                 {
                     movableTile.ResourceFigure3.Margin = new Thickness(0, -35, -34, 0);
                     movableTile.ResourceFigure3.Visibility = Visibility.Visible;
-                }
-
-                MainWindow.amountPlaces = movableTile.Places;                
+                }               
 
                 movableTile.Image = movableData.Image;
                 movableTile.Text = movableData.Text;
@@ -398,8 +407,8 @@ namespace DiplomaProrotype.ObjectsManipulation
                 movableTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = movableTile;
                 MainWindow.lastTileType = "movable";
-                MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1);
-                mw.TargetCanvas.Children.Add(movableTile);
+                MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.vectorChain.Count + 1);
+                mw.TargetCanvas.Children.Add(movableTile);              
             }         
         }
 
@@ -408,7 +417,7 @@ namespace DiplomaProrotype.ObjectsManipulation
             var stopTile = new StopTile();
 
             SelectWindow.CreateStopSelectWindow();
-            stopTile.Chain = SelectWindow.currentNumber;
+            stopTile.Chain = SelectWindow.currentNumber1;
             stopTile.Text = SelectWindow.currentWord;
 
             if (stopTile.Chain > 0 && stopTile.Text != "")
@@ -418,11 +427,22 @@ namespace DiplomaProrotype.ObjectsManipulation
 
                 Canvas.SetLeft(stopTile, dropPosition.X - stopTile.Width / 2 - 10);
                 Canvas.SetTop(stopTile, dropPosition.Y - stopTile.Height / 2 - 5);
-
+/*
                 if (stopTile.Text == "Погрузка") MainWindow.amountLoading++;
                 if (stopTile.Text == "Разгрузка") MainWindow.amountUnloading++;
+                stopTile.Id = MainWindow.stopTiles.Count;*/
 
-                stopTile.Id = MainWindow.stopTiles.Count;
+                if (stopTile.Text == "Погрузка")
+                {
+                    MainWindow.amountLoading++;
+                    stopTile.Id = MainWindow.amountLoading;
+                }
+                if (stopTile.Text == "Разгрузка")
+                {
+                    MainWindow.amountUnloading++;
+                    stopTile.Id = MainWindow.amountUnloading;
+                }
+
                 stopTile.StopText.Margin = new Thickness(0, 0, 0, 15);
                 stopTile.StopChain.Visibility = Visibility.Visible;
                 stopTile.StopId.Visibility = Visibility.Visible;
@@ -431,8 +451,8 @@ namespace DiplomaProrotype.ObjectsManipulation
                 stopTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = stopTile;
                 MainWindow.lastTileType = "stop";
-                MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1);
-                MainWindow.matrixResourcePlaceStop[stopTile.Id, 0] = stopTile.Text + " " + stopTile.Id;
+                MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.vectorChain.Count + 1);
+                MainWindow.matrixResourcePlaceStop[MainWindow.matrixResourcePlaceStop.GetLength(0) - 1, 0] = stopTile.Text + " " + stopTile.Id;
                 mw.TargetCanvas.Children.Add(stopTile);
             }
         }

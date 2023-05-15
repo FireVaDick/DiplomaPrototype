@@ -32,15 +32,19 @@ namespace DiplomaProrotype
 
         static public string[,] matrixResourceMachine = new string[1, 1];
         static public string[,] matrixResourcePlaceStop = new string[1, 1];
-        static public int amountPlaces = 0;
-        static public int amountLoading = 0;
-        static public int amountUnloading = 0;
+        static public int[,] matrixParticipation = new int[0, 0];
+        static public List<int> vectorChain = new List<int>();
+        static public List<int> vectorSignal = new List<int>();
+        static public List<int> vectorUnoccupation = new List<int>();
 
         static public UserControl chosenOneObject;
         static public string lastTileType = "";
         static public string currentMode = "move";
         static public string currentPathType = "solid";
         static public bool resourceNearMachineIsEmpty = false;
+
+        static public int amountLoading = 0;
+        static public int amountUnloading = 0;
 
         Vector targetMargin;
 

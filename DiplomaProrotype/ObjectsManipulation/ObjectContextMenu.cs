@@ -97,7 +97,7 @@ namespace DiplomaProrotype.ObjectsManipulation
 
         static private void CMCheckLinks_Click(object sender, RoutedEventArgs e) //!!!!!!!!!!!!!!!!!!!!!
         {
-            GetTileFromContextMenu(sender, e);
+            /*GetTileFromContextMenu(sender, e);
             int tileLinkAmount = 0;
             int row = 4;
 
@@ -149,7 +149,7 @@ namespace DiplomaProrotype.ObjectsManipulation
                 string table = string.Join('\n', tableRows);
 
                 MessageBox.Show(table);
-            }
+            }*/
         }
 
         static private void CMAnimate_Click(object sender, RoutedEventArgs e)
@@ -201,12 +201,12 @@ namespace DiplomaProrotype.ObjectsManipulation
             if (stopTiles.Contains(stopTileFromContextMenu))
             {
                 SelectWindow.CreateStopSelectWindow();
-                if (SelectWindow.currentNumber > 0 && SelectWindow.currentWord != "")
+                if (SelectWindow.currentNumber1 > 0 && SelectWindow.currentWord != "")
                 {
                     if (stopTileFromContextMenu.Text == "Погрузка") MainWindow.amountLoading--;
                     if (stopTileFromContextMenu.Text == "Разгрузка") MainWindow.amountUnloading--;
 
-                    stopTileFromContextMenu.Chain = SelectWindow.currentNumber;
+                    stopTileFromContextMenu.Chain = SelectWindow.currentNumber1;
                     stopTileFromContextMenu.Text = SelectWindow.currentWord;
 
                     if (stopTileFromContextMenu.Text == "Погрузка") MainWindow.amountLoading++;
@@ -270,8 +270,8 @@ namespace DiplomaProrotype.ObjectsManipulation
             }
 
             MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
-            MainWindow.matrixResourcePlaceStop = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.amountPlaces + 1);
-            
+            MainWindow.matrixResourcePlaceStop = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.vectorChain.Count + 1);
+
         }
     }
 }
