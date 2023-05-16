@@ -1,12 +1,18 @@
 ﻿using DiplomaProrotype;
 using DiplomaProrotype.Animations;
+using DiplomaProrotype.ObjectsManipulation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Runtime.CompilerServices;
+using DiplomaProrotype.Threads;
+using System.ComponentModel;
 
 namespace DiplomaPrototype.Animations
 {
@@ -14,13 +20,14 @@ namespace DiplomaPrototype.Animations
     {
         private Storyboard storyboard; // список Storyboard
 
-        private MovableTile movableTile;
+        private static MovableTile movableTile;
 
         private int currentStoryboardIndex = 0; // индекс текущего Storyboard
 
-        public TransportTileAnimation(Storyboard storyboard, MovableTile movableTile)
+        public TransportTileAnimation(Storyboard storyboard, MovableTile nmovableTile)
         {
             this.storyboard = storyboard;
+            movableTile = nmovableTile;
             StartNextStoryboard();
         }       
 
@@ -31,13 +38,17 @@ namespace DiplomaPrototype.Animations
 
         private void StartNextStoryboard()
         {
+            BackgroundWorker worker = new BackgroundWorker();
+           
+
             storyboard.Begin();
 
 
             Task.Delay(TimeSpan.FromSeconds(2)).ContinueWith((t) =>
             {
                 storyboard.Pause();
-                ResourceAnimation.ResourceOnMovableHeightAnimation(6, 25, 3, -15, -35);
+                //MovableHeightAnimation(6, 25, 3, -15, -35);                      
+
             });
 
             // Продолжение выполнения Storyboard через 10 секунд
@@ -50,7 +61,7 @@ namespace DiplomaPrototype.Animations
             Task.Delay(TimeSpan.FromSeconds(14.75)).ContinueWith((t) =>
             {
                 storyboard.Pause();
-                ResourceAnimation.ResourceOnMovableHeightAnimation(25, 6, 3, -35, -15);
+                //ResourceAnimation.ResourceOnMovableHeightAnimation(25, 6, 3, -35, -15);
             });
 
             // Продолжение выполнения Storyboard через 10 секунд
@@ -86,51 +97,85 @@ namespace DiplomaPrototype.Animations
             //timer.Start();
         }
 
-    //private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-    //{
-    //    // остановить Storyboard
-    //    if (storyboard != null)
-    //    {
-    //        storyboard.Pause();
-    //        // запустить таймер через 10 секунд для возобновления выполнения Storyboard
-    //        var resumeTimer = new System.Timers.Timer(5000);
-    //        resumeTimer.Elapsed += ResumeTimer_Elapsed;
-    //        resumeTimer.Start();
-    //    }
-    //}
 
-    //private void ResumeTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-    //{
-    //    // возобновить выполнение Storyboard
-    //    if (storyboard != null)
-    //    {
-    //        storyboard.Resume();
+        static public void MovableHeightAnimation(int from, int to, int time, int inputTop, int outputTop)
+        {
+            DoubleAnimation doubleAnimation = new DoubleAnimation();
+            ThicknessAnimation thicknessAnimation = new ThicknessAnimation();
 
-    //            var timer = new System.Timers.Timer(4000);
-    //            timer.Elapsed += Timer2_Elapsed;
-    //            timer.Start();
-    //        }
-    //}
+            doubleAnimation.From = from;
+            doubleAnimation.To = to;
+            doubleAnimation.Duration = TimeSpan.FromSeconds(time);
 
-    //    private void Timer2_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-    //    {
-    //        if (storyboard != null)
-    //        {
-    //            storyboard.Pause();
-    //            // запустить таймер через 10 секунд для возобновления выполнения Storyboard
-    //            var resumeTimer = new System.Timers.Timer(5000);
-    //            resumeTimer.Elapsed += ResumeTimer2_Elapsed;
-    //            resumeTimer.Start();
-    //        }
-    //    }
+            if (movableTile != null)
+            {
+                movableTile.ResourceFigure1.BeginAnimation(Button.HeightProperty, doubleAnimation);
+                movableTile.ResourceFigure2.BeginAnimation(Button.HeightProperty, doubleAnimation);
+                movableTile.ResourceFigure3.BeginAnimation(Button.HeightProperty, doubleAnimation);
+            }
 
-    //    private void ResumeTimer2_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-    //    {
-    //        // возобновить выполнение Storyboard
-    //        if (storyboard != null)
-    //        {
-    //            storyboard.Resume();
-    //        }
-    //    }
+            thicknessAnimation.Duration = TimeSpan.FromSeconds(time);
+            if (movableTile != null)
+            {
+                thicknessAnimation.From = new Thickness(0, inputTop, 10, 0);
+                thicknessAnimation.To = new Thickness(0, outputTop, 10, 0);
+                movableTile.ResourceFigure1.BeginAnimation(Button.MarginProperty, thicknessAnimation);
+
+                thicknessAnimation.From = new Thickness(0, inputTop, -12, 0);
+                thicknessAnimation.To = new Thickness(0, outputTop, -12, 0);
+                movableTile.ResourceFigure2.BeginAnimation(Button.MarginProperty, thicknessAnimation);
+
+                thicknessAnimation.From = new Thickness(0, inputTop, -34, 0);
+                thicknessAnimation.To = new Thickness(0, outputTop, -34, 0);
+                movableTile.ResourceFigure3.BeginAnimation(Button.MarginProperty, thicknessAnimation);
+            }
+        }
+
+        //private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    // остановить Storyboard
+        //    if (storyboard != null)
+        //    {
+        //        storyboard.Pause();
+        //        // запустить таймер через 10 секунд для возобновления выполнения Storyboard
+        //        var resumeTimer = new System.Timers.Timer(5000);
+        //        resumeTimer.Elapsed += ResumeTimer_Elapsed;
+        //        resumeTimer.Start();
+        //    }
+        //}
+
+        //private void ResumeTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    // возобновить выполнение Storyboard
+        //    if (storyboard != null)
+        //    {
+        //        storyboard.Resume();
+
+        //            var timer = new System.Timers.Timer(4000);
+        //            timer.Elapsed += Timer2_Elapsed;
+        //            timer.Start();
+        //        }
+        //}
+
+        //    private void Timer2_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //    {
+        //        if (storyboard != null)
+        //        {
+        //            storyboard.Pause();
+        //            // запустить таймер через 10 секунд для возобновления выполнения Storyboard
+        //            var resumeTimer = new System.Timers.Timer(5000);
+        //            resumeTimer.Elapsed += ResumeTimer2_Elapsed;
+        //            resumeTimer.Start();
+        //        }
+        //    }
+
+        //    private void ResumeTimer2_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //    {
+        //        // возобновить выполнение Storyboard
+        //        if (storyboard != null)
+        //        {
+        //            storyboard.Resume();
+        //        }
+        //    }
     }
 }

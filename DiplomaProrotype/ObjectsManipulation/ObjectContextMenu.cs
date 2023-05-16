@@ -194,6 +194,24 @@ namespace DiplomaProrotype.ObjectsManipulation
             }
         }
 
+
+        static public void CMStoryboardAnimate_Click()
+        {
+           
+
+            if (!(movableTileFromContextMenu is null))
+            {
+                if (movableTileFromContextMenu.ResourceFigure1.Height == 25)
+                {
+                    ResourceAnimation.ResourceOnMovableHeightAnimation(25, 6, 3, -35, -15);
+                }
+                else
+                {
+                    ResourceAnimation.ResourceOnMovableHeightAnimation(6, 25, 3, -15, -35);
+                }
+            }
+        }
+
         static private void CMEdit_Click(object sender, RoutedEventArgs e)
         {
             GetTileFromContextMenu(sender, e);
