@@ -39,11 +39,12 @@ namespace DiplomaProrotype
 
             if (resourceTiles.Count != 0 && stopTiles.Count != 0)
             {
-                CreateMatrixResourcePlaceStop();
+                CreateMatrixResourceChainStop();
             }
 
             FlowDocumentReader myFlowDocumentReader = new FlowDocumentReader();
             myFlowDocumentReader.Document = FlowDoc;
+            myFlowDocumentReader.ViewingMode = FlowDocumentReaderViewingMode.Scroll;
 
             this.Content = myFlowDocumentReader;
 
@@ -102,7 +103,7 @@ namespace DiplomaProrotype
         }
 
 
-        private void CreateMatrixResourcePlaceStop()
+        private void CreateMatrixResourceChainStop()
         {
             MatrixResourcePlaceStopTable = new Table();
             MatrixResourcePlaceStopTable.CellSpacing = 10;
@@ -130,12 +131,29 @@ namespace DiplomaProrotype
                 MatrixResourcePlaceStopTable.RowGroups[0].Rows.Add(new TableRow());
                 currentRow = MatrixResourcePlaceStopTable.RowGroups[0].Rows[i];
 
-                for (int j = 0; j < resourceTiles.Count + MainWindow.vectorChain.Count + 1; j++)
+                for (int j = 0; j < resourceTiles.Count + 1; j++)
                 {
-                    if (MainWindow.matrixResourcePlaceStop[i, j] == null && i > 0 && j > 0)
+                    if (MainWindow.matrixResourceStop[i, j] == null && i > 0 && j > 0)
                         currentRow.Cells.Add(new TableCell(new Paragraph(new Run("0"))));
                     else 
-                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourcePlaceStop[i, j]))));
+                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourceStop[i, j]))));
+
+                    if (i == 0)
+                    {
+                        currentRow.FontSize = 16;
+                        currentRow.FontWeight = FontWeights.Bold;
+                    }
+
+                    currentRow.Cells[0].FontSize = 16;
+                    currentRow.Cells[0].FontWeight = FontWeights.Bold;
+                }
+
+                for (int j = 0; j < MainWindow.vectorChain.Count; j++)
+                {
+                    if (MainWindow.matrixChainStop[i, j] == null && i > 0 && j >= 0)
+                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run("0"))));
+                    else
+                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixChainStop[i, j]))));
 
                     if (i == 0)
                     {

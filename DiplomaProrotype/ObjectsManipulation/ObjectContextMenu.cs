@@ -270,7 +270,7 @@ namespace DiplomaProrotype.ObjectsManipulation
             }
 
             MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
-            MainWindow.matrixResourcePlaceStop = ObjectPlacement.ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.vectorChain.Count + 1);
+            MainWindow.matrixResourceStop = ObjectPlacement.ResizeArray(MainWindow.matrixResourceStop, stopTiles.Count + 1, resourceTiles.Count + 1);
 
         }
     }

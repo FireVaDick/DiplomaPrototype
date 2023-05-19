@@ -276,9 +276,9 @@ namespace DiplomaProrotype.ObjectsManipulation
             MainWindow.chosenOneObject = resourceTile;
             MainWindow.lastTileType = "resource";
             MainWindow.matrixResourceMachine = ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
-            MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.vectorChain.Count + 1);
+            MainWindow.matrixResourceStop = ResizeArray(MainWindow.matrixResourceStop, stopTiles.Count + 1, resourceTiles.Count + 1);
             MainWindow.matrixResourceMachine[0, MainWindow.matrixResourceMachine.GetLength(1) - 1] = resourceTile.Text + " " + resourceTile.Id;
-            MainWindow.matrixResourcePlaceStop[0, MainWindow.matrixResourcePlaceStop.GetLength(1) - 1] = resourceTile.Text + " " + resourceTile.Id;
+            MainWindow.matrixResourceStop[0, MainWindow.matrixResourceStop.GetLength(1) - 1] = resourceTile.Text + " " + resourceTile.Id;
             mw.TargetCanvas.Children.Add(resourceTile);                 
         }
 
@@ -407,7 +407,7 @@ namespace DiplomaProrotype.ObjectsManipulation
                 movableTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = movableTile;
                 MainWindow.lastTileType = "movable";
-                MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.vectorChain.Count + 1);
+                MainWindow.matrixResourceStop = ResizeArray(MainWindow.matrixResourceStop, stopTiles.Count + 1, resourceTiles.Count + 1);
                 mw.TargetCanvas.Children.Add(movableTile);              
             }         
         }
@@ -451,8 +451,8 @@ namespace DiplomaProrotype.ObjectsManipulation
                 stopTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = stopTile;
                 MainWindow.lastTileType = "stop";
-                MainWindow.matrixResourcePlaceStop = ResizeArray(MainWindow.matrixResourcePlaceStop, stopTiles.Count + 1, resourceTiles.Count + MainWindow.vectorChain.Count + 1);
-                MainWindow.matrixResourcePlaceStop[MainWindow.matrixResourcePlaceStop.GetLength(0) - 1, 0] = stopTile.Text + " " + stopTile.Id;
+                MainWindow.matrixResourceStop = ResizeArray(MainWindow.matrixResourceStop, stopTiles.Count + 1, resourceTiles.Count + 1);
+                MainWindow.matrixResourceStop[MainWindow.matrixResourceStop.GetLength(0) - 1, 0] = stopTile.Text + " " + stopTile.Id;
                 mw.TargetCanvas.Children.Add(stopTile);
             }
         }

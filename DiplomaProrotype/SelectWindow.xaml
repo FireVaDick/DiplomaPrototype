@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiplomaPrototype"
         mc:Ignorable="d"      
-        Title="Окно выбора" Height="170" Width="400" ResizeMode="NoResize">
+        Title="Окно выбора" Height="170" Width="400" ResizeMode="NoResize"
+        KeyDown="SelectWindow_KeyDown">
     <Grid>
         <Grid.Resources>
             <Style TargetType="{x:Type Label}">
@@ -38,9 +39,9 @@
             <ComboBoxItem Content="Разгрузка"/>
         </ComboBox>
 
-        <Button Name="OkButton" 
-                Click="OkButton_Click" 
-                IsDefault="True" 
+        <Button Name="CancelButton" 
+                Click="CancelButton_Click" 
+                IsCancel="True" 
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Bottom" 
                 Cursor="Hand">
@@ -49,11 +50,11 @@
                     <GradientStop Color="#84A98C" Offset="0"/>
                     <GradientStop Color="#E5E9EC" Offset="0.8"/>
                 </LinearGradientBrush>
-            </Button.Background> Подтвердить
+            </Button.Background> Отменить
         </Button>
-        <Button Name="CancelButton" 
-                Click="CancelButton_Click" 
-                IsCancel="True" 
+        <Button Name="OkButton" 
+                Click="OkButton_Click" 
+                IsDefault="True" 
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Bottom" 
                 Cursor="Hand">
@@ -62,7 +63,7 @@
                     <GradientStop Color="#E5E9EC" Offset="0.2"/>
                     <GradientStop Color="#84A98C" Offset="1"/>
                 </LinearGradientBrush>
-            </Button.Background> Отменить
+            </Button.Background> Подтвердить
         </Button>
     </Grid>
 </Window>

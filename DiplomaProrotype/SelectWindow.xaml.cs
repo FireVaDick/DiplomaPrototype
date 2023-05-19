@@ -1,4 +1,6 @@
 ﻿using DiplomaProrotype;
+using DiplomaProrotype.Animations;
+using DiplomaProrotype.CanvasManipulation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -138,6 +140,19 @@ namespace DiplomaPrototype
 
 
         #region Кнопки
+        private void SelectWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Space:
+                    if (TextBox1.Text != "") currentNumber1 = Convert.ToInt32(TextBox1.Text);
+                    if (TextBox2.Text != "") currentNumber2 = Convert.ToInt32(TextBox2.Text);
+                    if (TextBox2.Text != "") currentNumber3 = Convert.ToInt32(TextBox2.Text);
+                    currentWord = WordComboBox.Text;
+                    this.Close();
+                    break;
+            }
+        }
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             if (TextBox1.Text != "") currentNumber1 = Convert.ToInt32(TextBox1.Text);
