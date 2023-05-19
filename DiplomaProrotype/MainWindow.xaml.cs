@@ -6,11 +6,14 @@ using DiplomaProrotype.ObjectsManipulation;
 using DiplomaPrototype;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace DiplomaProrotype
 {
@@ -296,8 +299,27 @@ namespace DiplomaProrotype
             }
         }
 
+
         #endregion
 
+
+        private void SliderAllInterface_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            foreach (var c in TargetCanvas.Children.OfType<UserControl>())
+            {
+                c.RenderTransform = new ScaleTransform(SliderAllInterface.Value, SliderAllInterface.Value);
+            }
+
+            foreach (var c in TargetCanvas.Children.OfType<Line>())
+            {
+                c.RenderTransform = new ScaleTransform(SliderAllInterface.Value, SliderAllInterface.Value);
+            }
+
+            foreach (var c in TargetCanvas.Children.OfType<Ellipse>())
+            {
+                c.RenderTransform = new ScaleTransform(SliderAllInterface.Value, SliderAllInterface.Value);
+            }
+        }
 
     }
 }
