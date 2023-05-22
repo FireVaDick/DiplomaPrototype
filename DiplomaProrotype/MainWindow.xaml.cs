@@ -1,4 +1,5 @@
-﻿using DiplomaProrotype.Animations;
+﻿using Bytescout.Spreadsheet;
+using DiplomaProrotype.Animations;
 using DiplomaProrotype.CanvasManipulation;
 using DiplomaProrotype.ColorsManipulation;
 using DiplomaProrotype.Models;
@@ -6,8 +7,10 @@ using DiplomaProrotype.ObjectsManipulation;
 using DiplomaPrototype;
 using System;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -209,7 +212,60 @@ namespace DiplomaProrotype
         #region Запись в Excel
         private void WriteToExcelButton_Click(object sender, RoutedEventArgs e)
         {
+            Spreadsheet document = new Spreadsheet();
+            Worksheet sheet = document.Workbook.Worksheets.Add("writeExcel");
 
+            for (int i = 0; i < machineTiles.Count + 1; i++)
+            {
+                for (int j = 0; j < resourceTiles.Count + 1; j++)
+                {
+                    var currentColumn = Convert.ToString(Convert.ToChar(65 + j));
+                    var currentCell = string.Format("{0}{1}", currentColumn, i + 1);
+
+                    if (matrixResourceMachine[i, j] == null && i > 0 && j > 0)
+                        sheet.Cell(currentCell).Value = 0;
+                    else
+                        sheet.Cell(currentCell).Value = matrixResourceMachine[i, j];
+
+                }
+            }
+
+            for (int i = 0; i < stopTiles.Count + 1; i++)
+            {
+                for (int j = 0; j < resourceTiles.Count + 1; j++)
+                {
+                    var currentColumn = Convert.ToString(Convert.ToChar(65 + j));
+                    var currentCell = string.Format("{0}{1}", currentColumn, i + 1 + matrixResourceMachine.GetLength(0));
+
+                    if (matrixResourceStop[i, j] == null && i > 0 && j > 0)
+                        sheet.Cell(currentCell).Value = 0;
+                    else
+                        sheet.Cell(currentCell).Value = matrixResourceStop[i, j];
+
+                }
+
+                for (int j = 0; j < vectorChain.Count; j++)
+                {
+                    var currentColumn = Convert.ToString(Convert.ToChar(65 + j + matrixResourceStop.GetLength(1)));
+                    var currentCell = string.Format("{0}{1}", currentColumn, i + 1 + matrixResourceMachine.GetLength(0));
+
+                    if (matrixChainStop[i, j] == null && i > 0 && j >= 0)
+                        sheet.Cell(currentCell).Value = 0;
+                    else
+                        sheet.Cell(currentCell).Value = matrixChainStop[i, j];
+
+                }
+            }
+
+            if (File.Exists(@"..\\Result.xlsx"))
+            {
+                File.Delete(@"..\\Result.xlsx");
+            }
+
+            document.SaveAs(@"..\\Result.xlsx");
+            document.Close();
+
+            //Process.Start("excel.exe", @"..\\Result");
         }
         #endregion
 
