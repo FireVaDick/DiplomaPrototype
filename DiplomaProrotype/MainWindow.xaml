@@ -65,6 +65,7 @@
                 Margin="10" 
                 HorizontalAlignment="Left" 
                 MouseWheel="ModeBorder_MouseWheel" 
+                Cursor="Hand"
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="ModePanel" 
                         Orientation="Vertical" 
@@ -140,6 +141,7 @@
                 VerticalAlignment="Top" 
                 HorizontalAlignment="Right"
                 MouseWheel="MatrixBorder_MouseWheel" 
+                Cursor="Hand"
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="MatrixPanel" Style="{StaticResource ResourceKey=SquarePanel}">
                 <local:ModeTile Margin="0,0,0,0" Text="Матрица" Image="Icons/x128/CheckLinks128.png" MouseLeftButtonDown="ModeTile_CheckAllLinks_MouseLeftButtonDown">
@@ -152,6 +154,24 @@
             </StackPanel>
         </Border>
 
+        <Button Name="WriteToExcelButton"                 
+                Width="100" 
+                Height="30" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top" 
+                Margin="0, 115, 10, 0"
+                FontSize="10"
+                Click="WriteToExcelButton_Click"
+                Cursor="Hand">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0.0, 0.0" EndPoint="0.9, 1" >
+                    <GradientStop Color="#E5E9EC" Offset="0.3"/>
+                    <GradientStop Color="#84A98C" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background> Записать в Excel
+        </Button>
+        
+
         <!-- Меню очистки -->
         <Border Name="ClearBorder" 
                 Width="100" 
@@ -160,6 +180,7 @@
                 VerticalAlignment="Bottom" 
                 HorizontalAlignment="Left"
                 MouseWheel="ClearBorder_MouseWheel" 
+                Cursor="Hand"
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="ClearPanel" Style="{StaticResource ResourceKey=SquarePanel}" >
                 <local:ModeTile Margin="0,0,0,0" x:Name="Eraser" Text="Очистить" Image="Icons/x128/Eraser128.png" MouseDown="ModeTile_Erase_MouseDown">

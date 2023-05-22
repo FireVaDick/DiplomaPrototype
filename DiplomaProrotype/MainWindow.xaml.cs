@@ -26,6 +26,7 @@ namespace DiplomaProrotype
         static public List<MachineTile> machineTiles = new List<MachineTile>();
         static public List<MovableTile> movableTiles = new List<MovableTile>();
         static public List<StopTile> stopTiles = new List<StopTile>();
+        static public List<Rectangle> mainStopPlaces = new List<Rectangle>();
         static public List<Link> links = new List<Link>();
 
         static public ResourceTile resourceTileFromContextMenu;
@@ -205,10 +206,39 @@ namespace DiplomaProrotype
         #endregion
 
 
+        #region Запись в Excel
+        private void WriteToExcelButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
+
+
         #region Очистка холста
         private void ModeTile_Erase_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Cleanup.CreateCleanupContextMenu();
+        }
+        #endregion
+
+
+        #region Масштабирование
+        private void SliderAllInterface_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            foreach (var c in TargetCanvas.Children.OfType<UserControl>())
+            {
+                c.RenderTransform = new ScaleTransform(SliderAllInterface.Value, SliderAllInterface.Value);
+            }
+
+            foreach (var c in TargetCanvas.Children.OfType<Line>())
+            {
+                c.RenderTransform = new ScaleTransform(SliderAllInterface.Value, SliderAllInterface.Value);
+            }
+
+            foreach (var c in TargetCanvas.Children.OfType<Ellipse>())
+            {
+                c.RenderTransform = new ScaleTransform(SliderAllInterface.Value, SliderAllInterface.Value);
+            }
         }
         #endregion
 
@@ -301,26 +331,6 @@ namespace DiplomaProrotype
 
 
         #endregion
-
-
-        private void SliderAllInterface_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            foreach (var c in TargetCanvas.Children.OfType<UserControl>())
-            {
-                c.RenderTransform = new ScaleTransform(SliderAllInterface.Value, SliderAllInterface.Value);
-            }
-
-            foreach (var c in TargetCanvas.Children.OfType<Line>())
-            {
-                c.RenderTransform = new ScaleTransform(SliderAllInterface.Value, SliderAllInterface.Value);
-            }
-
-            foreach (var c in TargetCanvas.Children.OfType<Ellipse>())
-            {
-                c.RenderTransform = new ScaleTransform(SliderAllInterface.Value, SliderAllInterface.Value);
-            }
-        }
-
     }
 }
 

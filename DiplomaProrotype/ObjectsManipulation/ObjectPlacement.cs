@@ -351,6 +351,8 @@ namespace DiplomaProrotype.ObjectsManipulation
         {            
             var movableTile = new MovableTile();
 
+            //Проверка на координаты главного стояночного места
+
             if (movableData.Amount == 0) // Создание из панели
             {
                 SelectWindow.CreateMovableSelectWindow();

@@ -498,6 +498,9 @@ namespace DiplomaProrotype.CanvasManipulation
 
             if (MainWindow.currentMode == "path")
             {
+                if (MainWindow.currentPathType == "discontinuous")
+                    MainWindow.mainStopPlaces.Add(pathRectangle);
+
                 pathRectangle = null;
 
                 EnableObjectsOrNot.SetAllObjectsToEnabled();
