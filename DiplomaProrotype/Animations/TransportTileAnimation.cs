@@ -1,18 +1,11 @@
 ﻿using DiplomaProrotype;
-using DiplomaProrotype.Animations;
-using DiplomaProrotype.ObjectsManipulation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Runtime.CompilerServices;
-using DiplomaProrotype.Threads;
 using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Animation;
 
 namespace DiplomaPrototype.Animations
 {
@@ -24,12 +17,51 @@ namespace DiplomaPrototype.Animations
 
         private int currentStoryboardIndex = 0; // индекс текущего Storyboard
 
-        public TransportTileAnimation(Storyboard storyboard, MovableTile nmovableTile)
+        public TransportTileAnimation(Storyboard storyboard, MovableTile nmovableTile, List<AnimationClock> clocks, List<DoubleAnimation> animations)
         {
             this.storyboard = storyboard;
             movableTile = nmovableTile;
-            StartNextStoryboard();
-        }       
+            //StartNextStoryboard();
+            movableTile.ApplyAnimationClock(Canvas.LeftProperty, (AnimationClock)clocks[0]);
+
+
+            clocks[0].Completed += (s, e) =>
+            {
+                movableTile.ApplyAnimationClock(Canvas.TopProperty, (AnimationClock)clocks[1]);
+            };
+            clocks[1].Completed += (s, e) =>
+            {
+                movableTile.ResourceFigure1.ApplyAnimationClock(Button.HeightProperty, clocks[2]);
+            };
+            clocks[2].Completed += (s, e) =>
+            {
+                movableTile.ApplyAnimationClock(Canvas.LeftProperty, (AnimationClock)clocks[3]);
+            };
+            clocks[3].Completed += (s, e) =>
+            {
+                movableTile.ApplyAnimationClock(Canvas.TopProperty, (AnimationClock)clocks[4]);
+            };
+            clocks[4].Completed += (s, e) =>
+            {
+                movableTile.ApplyAnimationClock(Canvas.LeftProperty, (AnimationClock)clocks[5]);
+            };
+            clocks[5].Completed += (s, e) =>
+            {
+                movableTile.ApplyAnimationClock(Canvas.TopProperty, (AnimationClock)clocks[6]);
+            };
+            clocks[6].Completed += (s, e) =>
+            {
+                movableTile.ResourceFigure1.ApplyAnimationClock(Button.HeightProperty, clocks[7]);
+            };
+            clocks[7].Completed += (s, e) =>
+            {
+                movableTile.ApplyAnimationClock(Canvas.TopProperty, (AnimationClock)clocks[8]);
+            };
+            clocks[8].Completed += (s, e) =>
+            {
+                movableTile.ApplyAnimationClock(Canvas.LeftProperty, (AnimationClock)clocks[9]);
+            };
+        }
 
         private void Storyboard_Completed(object sender, System.EventArgs e)
         {
@@ -39,7 +71,7 @@ namespace DiplomaPrototype.Animations
         private void StartNextStoryboard()
         {
             BackgroundWorker worker = new BackgroundWorker();
-           
+
 
             storyboard.Begin();
 
