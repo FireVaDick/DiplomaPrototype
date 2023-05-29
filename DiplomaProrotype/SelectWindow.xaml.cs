@@ -10,7 +10,8 @@ namespace DiplomaPrototype
         static public int currentNumber1;
         static public int currentNumber2;
         static public int currentNumber3;
-        static public string currentWord;
+        static public string currentWord = "";
+        static public string currentText = "";
 
 
         public SelectWindow()
@@ -24,7 +25,7 @@ namespace DiplomaPrototype
 
             this.TextBox1.PreviewTextInput += new TextCompositionEventHandler(NumberTextBox_PreviewTextInput);
             this.TextBox2.PreviewTextInput += new TextCompositionEventHandler(NumberTextBox_PreviewTextInput);
-            this.TextBox2.PreviewTextInput += new TextCompositionEventHandler(NumberTextBox_PreviewTextInput);
+            this.TextBox3.PreviewTextInput += new TextCompositionEventHandler(NumberTextBox_PreviewTextInput);
         }
 
 
@@ -34,6 +35,29 @@ namespace DiplomaPrototype
             currentNumber2 = 0;
             currentNumber3 = 0;
             currentWord = "";
+            currentText = "";
+        }
+
+        static public void CreateResourceSelectWindow()
+        {
+            SetZeroValues();
+
+            MainWindow.selectWindow = new SelectWindow();
+            MainWindow.selectWindow.TextBox4.Focus();
+            MainWindow.selectWindow.Label1.Content = "Имя задела:";
+            MainWindow.selectWindow.Label2.Visibility = Visibility.Hidden;
+            MainWindow.selectWindow.Label3.Visibility = Visibility.Hidden;
+        
+            MainWindow.selectWindow.TextBox4.Visibility = Visibility.Visible;
+            MainWindow.selectWindow.TextBox4.IsEnabled = true;
+
+            MainWindow.selectWindow.TextBox1.Visibility = Visibility.Hidden;
+            MainWindow.selectWindow.TextBox1.IsEnabled = false;
+            MainWindow.selectWindow.TextBox2.Visibility = Visibility.Hidden;
+            MainWindow.selectWindow.TextBox2.IsEnabled = false;
+            MainWindow.selectWindow.TextBox3.Visibility = Visibility.Hidden;
+            MainWindow.selectWindow.TextBox3.IsEnabled = false;
+            MainWindow.selectWindow.ShowDialog();
         }
 
         static public void CreateMachineSelectWindow()
@@ -134,8 +158,9 @@ namespace DiplomaPrototype
                 case Key.Space:
                     if (TextBox1.Text != "") currentNumber1 = Convert.ToInt32(TextBox1.Text);
                     if (TextBox2.Text != "") currentNumber2 = Convert.ToInt32(TextBox2.Text);
-                    if (TextBox2.Text != "") currentNumber3 = Convert.ToInt32(TextBox2.Text);
+                    if (TextBox3.Text != "") currentNumber3 = Convert.ToInt32(TextBox3.Text);
                     currentWord = WordComboBox.Text;
+                    currentText = TextBox4.Text;
                     this.Close();
                     break;
             }
@@ -144,8 +169,9 @@ namespace DiplomaPrototype
         {
             if (TextBox1.Text != "") currentNumber1 = Convert.ToInt32(TextBox1.Text);
             if (TextBox2.Text != "") currentNumber2 = Convert.ToInt32(TextBox2.Text);
-            if (TextBox2.Text != "") currentNumber3 = Convert.ToInt32(TextBox2.Text);
+            if (TextBox3.Text != "") currentNumber3 = Convert.ToInt32(TextBox3.Text);
             currentWord = WordComboBox.Text;
+            currentText = TextBox4.Text;
             this.Close();
         }
 

@@ -81,6 +81,7 @@
 
   <ItemGroup>
     <PackageReference Include="Bytescout.Spreadsheet" Version="4.7.0.2038" />
+    <PackageReference Include="FreeSpire.XLS" Version="12.7.0" />
     <PackageReference Include="Haley.Extensions" Version="2.1.15.2" />
     <PackageReference Include="Haley.Helpers" Version="2.1.9" />
     <PackageReference Include="Haley.IOC" Version="3.0.13" />

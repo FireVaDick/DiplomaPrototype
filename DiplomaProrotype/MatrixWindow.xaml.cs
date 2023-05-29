@@ -85,10 +85,7 @@ namespace DiplomaProrotype
 
                 for (int j = 0; j < resourceTiles.Count + 1; j++)
                 {
-                    if (MainWindow.matrixResourceMachine[i, j] == null && i > 0 && j > 0)
-                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run("0"))));
-                    else
-                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourceMachine[i, j]))));
+                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourceMachine[i, j]))));
 
                     if (i == 0)
                     {
@@ -133,10 +130,7 @@ namespace DiplomaProrotype
 
                 for (int j = 0; j < resourceTiles.Count + 1; j++)
                 {
-                    if (MainWindow.matrixResourceStop[i, j] == null && i > 0 && j > 0)
-                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run("0"))));
-                    else 
-                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourceStop[i, j]))));
+                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourceStop[i, j]))));
 
                     if (i == 0)
                     {
@@ -150,10 +144,7 @@ namespace DiplomaProrotype
 
                 for (int j = 0; j < MainWindow.vectorChain.Count; j++)
                 {
-                    if (MainWindow.matrixChainStop[i, j] == null && i > 0 && j >= 0)
-                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run("0"))));
-                    else
-                        currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixChainStop[i, j]))));
+                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixChainStop[i, j]))));
 
                     if (i == 0)
                     {

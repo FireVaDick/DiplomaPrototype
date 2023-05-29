@@ -19,6 +19,8 @@ namespace DiplomaProrotype.ObjectsManipulation
         static private List<StopTile> stopTiles = MainWindow.stopTiles;
         static private List<Link> linksResourceMachine = MainWindow.links;
 
+        static private int newMatrixCrossingsRows = 1;
+
 
         static public void ObjectMovingFromPanelOrCanvas(DragEventArgs e)
         {
@@ -254,13 +256,18 @@ namespace DiplomaProrotype.ObjectsManipulation
         {
             var resourceTile = new ResourceTile();
 
+            SelectWindow.CreateResourceSelectWindow();
+            if (SelectWindow.currentText == "")
+                resourceTile.Text = "Задел";
+            else
+                resourceTile.Text = SelectWindow.currentText;
+
             CreateContextMenu(resourceTile);
             MainWindow.resourceTiles.Add(resourceTile);
 
             Canvas.SetLeft(resourceTile, dropPosition.X - resourceTile.Width / 2 - 7.5);
             Canvas.SetTop(resourceTile, dropPosition.Y - resourceTile.Height / 2);
-            
-            resourceTile.Text = "Задел";
+                     
             resourceTile.Id = MainWindow.resourceTiles.Count;
             resourceTile.ResourceText.Margin = new Thickness(0, 0, 0, 15);
             resourceTile.ResourceId.Visibility = Visibility.Visible;
@@ -334,7 +341,8 @@ namespace DiplomaProrotype.ObjectsManipulation
                 MainWindow.chosenOneObject = machineTile;
                 MainWindow.lastTileType = "machine";
                 MainWindow.matrixResourceMachine = ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
-                MainWindow.matrixResourceMachine[MainWindow.matrixResourceMachine.GetLength(0) - 1, 0] = machineTile.Text + " " + machineTile.Id;
+                MainWindow.matrixResourceMachine[MainWindow.matrixResourceMachine.GetLength(0) - 1, 0] = machineTile.Text + " " + machineTile.Id;                
+                MainWindow.operations.Add(machineTile.Text + " " + machineTile.Id);
                 mw.TargetCanvas.Children.Add(machineTile);
 
                 // Добавление пустого задела рядом
@@ -410,7 +418,7 @@ namespace DiplomaProrotype.ObjectsManipulation
                 MainWindow.chosenOneObject = movableTile;
                 MainWindow.lastTileType = "movable";
                 MainWindow.matrixResourceStop = ResizeArray(MainWindow.matrixResourceStop, stopTiles.Count + 1, resourceTiles.Count + 1);
-                mw.TargetCanvas.Children.Add(movableTile);              
+                mw.TargetCanvas.Children.Add(movableTile);             
             }         
         }
 
@@ -455,7 +463,24 @@ namespace DiplomaProrotype.ObjectsManipulation
                 MainWindow.lastTileType = "stop";
                 MainWindow.matrixResourceStop = ResizeArray(MainWindow.matrixResourceStop, stopTiles.Count + 1, resourceTiles.Count + 1);
                 MainWindow.matrixResourceStop[MainWindow.matrixResourceStop.GetLength(0) - 1, 0] = stopTile.Text + " " + stopTile.Id;
+                MainWindow.operations.Add(stopTile.Text + " " + stopTile.Id);
                 mw.TargetCanvas.Children.Add(stopTile);
+
+                // Переезды
+                int oldMatrixCrossingsRows = newMatrixCrossingsRows - 1;
+                newMatrixCrossingsRows += (stopTiles.Count - 1) * 2;
+           
+                MainWindow.matrixCrossings = ResizeArray(MainWindow.matrixCrossings, newMatrixCrossingsRows, 1/* resourceTiles.Count + MainWindow.vectorChain.Count + 1*/);
+
+                int skipValue = 0;
+                for (int i = 1; i < stopTiles.Count; i++)
+                {
+                    MainWindow.matrixCrossings[i + oldMatrixCrossingsRows + skipValue, 0] =
+                        string.Format("Переезд [{0} {1} - {2} {3}]", stopTiles[i - 1].Text, stopTiles[i - 1].Id, stopTiles[stopTiles.Count - 1].Text, stopTiles[stopTiles.Count - 1].Id);
+                    MainWindow.matrixCrossings[i + oldMatrixCrossingsRows + skipValue + 1, 0] =
+                        string.Format("Переезд [{0} {1} - {2} {3}]", stopTiles[stopTiles.Count - 1].Text, stopTiles[stopTiles.Count - 1].Id, stopTiles[i -1].Text, stopTiles[i - 1].Id);
+                    skipValue++;
+                } // было i и stopTiles.Count
             }
         }
 
