@@ -35,7 +35,12 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
         private DoubleAnimation MoveFrom3To4Y;
         private DoubleAnimation MoveFrom4To5Y;
         private DoubleAnimation MoveFrom4To5X;
-
+        private DoubleAnimation MoveFrom5To6Y;
+        private DoubleAnimation MoveFrom5To6X;
+        private DoubleAnimation MoveFrom6To7Y;
+        private DoubleAnimation MoveFrom6To7X;
+        private DoubleAnimation MoveFrom7To1Y;
+        private DoubleAnimation MoveFrom7To1X;
 
         public RoutesCreating() 
         {
@@ -49,11 +54,11 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
                 }
                 else if (operation.Contains("Погрузка"))
                 {
-                    stories.Enqueue(Input(operation));
+                    Input(operation);
                 }
                 else if (operation.Contains("Разгрузка"))
                 {
-                    stories.Enqueue(Output(operation));
+                    Output(operation);
                 }
                 else
                 {
@@ -76,22 +81,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             Vector stopTile4 = VisualTreeHelper.GetOffset(stopTiles[3]);
             Vector stopTile5 = VisualTreeHelper.GetOffset(stopTiles[4]);
             Vector stopTile6 = VisualTreeHelper.GetOffset(stopTiles[5]);
-            Vector stopTile7 = VisualTreeHelper.GetOffset(stopTiles[6]);
-
-            PathGeometry pathGeometry = new PathGeometry();
-            PathFigure pathFigure = new PathFigure();
-
-            pathFigure.StartPoint = new Point(stopTile1.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2));
-
-
-            //for (int j = 0; j < 2; j++)
-            //{
-            //    for (int i = 1; i < coordinates.Count; i++)
-            //    {
-            //        pathFigure.Segments.Add(new LineSegment(new Point(coordinates[i - 1].X, coordinates[i - 1].Y), true));
-            //        pathFigure.Segments.Add(new LineSegment(new Point(coordinates[i].X, coordinates[i - 1].Y), true));
-            //    }
-            //}
+            Vector stopTile7 = VisualTreeHelper.GetOffset(stopTiles[6]);          
 
             //1-2
 
@@ -203,7 +193,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             AnimationClock widthAnimationClock2 = widthAnimation2.CreateClock();
 
             animations.Add(widthAnimation2);
-            //4-1
+            //4-5
 
             MoveFrom4To5Y = new DoubleAnimation();
             MoveFrom4To5Y.From = stopTile4.Y - YMargin;
@@ -215,7 +205,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             Storyboard.SetTarget(MoveFrom4To5Y, movableTiles[0]);
             Storyboard.SetTargetProperty(MoveFrom4To5Y, new PropertyPath(Canvas.LeftProperty));
 
-            AnimationClock MoveFrom4To1YClock = MoveFrom4To5Y.CreateClock() as AnimationClock;
+            AnimationClock MoveFrom4To5YClock = MoveFrom4To5Y.CreateClock() as AnimationClock;
 
             animations.Add(MoveFrom4To5Y);
 
@@ -233,6 +223,67 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 
             animations.Add(MoveFrom4To5X);
 
+            //5-6
+
+            MoveFrom5To6Y = new DoubleAnimation();
+            MoveFrom5To6Y.From = stopTile5.Y - YMargin;
+            MoveFrom5To6Y.To = stopTile6.Y - YMargin;
+            MoveFrom5To6Y.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFrom5To6Y.AutoReverse = false;
+            MoveFrom5To6Y.RepeatBehavior = new RepeatBehavior(9);
+
+            Storyboard.SetTarget(MoveFrom5To6Y, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFrom5To6Y, new PropertyPath(Canvas.LeftProperty));
+
+            AnimationClock MoveFrom5To6YClock = MoveFrom5To6Y.CreateClock() as AnimationClock;
+
+            animations.Add(MoveFrom5To6Y);
+
+            MoveFrom5To6X = new DoubleAnimation();
+            MoveFrom5To6X.From = stopTile5.X - XMargin;
+            MoveFrom5To6X.To = stopTile6.X - XMargin;
+            MoveFrom5To6X.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFrom5To6X.AutoReverse = false;
+            MoveFrom5To6X.RepeatBehavior = new RepeatBehavior(10);
+
+            Storyboard.SetTarget(MoveFrom5To6X, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFrom5To6X, new PropertyPath(Canvas.TopProperty));
+
+            AnimationClock MoveFrom5To6XClock = MoveFrom5To6X.CreateClock() as AnimationClock;
+
+            animations.Add(MoveFrom5To6X);
+
+            //6-7
+
+            MoveFrom6To7Y = new DoubleAnimation();
+            MoveFrom6To7Y.From = stopTile5.Y - YMargin;
+            MoveFrom6To7Y.To = stopTile6.Y - YMargin;
+            MoveFrom6To7Y.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFrom6To7Y.AutoReverse = false;
+            MoveFrom6To7Y.RepeatBehavior = new RepeatBehavior(9);
+
+            Storyboard.SetTarget(MoveFrom6To7Y, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFrom6To7Y, new PropertyPath(Canvas.LeftProperty));
+
+            AnimationClock MoveFrom6To7YClock = MoveFrom6To7Y.CreateClock() as AnimationClock;
+
+            animations.Add(MoveFrom5To6Y);
+
+            MoveFrom6To7X = new DoubleAnimation();
+            MoveFrom6To7X.From = stopTile5.X - XMargin;
+            MoveFrom6To7X.To = stopTile6.X - XMargin;
+            MoveFrom6To7X.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFrom6To7X.AutoReverse = false;
+            MoveFrom6To7X.RepeatBehavior = new RepeatBehavior(10);
+
+            Storyboard.SetTarget(MoveFrom6To7X, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFrom6To7X, new PropertyPath(Canvas.TopProperty));
+
+            AnimationClock MoveFrom6To7XClock = MoveFrom6To7X.CreateClock() as AnimationClock;
+
+            animations.Add(MoveFrom5To6X);
+
+
             clocks.Add(MoveFrom1To2XClock);
             clocks.Add(MoveFrom1To2YClock);
             clocks.Add(widthanimationClock);
@@ -241,9 +292,12 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             clocks.Add(MoveFrom3To4XClock);
             clocks.Add(MoveFrom3To4YClock);
             clocks.Add(widthAnimationClock2);
-            clocks.Add(MoveFrom4To1YClock);
             clocks.Add(MoveFrom4To5XClock);
-               
+            clocks.Add(MoveFrom4To5YClock);
+            clocks.Add(MoveFrom5To6XClock);
+            clocks.Add(MoveFrom5To6YClock);
+
+
             Storyboard storyboard = new Storyboard();
 
             return storyboard;
@@ -260,9 +314,6 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             Vector start = VisualTreeHelper.GetOffset(stopTiles[(startStopTileIndex)]);
             Vector end = VisualTreeHelper.GetOffset(stopTiles[(endStopTileIndex)]);
             Vector lastInputTargetMargin = VisualTreeHelper.GetOffset(stopTiles[2]);
-
-            Vector V1 = VisualTreeHelper.GetOffset(stopTiles[startStopTileIndex]);
-            Point p1 = new Point(V1.X, V1.Y);
 
 
             Point startPoint = new Point(start.X, start.Y);
@@ -299,64 +350,36 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 
         }
 
-        public Storyboard Input(string operationName)
+        public void Input(string operationName)
         {
-            Vector startTargetMargin = VisualTreeHelper.GetOffset(stopTiles[(int.Parse(operationName[9].ToString()) - 1)]);
-           
-            Point startPoint = new Point(startTargetMargin.X, startTargetMargin.Y);
-           
-            PathGeometry pathGeometry = new PathGeometry();
-            PathFigure pathFigure = new PathFigure();
+            //Погрузка
+            DoubleAnimation widthAnimation = new DoubleAnimation();
+            widthAnimation.From = movableTiles[0].ResourceFigure1.Height;
+            widthAnimation.To = movableTiles[0].ResourceFigure1.Height / 2;
+            widthAnimation.Duration = new Duration(TimeSpan.FromSeconds(2));
+            widthAnimation.AutoReverse = false;
+            widthAnimation.RepeatBehavior = new RepeatBehavior(3);
 
-            pathFigure.StartPoint = startPoint;
 
-            pathFigure.Segments.Add(new LineSegment(startPoint, true));
+            AnimationClock widthanimationClock = widthAnimation.CreateClock() as AnimationClock;
 
-            pathGeometry.Figures.Add(pathFigure);
-
-            // Создание DoubleAnimationUsingPath, содержащего анимацию движения объекта по траектории
-            MatrixAnimationUsingPath animation = new MatrixAnimationUsingPath();
-            animation.PathGeometry = pathGeometry;
-            animation.Duration = TimeSpan.FromSeconds(double.Parse(operationName[11..]));
-
-            // Создание Storyboard и добавление в него анимации
-            Storyboard storyboard = new Storyboard();
-            Storyboard.SetTarget(animation, movableTiles[0]);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
-            storyboard.Children.Add(animation);
-
-            // Запуск анимации
-            return storyboard;
+            animations.Add(widthAnimation);
         }
 
-        public Storyboard Output(string operationName)
+        public void Output(string operationName)
         {
             Vector startTargetMargin = VisualTreeHelper.GetOffset(stopTiles[((3 + int.Parse(operationName[10].ToString())) - 1)]);
 
-            Point startPoint = new Point(startTargetMargin.X, startTargetMargin.Y);
+            DoubleAnimation widthAnimation2 = new DoubleAnimation();
+            widthAnimation2.From = movableTiles[0].ResourceFigure1.Width;
+            widthAnimation2.To = movableTiles[0].ResourceFigure1.Width * 2;
+            widthAnimation2.Duration = new Duration(TimeSpan.FromSeconds(2));
+            widthAnimation2.AutoReverse = false;
+            widthAnimation2.RepeatBehavior = new RepeatBehavior(8);
 
-            PathGeometry pathGeometry = new PathGeometry();
-            PathFigure pathFigure = new PathFigure();
+            AnimationClock widthAnimationClock2 = widthAnimation2.CreateClock();
 
-            pathFigure.StartPoint = startPoint;
-
-            pathFigure.Segments.Add(new LineSegment(startPoint, true));
-
-            pathGeometry.Figures.Add(pathFigure);
-
-            // Создание DoubleAnimationUsingPath, содержащего анимацию движения объекта по траектории
-            MatrixAnimationUsingPath animation = new MatrixAnimationUsingPath();
-            animation.PathGeometry = pathGeometry;
-            animation.Duration = TimeSpan.FromSeconds(double.Parse(operationName[12..]));
-
-            // Создание Storyboard и добавление в него анимации
-            Storyboard storyboard = new Storyboard();
-            Storyboard.SetTarget(animation, movableTiles[0]);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
-            storyboard.Children.Add(animation);
-
-            // Запуск анимации
-            return storyboard;
+            animations.Add(widthAnimation2);         
         }
     }
 }
