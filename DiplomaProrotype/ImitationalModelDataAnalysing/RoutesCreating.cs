@@ -27,14 +27,14 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
         public List<AnimationClock> clocks = new List<AnimationClock>();
 
 
-        private DoubleAnimation myDoubleAnimation;
-        private DoubleAnimation myDoubleAnimation2;
-        private DoubleAnimation myDoubleAnimation3;
-        private DoubleAnimation myDoubleAnimation4;
-        private DoubleAnimation myDoubleAnimation5;
-        private DoubleAnimation myDoubleAnimation6;
-        private DoubleAnimation myDoubleAnimation7;
-        private DoubleAnimation myDoubleAnimation8;
+        private DoubleAnimation MoveFrom1To2X;
+        private DoubleAnimation MoveFrom1To2Y;
+        private DoubleAnimation MoveFrom2To3X;
+        private DoubleAnimation MoveFrom2To3Y;
+        private DoubleAnimation MoveFrom3To4X;
+        private DoubleAnimation MoveFrom3To4Y;
+        private DoubleAnimation MoveFrom4To5Y;
+        private DoubleAnimation MoveFrom4To5X;
 
 
         public RoutesCreating() 
@@ -45,7 +45,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             {
                 if (operation.Contains("Переезд"))
                 {
-                    stories.Enqueue(Relocate(operation));
+                    Relocate(operation);
                 }
                 else if (operation.Contains("Погрузка"))
                 {
@@ -66,13 +66,17 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
         public Storyboard CreateStory()
         {
 
-            
+            double YMargin = 20;
+            double XMargin = 20;
 
             Vector movableTile = VisualTreeHelper.GetOffset(movableTiles[0]);
             Vector stopTile1 = VisualTreeHelper.GetOffset(stopTiles[0]);
             Vector stopTile2 = VisualTreeHelper.GetOffset(stopTiles[1]);
             Vector stopTile3 = VisualTreeHelper.GetOffset(stopTiles[2]);
             Vector stopTile4 = VisualTreeHelper.GetOffset(stopTiles[3]);
+            Vector stopTile5 = VisualTreeHelper.GetOffset(stopTiles[4]);
+            Vector stopTile6 = VisualTreeHelper.GetOffset(stopTiles[5]);
+            Vector stopTile7 = VisualTreeHelper.GetOffset(stopTiles[6]);
 
             PathGeometry pathGeometry = new PathGeometry();
             PathFigure pathFigure = new PathFigure();
@@ -91,33 +95,33 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 
             //1-2
 
-            myDoubleAnimation = new DoubleAnimation();
-            myDoubleAnimation.From = stopTile1.X - (movableTiles[0].Width - 50);
-            myDoubleAnimation.To = stopTile2.X - (movableTiles[0].Width - 50);
-            myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(2));
-            myDoubleAnimation.AutoReverse = false;
-            myDoubleAnimation.RepeatBehavior = new RepeatBehavior(1);
+            MoveFrom1To2X = new DoubleAnimation();
+            MoveFrom1To2X.From = stopTile1.X - XMargin;
+            MoveFrom1To2X.To = stopTile2.X - XMargin;
+            MoveFrom1To2X.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFrom1To2X.AutoReverse = false;
+            MoveFrom1To2X.RepeatBehavior = new RepeatBehavior(1);
 
-            Storyboard.SetTarget(myDoubleAnimation, movableTiles[0]);
-            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Canvas.LeftProperty));
+            Storyboard.SetTarget(MoveFrom1To2X, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFrom1To2X, new PropertyPath(Canvas.LeftProperty));
 
-            AnimationClock animationClock = myDoubleAnimation.CreateClock() as AnimationClock;
+            AnimationClock MoveFrom1To2XClock = MoveFrom1To2X.CreateClock() as AnimationClock;
 
-            animations.Add(myDoubleAnimation);
+            animations.Add(MoveFrom1To2X);
 
-            myDoubleAnimation2 = new DoubleAnimation();
-            myDoubleAnimation2.From = stopTile1.Y - (movableTiles[0].Height / 2);
-            myDoubleAnimation2.To = stopTile2.Y - (movableTiles[0].Height / 2);
-            myDoubleAnimation2.Duration = new Duration(TimeSpan.FromSeconds(2));
-            myDoubleAnimation2.AutoReverse = false;
-            myDoubleAnimation2.RepeatBehavior = new RepeatBehavior(2);
+            MoveFrom1To2Y = new DoubleAnimation();
+            MoveFrom1To2Y.From = stopTile1.Y - YMargin;
+            MoveFrom1To2Y.To = stopTile2.Y - YMargin;
+            MoveFrom1To2Y.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFrom1To2Y.AutoReverse = false;
+            MoveFrom1To2Y.RepeatBehavior = new RepeatBehavior(2);
 
-            Storyboard.SetTarget(myDoubleAnimation2, movableTiles[0]);
-            Storyboard.SetTargetProperty(myDoubleAnimation2, new PropertyPath(Canvas.TopProperty));
+            Storyboard.SetTarget(MoveFrom1To2Y, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFrom1To2Y, new PropertyPath(Canvas.TopProperty));
 
-            AnimationClock animationClock2 = myDoubleAnimation2.CreateClock() as AnimationClock;
+            AnimationClock MoveFrom1To2YClock = MoveFrom1To2Y.CreateClock() as AnimationClock;
 
-            animations.Add(myDoubleAnimation2);
+            animations.Add(MoveFrom1To2Y);
             //Погрузка
             DoubleAnimation widthAnimation = new DoubleAnimation();
             widthAnimation.From = movableTiles[0].ResourceFigure1.Height;
@@ -132,61 +136,61 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             animations.Add(widthAnimation);
 
             //2-3
-            myDoubleAnimation3 = new DoubleAnimation();
-            myDoubleAnimation3.From = stopTile2.X - (movableTiles[0].Width - 50);
-            myDoubleAnimation3.To = stopTile3.X - (movableTiles[0].Width - 50);
-            myDoubleAnimation3.Duration = new Duration(TimeSpan.FromSeconds(2));
-            myDoubleAnimation3.AutoReverse = false;
-            myDoubleAnimation3.RepeatBehavior = new RepeatBehavior(4);
+            MoveFrom2To3X = new DoubleAnimation();
+            MoveFrom2To3X.From = stopTile2.X - XMargin;
+            MoveFrom2To3X.To = stopTile3.X - XMargin;
+            MoveFrom2To3X.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFrom2To3X.AutoReverse = false;
+            MoveFrom2To3X.RepeatBehavior = new RepeatBehavior(4);
 
-            Storyboard.SetTarget(myDoubleAnimation3, movableTiles[0]);
-            Storyboard.SetTargetProperty(myDoubleAnimation3, new PropertyPath(Canvas.LeftProperty));
+            Storyboard.SetTarget(MoveFrom2To3X, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFrom2To3X, new PropertyPath(Canvas.LeftProperty));
 
-            AnimationClock animationClock3 = myDoubleAnimation3.CreateClock() as AnimationClock;
+            AnimationClock MoveFrom2To3XClock = MoveFrom2To3X.CreateClock() as AnimationClock;
 
-            animations.Add(myDoubleAnimation3);
+            animations.Add(MoveFrom2To3X);
 
-            myDoubleAnimation4 = new DoubleAnimation();
-            myDoubleAnimation4.From = stopTile2.Y - (movableTiles[0].Height / 2);
-            myDoubleAnimation4.To = stopTile3.Y - (movableTiles[0].Height / 2);
-            myDoubleAnimation4.Duration = new Duration(TimeSpan.FromSeconds(2));
-            myDoubleAnimation4.AutoReverse = false;
-            myDoubleAnimation4.RepeatBehavior = new RepeatBehavior(5);
+            MoveFrom2To3Y = new DoubleAnimation();
+            MoveFrom2To3Y.From = stopTile2.Y - YMargin;
+            MoveFrom2To3Y.To = stopTile3.Y - YMargin;
+            MoveFrom2To3Y.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFrom2To3Y.AutoReverse = false;
+            MoveFrom2To3Y.RepeatBehavior = new RepeatBehavior(5);
 
-            Storyboard.SetTarget(myDoubleAnimation4, movableTiles[0]);
-            Storyboard.SetTargetProperty(myDoubleAnimation4, new PropertyPath(Canvas.TopProperty));
+            Storyboard.SetTarget(MoveFrom2To3Y, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFrom2To3Y, new PropertyPath(Canvas.TopProperty));
 
-            AnimationClock animationClock4 = myDoubleAnimation4.CreateClock() as AnimationClock;
+            AnimationClock MoveFrom2To3YClock = MoveFrom2To3Y.CreateClock() as AnimationClock;
 
-            animations.Add(myDoubleAnimation4);
+            animations.Add(MoveFrom2To3Y);
             //3-4
-            myDoubleAnimation5 = new DoubleAnimation();
-            myDoubleAnimation5.From = stopTile3.X - (movableTiles[0].Width - 50);
-            myDoubleAnimation5.To = stopTile4.X - (movableTiles[0].Width - 50);
-            myDoubleAnimation5.Duration = new Duration(TimeSpan.FromSeconds(2));
-            myDoubleAnimation5.AutoReverse = false;
-            myDoubleAnimation5.RepeatBehavior = new RepeatBehavior(6);
+            MoveFrom3To4X = new DoubleAnimation();
+            MoveFrom3To4X.From = stopTile3.X - XMargin;
+            MoveFrom3To4X.To = stopTile4.X - XMargin;
+            MoveFrom3To4X.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFrom3To4X.AutoReverse = false;
+            MoveFrom3To4X.RepeatBehavior = new RepeatBehavior(6);
 
-            Storyboard.SetTarget(myDoubleAnimation5, movableTiles[0]);
-            Storyboard.SetTargetProperty(myDoubleAnimation5, new PropertyPath(Canvas.LeftProperty));
+            Storyboard.SetTarget(MoveFrom3To4X, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFrom3To4X, new PropertyPath(Canvas.LeftProperty));
 
-            AnimationClock animationClock5 = myDoubleAnimation5.CreateClock() as AnimationClock;
+            AnimationClock MoveFrom3To4XClock = MoveFrom3To4X.CreateClock() as AnimationClock;
 
-            animations.Add(myDoubleAnimation5);
+            animations.Add(MoveFrom3To4X);
 
-            myDoubleAnimation6 = new DoubleAnimation();
-            myDoubleAnimation6.From = stopTile3.Y - (movableTiles[0].Height / 2);
-            myDoubleAnimation6.To = stopTile4.Y - (movableTiles[0].Height / 2);
-            myDoubleAnimation6.Duration = new Duration(TimeSpan.FromSeconds(2));
-            myDoubleAnimation6.AutoReverse = false;
-            myDoubleAnimation6.RepeatBehavior = new RepeatBehavior(7);
+            MoveFrom3To4Y = new DoubleAnimation();
+            MoveFrom3To4Y.From = stopTile3.Y - YMargin;
+            MoveFrom3To4Y.To = stopTile4.Y - YMargin;
+            MoveFrom3To4Y.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFrom3To4Y.AutoReverse = false;
+            MoveFrom3To4Y.RepeatBehavior = new RepeatBehavior(7);
 
-            Storyboard.SetTarget(myDoubleAnimation6, movableTiles[0]);
-            Storyboard.SetTargetProperty(myDoubleAnimation6, new PropertyPath(Canvas.TopProperty));
+            Storyboard.SetTarget(MoveFrom3To4Y, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFrom3To4Y, new PropertyPath(Canvas.TopProperty));
 
-            AnimationClock animationClock6 = myDoubleAnimation6.CreateClock() as AnimationClock;
+            AnimationClock MoveFrom3To4YClock = MoveFrom3To4Y.CreateClock() as AnimationClock;
 
-            animations.Add(myDoubleAnimation6);
+            animations.Add(MoveFrom3To4Y);
 
             //Разгрузка
             DoubleAnimation widthAnimation2 = new DoubleAnimation();
@@ -201,127 +205,98 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             animations.Add(widthAnimation2);
             //4-1
 
-            myDoubleAnimation7 = new DoubleAnimation();
-            myDoubleAnimation7.From = stopTile4.Y - (movableTiles[0].Height / 2);
-            myDoubleAnimation7.To = stopTile1.Y - (movableTiles[0].Height / 2);
-            myDoubleAnimation7.Duration = new Duration(TimeSpan.FromSeconds(2));
-            myDoubleAnimation7.AutoReverse = false;
-            myDoubleAnimation7.RepeatBehavior = new RepeatBehavior(9);
+            MoveFrom4To5Y = new DoubleAnimation();
+            MoveFrom4To5Y.From = stopTile4.Y - YMargin;
+            MoveFrom4To5Y.To = stopTile5.Y - YMargin;
+            MoveFrom4To5Y.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFrom4To5Y.AutoReverse = false;
+            MoveFrom4To5Y.RepeatBehavior = new RepeatBehavior(9);
 
-            Storyboard.SetTarget(myDoubleAnimation7, movableTiles[0]);
-            Storyboard.SetTargetProperty(myDoubleAnimation7, new PropertyPath(Canvas.LeftProperty));
+            Storyboard.SetTarget(MoveFrom4To5Y, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFrom4To5Y, new PropertyPath(Canvas.LeftProperty));
 
-            AnimationClock animationClock7 = myDoubleAnimation7.CreateClock() as AnimationClock;
+            AnimationClock MoveFrom4To1YClock = MoveFrom4To5Y.CreateClock() as AnimationClock;
 
-            animations.Add(myDoubleAnimation7);
+            animations.Add(MoveFrom4To5Y);
 
-            myDoubleAnimation8 = new DoubleAnimation();
-            myDoubleAnimation8.From = stopTile4.X - (movableTiles[0].Width - 50);
-            myDoubleAnimation8.To = stopTile1.X - (movableTiles[0].Width - 50);
-            myDoubleAnimation8.Duration = new Duration(TimeSpan.FromSeconds(2));
-            myDoubleAnimation8.AutoReverse = false;
-            myDoubleAnimation8.RepeatBehavior = new RepeatBehavior(10);
+            MoveFrom4To5X = new DoubleAnimation();
+            MoveFrom4To5X.From = stopTile4.X - XMargin;
+            MoveFrom4To5X.To = stopTile5.X - XMargin;
+            MoveFrom4To5X.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFrom4To5X.AutoReverse = false;
+            MoveFrom4To5X.RepeatBehavior = new RepeatBehavior(10);
 
-            Storyboard.SetTarget(myDoubleAnimation8, movableTiles[0]);
-            Storyboard.SetTargetProperty(myDoubleAnimation8, new PropertyPath(Canvas.TopProperty));
+            Storyboard.SetTarget(MoveFrom4To5X, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFrom4To5X, new PropertyPath(Canvas.TopProperty));
 
-            AnimationClock animationClock8 = myDoubleAnimation8.CreateClock() as AnimationClock;
+            AnimationClock MoveFrom4To5XClock = MoveFrom4To5X.CreateClock() as AnimationClock;
 
-            animations.Add(myDoubleAnimation8);
+            animations.Add(MoveFrom4To5X);
 
-            clocks.Add(animationClock);
-            clocks.Add(animationClock2);
+            clocks.Add(MoveFrom1To2XClock);
+            clocks.Add(MoveFrom1To2YClock);
             clocks.Add(widthanimationClock);
-            clocks.Add(animationClock3);
-            clocks.Add(animationClock4);
-            clocks.Add(animationClock5);
-            clocks.Add(animationClock6);
+            clocks.Add(MoveFrom2To3XClock);
+            clocks.Add(MoveFrom2To3YClock);
+            clocks.Add(MoveFrom3To4XClock);
+            clocks.Add(MoveFrom3To4YClock);
             clocks.Add(widthAnimationClock2);
-            clocks.Add(animationClock7);
-            clocks.Add(animationClock8);
-    
-
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X - (movableTiles[0].Width - 50), stopTile2.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X - (movableTiles[0].Width - 50), stopTile2.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X - (movableTiles[0].Width - 50), stopTile3.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X - (movableTiles[0].Width - 50), stopTile3.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X - (movableTiles[0].Width - 50), stopTile4.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile2.X - (movableTiles[0].Width - 50), stopTile2.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X - (movableTiles[0].Width - 50), stopTile2.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile3.X - (movableTiles[0].Width - 50), stopTile3.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X - (movableTiles[0].Width - 50), stopTile3.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X - (movableTiles[0].Width - 50), stopTile4.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile4.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
-            pathFigure.Segments.Add(new LineSegment(new Point(stopTile1.X - (movableTiles[0].Width - 50), stopTile1.Y - (movableTiles[0].Height / 2)), true));
-                
-            pathGeometry.Figures.Add(pathFigure);
-
-            MatrixAnimationUsingPath animation = new MatrixAnimationUsingPath();
-            animation.PathGeometry = pathGeometry;
-            animation.Duration = TimeSpan.FromSeconds(35);
-
-
+            clocks.Add(MoveFrom4To1YClock);
+            clocks.Add(MoveFrom4To5XClock);
+               
             Storyboard storyboard = new Storyboard();
-            Storyboard.SetTarget(animation, movableTiles[0]);
-            Storyboard.SetTargetProperty(animation, new PropertyPath("(RenderTransform).(MatrixTransform.Matrix)"));
-            storyboard.Children.Add(animation);
 
             return storyboard;
         }
 
-        public Storyboard Relocate(string operationName)
+        public void Relocate(string operationName)
         {
+            double YMargin = 20;
+            double XMargin = 20;
+
             int startStopTileIndex = int.Parse(operationName[8].ToString()) - 1;
             int endStopTileIndex = int.Parse(operationName[10].ToString()) - 1;
 
-            Vector startTargetMargin = VisualTreeHelper.GetOffset(movableTiles[0]);
-            Vector endTargetMargin = VisualTreeHelper.GetOffset(stopTiles[(endStopTileIndex)]);
+            Vector start = VisualTreeHelper.GetOffset(stopTiles[(startStopTileIndex)]);
+            Vector end = VisualTreeHelper.GetOffset(stopTiles[(endStopTileIndex)]);
             Vector lastInputTargetMargin = VisualTreeHelper.GetOffset(stopTiles[2]);
 
-            Point startPoint = new Point(startTargetMargin.X, startTargetMargin.Y);
-            Point endPoint = new Point(endTargetMargin.X, endTargetMargin.Y);
-
-            PathGeometry pathGeometry = new PathGeometry();
-            PathFigure pathFigure = new PathFigure();
-
-            pathFigure.StartPoint = startPoint;
-
-            if ((int.Parse(operationName[10].ToString()) - 1) >= 4)
-            {
-                pathFigure.Segments.Add(new LineSegment(new Point(startPoint.X, lastInputTargetMargin.Y), true));
-                pathFigure.Segments.Add(new LineSegment(new Point(endPoint.X, lastInputTargetMargin.Y), true));
-                pathFigure.Segments.Add(new LineSegment(endPoint, true));
-            }
-            else
-            {
-                pathFigure.Segments.Add(new LineSegment(new Point(endPoint.X, startPoint.Y), true));
-                pathFigure.Segments.Add(new LineSegment(endPoint, true));
-            }
-
-           
-            pathGeometry.Figures.Add(pathFigure);
-
-            // Создание DoubleAnimationUsingPath, содержащего анимацию движения объекта по траектории
-            MatrixAnimationUsingPath animation = new MatrixAnimationUsingPath();
+            Vector V1 = VisualTreeHelper.GetOffset(stopTiles[startStopTileIndex]);
+            Point p1 = new Point(V1.X, V1.Y);
 
 
-            animation.PathGeometry = pathGeometry;
-            animation.Duration = TimeSpan.FromSeconds(35);
+            Point startPoint = new Point(start.X, start.Y);
+            Point endPoint = new Point(end.X, end.Y);
 
-            // Создание Storyboard и добавление в него анимации
-            Storyboard storyboard = new Storyboard();
-            Storyboard.SetTarget(animation, movableTiles[0]);
-            Storyboard.SetTargetProperty(animation, new PropertyPath("(RenderTransform).(MatrixTransform.Matrix)"));
-            storyboard.Children.Add(animation);
-             
-            // Запуск анимации
-            return storyboard;
+            DoubleAnimation MoveFromToX = new DoubleAnimation();
+            MoveFromToX.From = startPoint.X - XMargin;
+            MoveFromToX.To = endPoint.X - XMargin;
+            MoveFromToX.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFromToX.AutoReverse = false;
+            MoveFromToX.RepeatBehavior = new RepeatBehavior(4);
+
+            Storyboard.SetTarget(MoveFromToX, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFromToX, new PropertyPath(Canvas.LeftProperty));
+
+            AnimationClock MoveFromToXClock = MoveFromToX.CreateClock() as AnimationClock;
+
+
+
+            DoubleAnimation MoveFromToY = new DoubleAnimation();
+            MoveFromToY.From = startPoint.Y - YMargin;
+            MoveFromToY.To = endPoint.Y - YMargin;
+            MoveFromToY.Duration = new Duration(TimeSpan.FromSeconds(2));
+            MoveFromToY.AutoReverse = false;
+            MoveFromToY.RepeatBehavior = new RepeatBehavior(5);
+
+            Storyboard.SetTarget(MoveFromToY, movableTiles[0]);
+            Storyboard.SetTargetProperty(MoveFromToY, new PropertyPath(Canvas.TopProperty));
+
+            AnimationClock MoveFromToYClock = MoveFromToY.CreateClock() as AnimationClock;
+            
+            //clocks.Add(MoveFromToXClock);
+            //clocks.Add(MoveFromToYClock);
+
         }
 
         public Storyboard Input(string operationName)

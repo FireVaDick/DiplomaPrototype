@@ -1,4 +1,5 @@
 ﻿using DiplomaProrotype;
+using DiplomaPrototype.ImitationalModelDataAnalysing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,7 +27,7 @@ namespace DiplomaPrototype.Animations
 
 
             clocks[0].Completed += (s, e) =>
-            {
+            {             
                 movableTile.ApplyAnimationClock(Canvas.TopProperty, (AnimationClock)clocks[1]);
             };
             clocks[1].Completed += (s, e) =>
