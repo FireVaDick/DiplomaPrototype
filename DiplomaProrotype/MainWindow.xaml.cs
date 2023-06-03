@@ -43,7 +43,7 @@ namespace DiplomaProrotype
         static public string[,] matrixResourceMachine = new string[1, 1];
         static public string[,] matrixResourceStop = new string[1, 1];
         static public string[,] matrixChainStop = new string[0, 0];
-        static public string[,] matrixCrossings = new string[1, 1];
+        static public string[] matrixCrossings = new string[1] { " " };
         static public int[,] matrixParticipation = new int[0, 0];
         static public List<int> vectorChain = new List<int>();
         static public List<int> vectorSignal = new List<int>();

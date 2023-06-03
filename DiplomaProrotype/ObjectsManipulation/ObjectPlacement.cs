@@ -1,11 +1,13 @@
 ﻿using DiplomaProrotype.Models;
 using DiplomaPrototype;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Point = System.Windows.Point;
+using Bytescout.Spreadsheet;
 
 namespace DiplomaProrotype.ObjectsManipulation
 {
@@ -20,7 +22,6 @@ namespace DiplomaProrotype.ObjectsManipulation
         static private List<Link> linksResourceMachine = MainWindow.links;
 
         static private int newMatrixCrossingsRows = 1;
-
 
         static public void ObjectMovingFromPanelOrCanvas(DragEventArgs e)
         {
@@ -467,22 +468,39 @@ namespace DiplomaProrotype.ObjectsManipulation
                 mw.TargetCanvas.Children.Add(stopTile);
 
                 // Переезды
-                int oldMatrixCrossingsRows = newMatrixCrossingsRows - 1;
-                newMatrixCrossingsRows += (stopTiles.Count - 1) * 2;
-           
-                MainWindow.matrixCrossings = ResizeArray(MainWindow.matrixCrossings, newMatrixCrossingsRows, 1/* resourceTiles.Count + MainWindow.vectorChain.Count + 1*/);
-
                 int skipValue = 0;
+                int oldMatrixCrossingsRows = newMatrixCrossingsRows - 1;
+                newMatrixCrossingsRows += (stopTiles.Count - 1) * 2;       
+
+                Array.Resize(ref MainWindow.matrixCrossings, newMatrixCrossingsRows);
+
                 for (int i = 1; i < stopTiles.Count; i++)
                 {
-                    MainWindow.matrixCrossings[i + oldMatrixCrossingsRows + skipValue, 0] =
-                        string.Format("Переезд [{0} {1} - {2} {3}]", stopTiles[i - 1].Text, stopTiles[i - 1].Id, stopTiles[stopTiles.Count - 1].Text, stopTiles[stopTiles.Count - 1].Id);
-                    MainWindow.matrixCrossings[i + oldMatrixCrossingsRows + skipValue + 1, 0] =
-                        string.Format("Переезд [{0} {1} - {2} {3}]", stopTiles[stopTiles.Count - 1].Text, stopTiles[stopTiles.Count - 1].Id, stopTiles[i -1].Text, stopTiles[i - 1].Id);
+                    int nextValue = 0;
+
+                    if (stopTiles[i - 1].Text == "Разгрузка" && stopTiles[stopTiles.Count - 1].Text == "Погрузка") { skipValue--; }
+                    else
+                    {
+                        MainWindow.matrixCrossings[i + oldMatrixCrossingsRows + skipValue] =
+                            string.Format("Переезд [{0} {1} - {2} {3}]", stopTiles[i - 1].Text, stopTiles[i - 1].Id,
+                            stopTiles[stopTiles.Count - 1].Text, stopTiles[stopTiles.Count - 1].Id);
+                        nextValue++;
+                    }
+
+                    if (stopTiles[stopTiles.Count - 1].Text == "Разгрузка" && stopTiles[i - 1].Text == "Погрузка") { skipValue--; }
+                    else
+                    {
+                        MainWindow.matrixCrossings[i + oldMatrixCrossingsRows + skipValue + nextValue] =
+                            string.Format("Переезд [{0} {1} - {2} {3}]", stopTiles[stopTiles.Count - 1].Text, stopTiles[stopTiles.Count - 1].Id,
+                            stopTiles[i - 1].Text, stopTiles[i - 1].Id);
+                    }
+
                     skipValue++;
                 } // было i и stopTiles.Count
+
+                MainWindow.matrixCrossings = MainWindow.matrixCrossings.Where(x => x != null).ToArray();
             }
-        }
+        }   
 
 
         static private void CreateContextMenu(UserControl tile)

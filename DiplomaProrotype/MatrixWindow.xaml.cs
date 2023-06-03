@@ -1,5 +1,6 @@
 ﻿using DiplomaProrotype.Animations;
 using DiplomaProrotype.CanvasManipulation;
+using Haley.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +22,6 @@ namespace DiplomaProrotype
     /// </summary>
     public partial class MatrixWindow : Window
     {
-        static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
-        static private List<MachineTile> machineTiles = MainWindow.machineTiles;
-        static private List<StopTile> stopTiles = MainWindow.stopTiles;
-
-
         public MatrixWindow()
         {
             InitializeComponent();
@@ -58,21 +54,21 @@ namespace DiplomaProrotype
             Matrix.RowGroups.Add(new TableRowGroup());
             TableRow currentRow;
 
-            // Инициализация колонок
+            // Инициализация строк
             for (int i = 0; i < MainWindow.machineTiles.Count + MainWindow.stopTiles.Count + MainWindow.matrixCrossings.GetLength(0) + 1; i++)
             {
                 Matrix.RowGroups[0].Rows.Add(new TableRow());
             }
 
             // Визуальное оформление строк
-            for (int x = 0; x < MainWindow.machineTiles.Count + MainWindow.stopTiles.Count + MainWindow.matrixCrossings.GetLength(0) + 1; x++)
+            for (int x = 0; x < MainWindow.resourceTiles.Count + MainWindow.vectorChain.Count + 1; x++)
             {
-                currentRow = Matrix.RowGroups[0].Rows[x];
+                Matrix.Columns.Add(new TableColumn());
 
-                if (x % 2 == 1)
-                    currentRow.Background = new SolidColorBrush(Color.FromArgb(255, (byte)229, (byte)233, (byte)236));
+                if (x % 2 == 0)
+                    Matrix.Columns[x].Background = new SolidColorBrush(Color.FromArgb(255, (byte)229, (byte)233, (byte)236));
                 else
-                    currentRow.Background = new SolidColorBrush(Color.FromArgb(255, (byte)132, (byte)169, (byte)140));
+                    Matrix.Columns[x].Background = new SolidColorBrush(Color.FromArgb(255, (byte)132, (byte)169, (byte)140));
             }
 
 
@@ -141,7 +137,7 @@ namespace DiplomaProrotype
                 Matrix.RowGroups[0].Rows.Add(new TableRow());
                 currentRow = Matrix.RowGroups[0].Rows[i + MainWindow.matrixResourceMachine.GetLength(0) + MainWindow.matrixResourceStop.GetLength(0)];
 
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixCrossings[i, 0]))));
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixCrossings[i]))));
 
                 currentRow.Cells[0].FontSize = 16;
                 currentRow.Cells[0].FontWeight = FontWeights.Bold;

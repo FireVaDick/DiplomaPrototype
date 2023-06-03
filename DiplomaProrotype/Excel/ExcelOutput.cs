@@ -71,7 +71,7 @@ namespace DiplomaPrototype.Excel
             {
                 var currentCell = string.Format("{0}{1}", "A", i + MainWindow.matrixResourceMachine.GetLength(0) + MainWindow.matrixResourceStop.GetLength(0) - 1);
 
-                sheet.Range[currentCell].Value = MainWindow.matrixCrossings[i, 0];
+                sheet.Range[currentCell].Value = MainWindow.matrixCrossings[i];
             }
 
             // Диспетчер имён
