@@ -476,21 +476,18 @@ namespace DiplomaProrotype.ObjectsManipulation
 
                 for (int i = 1; i < stopTiles.Count; i++)
                 {
-                    int nextValue = 0;
-
                     if (stopTiles[i - 1].Text == "Разгрузка" && stopTiles[stopTiles.Count - 1].Text == "Погрузка") { skipValue--; }
                     else
                     {
                         MainWindow.matrixCrossings[i + oldMatrixCrossingsRows + skipValue] =
                             string.Format("Переезд [{0} {1} - {2} {3}]", stopTiles[i - 1].Text, stopTiles[i - 1].Id,
                             stopTiles[stopTiles.Count - 1].Text, stopTiles[stopTiles.Count - 1].Id);
-                        nextValue++;
                     }
 
                     if (stopTiles[stopTiles.Count - 1].Text == "Разгрузка" && stopTiles[i - 1].Text == "Погрузка") { skipValue--; }
                     else
                     {
-                        MainWindow.matrixCrossings[i + oldMatrixCrossingsRows + skipValue + nextValue] =
+                        MainWindow.matrixCrossings[i + oldMatrixCrossingsRows + skipValue + 1] =
                             string.Format("Переезд [{0} {1} - {2} {3}]", stopTiles[stopTiles.Count - 1].Text, stopTiles[stopTiles.Count - 1].Id,
                             stopTiles[i - 1].Text, stopTiles[i - 1].Id);
                     }
