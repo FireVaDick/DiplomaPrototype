@@ -8,10 +8,7 @@
         KeyDown="MatrixWindow_KeyDown"
         Title="Матрица" Height="500" Width="1000" MinHeight="200" MinWidth="250">
     <FlowDocument Name="FlowDoc">
-        <Table Name="MatrixResourceMachineTable">
-            
-        </Table>
-        <Table Name="MatrixResourcePlaceStopTable">
+        <Table Name="Matrix">
 
         </Table>
     </FlowDocument>

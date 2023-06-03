@@ -9,9 +9,10 @@ namespace DiplomaPrototype.Excel
 {
     internal class ExcelOutput
     {
+        static string baseCell = "B2";
+
         static public void CreateExcelOutput()
         {
-
             Workbook workbook = new Workbook();
             Worksheet sheet = workbook.Worksheets[0];
             sheet.Range["A1"].ColumnWidth = 35;
@@ -80,7 +81,7 @@ namespace DiplomaPrototype.Excel
             INamedRange NamedRange2 = workbook.NameRanges.Add("МатрСвязиОпераций");
             int endRow = MainWindow.matrixResourceMachine.GetLength(0) + MainWindow.matrixResourceStop.GetLength(0) - 1 + MainWindow.matrixCrossings.GetLength(0) - 1;
             var endColumn = Convert.ToString(Convert.ToChar(65 + MainWindow.resourceTiles.Count + MainWindow.vectorChain.Count));
-            NamedRange2.RefersToRange = sheet.Range[string.Format("B2:{0}{1}", endColumn, endRow)];
+            NamedRange2.RefersToRange = sheet.Range[string.Format("{0}:{1}{2}", baseCell, endColumn, endRow)];
 
             // Запись
             try
