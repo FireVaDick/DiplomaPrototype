@@ -83,7 +83,7 @@ namespace DiplomaProrotype
         {
             RoutesCreating routesCreating = new RoutesCreating();
             movableTileFromContextMenu = movableTiles[0];
-            TransportTileAnimation transportTileAnimation = new TransportTileAnimation(routesCreating.CreateStory(), movableTiles[0], routesCreating.clocks,routesCreating.animations);
+            TransportTileAnimation transportTileAnimation = new TransportTileAnimation(routesCreating.CreateStory(), movableTiles[0], routesCreating.clocks2,routesCreating.animations, routesCreating.complexesClocks);
         }
 
         private void CMChooseSolidPath_Click(object sender, RoutedEventArgs e)
