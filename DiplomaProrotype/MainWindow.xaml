@@ -37,27 +37,27 @@
 
         <!-- Целевой холст -->
         <Border Name="TargetBorder"
-                Height="350"
-                Width="550"        
-                Margin="0,100,0,0" 
-                Style="{StaticResource ResourceKey=PaleBorder}">
+            Height="350"
+            Width="550"        
+            Margin="0,100,0,0" 
+            Style="{StaticResource ResourceKey=PaleBorder}">
             <Canvas Name="TargetCanvas" 
-                    AllowDrop="True" 
-                    DragOver="TargetCanvas_DragOver" 
-                    Drop="TargetCanvas_Drop" 
-                    MouseLeftButtonDown="TargetCanvas_MouseLeftButtonDown"
-                    MouseMove="TargetCanvas_MouseMove"
-                    MouseLeftButtonUp="TargetCanvas_MouseLeftButtonUp"
-                    MouseRightButtonDown="TargetCanvas_MouseRightButtonUp"
-                    Background="Transparent" >
-                <Canvas.RenderTransform>
+                AllowDrop="True" 
+                DragOver="TargetCanvas_DragOver" 
+                Drop="TargetCanvas_Drop" 
+                MouseLeftButtonDown="TargetCanvas_MouseLeftButtonDown"
+                MouseMove="TargetCanvas_MouseMove"
+                MouseLeftButtonUp="TargetCanvas_MouseLeftButtonUp"
+                MouseRightButtonDown="TargetCanvas_MouseRightButtonUp"
+                Background="Transparent" >
+                <!-- <Canvas.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="{Binding ElementName=SliderAllInterface, Path=Value}" ScaleY="{Binding ElementName=SliderAllInterface, Path=Value}"/>
                     </TransformGroup>
-                </Canvas.RenderTransform>
+                </Canvas.RenderTransform> -->
             </Canvas>
         </Border>
-
+        
         <!-- Меню режимов слева -->
         <Border Name="ModeBorder" 
                 Width="100" 
@@ -65,6 +65,7 @@
                 Margin="10" 
                 HorizontalAlignment="Left" 
                 MouseWheel="ModeBorder_MouseWheel" 
+                Cursor="Hand"
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="ModePanel" 
                         Orientation="Vertical" 
@@ -140,6 +141,7 @@
                 VerticalAlignment="Top" 
                 HorizontalAlignment="Right"
                 MouseWheel="MatrixBorder_MouseWheel" 
+                Cursor="Hand"
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="MatrixPanel" Style="{StaticResource ResourceKey=SquarePanel}">
                 <local:ModeTile Margin="0,0,0,0" Text="Матрица" Image="Icons/x128/CheckLinks128.png" MouseLeftButtonDown="ModeTile_CheckAllLinks_MouseLeftButtonDown">
@@ -152,6 +154,24 @@
             </StackPanel>
         </Border>
 
+        <Button Name="WriteToExcelButton"                 
+                Width="100" 
+                Height="30" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top" 
+                Margin="0, 115, 10, 0"
+                FontSize="10"
+                Click="WriteToExcelButton_Click"
+                Cursor="Hand">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0.0, 0.0" EndPoint="0.9, 1" >
+                    <GradientStop Color="#E5E9EC" Offset="0.3"/>
+                    <GradientStop Color="#84A98C" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background> Записать в Excel
+        </Button>
+        
+
         <!-- Меню очистки -->
         <Border Name="ClearBorder" 
                 Width="100" 
@@ -160,6 +180,7 @@
                 VerticalAlignment="Bottom" 
                 HorizontalAlignment="Left"
                 MouseWheel="ClearBorder_MouseWheel" 
+                Cursor="Hand"
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="ClearPanel" Style="{StaticResource ResourceKey=SquarePanel}" >
                 <local:ModeTile Margin="0,0,0,0" x:Name="Eraser" Text="Очистить" Image="Icons/x128/Eraser128.png" MouseDown="ModeTile_Erase_MouseDown">
@@ -195,7 +216,7 @@
         </Border>
 
         <Slider Name="SliderAllInterface" Width="400" Margin="0,0,0,15" Minimum="0.5" Maximum="1.5" Value="1" 
-                VerticalAlignment="Bottom" HorizontalAlignment="Center" LargeChange="0.1" Cursor="Hand" Focusable="False"/>
+                VerticalAlignment="Bottom" HorizontalAlignment="Center" LargeChange="0.1" Cursor="Hand" Focusable="False" ValueChanged="SliderAllInterface_ValueChanged"/>
 
     </Grid>
 </Window>

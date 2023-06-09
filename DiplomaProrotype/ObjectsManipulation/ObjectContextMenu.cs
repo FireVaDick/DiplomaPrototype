@@ -22,7 +22,7 @@ namespace DiplomaProrotype.ObjectsManipulation
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
         static private List<MovableTile> movableTiles = MainWindow.movableTiles;
         static private List<StopTile> stopTiles = MainWindow.stopTiles;
-        static private List<Link> linksResourceMachine = MainWindow.linksResourceMachine;
+        static private List<Link> linksResourceMachine = MainWindow.links;
 
         static private ResourceTile resourceTileFromContextMenu = MainWindow.resourceTileFromContextMenu;
         static private MachineTile machineTileFromContextMenu = MainWindow.machineTileFromContextMenu;
@@ -97,7 +97,7 @@ namespace DiplomaProrotype.ObjectsManipulation
 
         static private void CMCheckLinks_Click(object sender, RoutedEventArgs e) //!!!!!!!!!!!!!!!!!!!!!
         {
-            GetTileFromContextMenu(sender, e);
+            /*GetTileFromContextMenu(sender, e);
             int tileLinkAmount = 0;
             int row = 4;
 
@@ -149,7 +149,7 @@ namespace DiplomaProrotype.ObjectsManipulation
                 string table = string.Join('\n', tableRows);
 
                 MessageBox.Show(table);
-            }
+            }*/
         }
 
         static private void CMAnimate_Click(object sender, RoutedEventArgs e)
@@ -198,13 +198,60 @@ namespace DiplomaProrotype.ObjectsManipulation
         {
             GetTileFromContextMenu(sender, e);
 
+            if (resourceTiles.Contains(resourceTileFromContextMenu))
+            {
+                SelectWindow.CreateResourceSelectWindow();
+
+                for (int j = 1; j < MainWindow.matrixResourceMachine.GetLength(1); j++)
+                {
+                    if (MainWindow.matrixResourceMachine[0, j] == resourceTileFromContextMenu.Text + " " + resourceTileFromContextMenu.Id)
+                    {
+                        if (SelectWindow.currentText == "")
+                        {
+                            resourceTileFromContextMenu.Text = "Задел";
+                            MainWindow.matrixResourceMachine[0, j] = "Задел " + resourceTileFromContextMenu.Id;
+                            MainWindow.matrixResourceStop[0, j] = "Задел " + resourceTileFromContextMenu.Id;
+                        }
+                        else
+                        {
+                            resourceTileFromContextMenu.Text = SelectWindow.currentText;
+                            MainWindow.matrixResourceMachine[0, j] = SelectWindow.currentText + " " + resourceTileFromContextMenu.Id;
+                            MainWindow.matrixResourceStop[0, j] = SelectWindow.currentText + " " + resourceTileFromContextMenu.Id;
+                        }
+                    }
+                }
+            }
+
             if (stopTiles.Contains(stopTileFromContextMenu))
             {
                 SelectWindow.CreateStopSelectWindow();
-                if (SelectWindow.currentNumber > 0 && SelectWindow.currentWord != "")
+
+                for (int i = 1; i < MainWindow.matrixResourceStop.GetLength(0); i++)
                 {
-                    stopTileFromContextMenu.Chain = SelectWindow.currentNumber;
-                    stopTileFromContextMenu.Text = SelectWindow.currentWord;
+                    if (MainWindow.matrixResourceStop[i, 0] == stopTileFromContextMenu.Text + " " + stopTileFromContextMenu.Id)
+                    {
+                        if (SelectWindow.currentNumber1 > 0 && SelectWindow.currentWord != "")
+                        {
+                            if (stopTileFromContextMenu.Text == "Погрузка") MainWindow.amountLoading--;
+                            if (stopTileFromContextMenu.Text == "Разгрузка") MainWindow.amountUnloading--;
+
+                            stopTileFromContextMenu.Chain = SelectWindow.currentNumber1;
+                            stopTileFromContextMenu.Text = SelectWindow.currentWord;
+
+                            if (stopTileFromContextMenu.Text == "Погрузка") 
+                            { 
+                                MainWindow.amountLoading++;
+                                stopTileFromContextMenu.Id = MainWindow.amountLoading;
+                            }
+                            if (stopTileFromContextMenu.Text == "Разгрузка")
+                            {
+                                MainWindow.amountUnloading++;
+                                stopTileFromContextMenu.Id = MainWindow.amountUnloading;
+                            }
+
+                            MainWindow.matrixResourceStop[i, 0] = SelectWindow.currentWord + " " + stopTileFromContextMenu.Id;
+                        }
+                    }
                 }
             }
         }
@@ -263,7 +310,9 @@ namespace DiplomaProrotype.ObjectsManipulation
                 stopTiles.Remove(stopTileFromContextMenu);
             }
 
-            MainWindow.matrixResourceMachine = (int[,])ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
+            MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
+            MainWindow.matrixResourceStop = ObjectPlacement.ResizeArray(MainWindow.matrixResourceStop, stopTiles.Count + 1, resourceTiles.Count + 1);
+
         }
     }
 }

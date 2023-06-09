@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiplomaPrototype"
         mc:Ignorable="d"      
-        Title="Окно выбора" Height="145" Width="350" ResizeMode="NoResize">
+        Title="Окно выбора" Height="170" Width="400" ResizeMode="NoResize"
+        KeyDown="SelectWindow_KeyDown">
     <Grid>
         <Grid.Resources>
             <Style TargetType="{x:Type Label}">
-                <Setter Property="Width" Value="170" />
+                <Setter Property="Width" Value="220" />
             </Style>
             <Style TargetType="{x:Type TextBox}">
                 <Setter Property="Width" Value="130" />
@@ -18,26 +19,30 @@
                 <Setter Property="Width" Value="130" />
             </Style>
             <Style TargetType="{x:Type Button}">
-                <Setter Property="Width" Value="155" />
+                <Setter Property="Width" Value="175" />
                 <Setter Property="Height" Value="25" />
                 <Setter Property="Margin" Value="10" />
             </Style>
         </Grid.Resources>
 
-        <Label Name="FirstLabel" Margin="10, 10, 5, 5" HorizontalAlignment="Left" VerticalAlignment="Top">1</Label>
-        <TextBox Name="NumberTextBox" Margin="10, 15, 15, 10" HorizontalAlignment="Right" VerticalAlignment="Top" />
+        <Label Name="Label1" Margin="10, 10, 5, 5" HorizontalAlignment="Left" VerticalAlignment="Top">1</Label>
+        <TextBox Name="TextBox1" Margin="10, 15, 15, 10" HorizontalAlignment="Right" VerticalAlignment="Top" />
+        <TextBox Name="TextBox4" Margin="10, 15, 15, 10" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="Hidden" />
 
-        <Label Name="SecondLabel" Margin="10, 35, 5, 5" HorizontalAlignment="Left" VerticalAlignment="Top">2</Label>
-        <TextBox Name="PlacesTextBox" Margin="10, 40, 15, 10" HorizontalAlignment="Right" VerticalAlignment="Top" />
+        <Label Name="Label2" Margin="10, 35, 5, 5" HorizontalAlignment="Left" VerticalAlignment="Top">2</Label>
+        <TextBox Name="TextBox2" Margin="10, 40, 15, 10" HorizontalAlignment="Right" VerticalAlignment="Top" />
 
+        <Label Name="Label3" Margin="10, 60, 5, 5" HorizontalAlignment="Left" VerticalAlignment="Top">3</Label>
+        <TextBox Name="TextBox3" Margin="10, 65, 15, 10" HorizontalAlignment="Right" VerticalAlignment="Top" />
+        
         <ComboBox Name="WordComboBox" Margin="10, 40, 15, 10" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="Hidden" >
             <ComboBoxItem Content="Погрузка"/>
             <ComboBoxItem Content="Разгрузка"/>
         </ComboBox>
 
-        <Button Name="OkButton" 
-                Click="OkButton_Click" 
-                IsDefault="True" 
+        <Button Name="CancelButton" 
+                Click="CancelButton_Click" 
+                IsCancel="True" 
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Bottom" 
                 Cursor="Hand">
@@ -46,11 +51,11 @@
                     <GradientStop Color="#84A98C" Offset="0"/>
                     <GradientStop Color="#E5E9EC" Offset="0.8"/>
                 </LinearGradientBrush>
-            </Button.Background> Подтвердить
+            </Button.Background> Отменить
         </Button>
-        <Button Name="CancelButton" 
-                Click="CancelButton_Click" 
-                IsCancel="True" 
+        <Button Name="OkButton" 
+                Click="OkButton_Click" 
+                IsDefault="True" 
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Bottom" 
                 Cursor="Hand">
@@ -59,7 +64,7 @@
                     <GradientStop Color="#E5E9EC" Offset="0.2"/>
                     <GradientStop Color="#84A98C" Offset="1"/>
                 </LinearGradientBrush>
-            </Button.Background> Отменить
+            </Button.Background> Подтвердить
         </Button>
     </Grid>
 </Window>

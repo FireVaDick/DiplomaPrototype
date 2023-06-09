@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:DiplomaProrotype"
         mc:Ignorable="d"
         KeyDown="MatrixWindow_KeyDown"
-        Title="Матрица" Height="400" Width="500" MinHeight="200" MinWidth="250">
+        Title="Матрица" Height="500" Width="1000" MinHeight="200" MinWidth="250">
     <FlowDocument Name="FlowDoc">
-        <Table Name="MatrixTable">
-            
+        <Table Name="Matrix">
+
         </Table>
     </FlowDocument>
 </Window>

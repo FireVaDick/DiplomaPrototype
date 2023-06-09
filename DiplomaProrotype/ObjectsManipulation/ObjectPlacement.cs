@@ -1,11 +1,13 @@
 ﻿using DiplomaProrotype.Models;
 using DiplomaPrototype;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Point = System.Windows.Point;
+using Bytescout.Spreadsheet;
 
 namespace DiplomaProrotype.ObjectsManipulation
 {
@@ -17,8 +19,9 @@ namespace DiplomaProrotype.ObjectsManipulation
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
         static private List<MovableTile> movableTiles = MainWindow.movableTiles;
         static private List<StopTile> stopTiles = MainWindow.stopTiles;
-        static private List<Link> linksResourceMachine = MainWindow.linksResourceMachine;
+        static private List<Link> linksResourceMachine = MainWindow.links;
 
+        static private int newMatrixCrossingsRows = 1;
 
         static public void ObjectMovingFromPanelOrCanvas(DragEventArgs e)
         {
@@ -225,7 +228,8 @@ namespace DiplomaProrotype.ObjectsManipulation
 
             for (int i = 0; i < linksResourceMachine.Count; i++)
             {
-                if (linksResourceMachine[i].FirstTargetType == "stop" && linksResourceMachine[i].FirstTargetListId == stopTiles.IndexOf(stopData))
+                if ((linksResourceMachine[i].FirstTargetType == "loading" || linksResourceMachine[i].FirstTargetType == "unloading") 
+                    && linksResourceMachine[i].FirstTargetListId == stopTiles.IndexOf(stopData))
                 {
                     double firstMarginLeft = dropPosition.X + stopData.Width / 2 - 5;
 
@@ -235,7 +239,8 @@ namespace DiplomaProrotype.ObjectsManipulation
                     linksResourceMachine[i].CircleInfo.Margin = new Thickness(linksResourceMachine[i].LineInfo.X1 - 5, linksResourceMachine[i].LineInfo.Y1 - 5, 0, 0);
                 }
 
-                if (linksResourceMachine[i].LastTargetType == "stop" && linksResourceMachine[i].LastTargetListId == stopTiles.IndexOf(stopData))
+                if ((linksResourceMachine[i].LastTargetType == "loading" || linksResourceMachine[i].LastTargetType == "unloading") 
+                    && linksResourceMachine[i].LastTargetListId == stopTiles.IndexOf(stopData))
                 {
                     double lastMarginLeft = dropPosition.X - stopData.Width / 2 + 24;
 
@@ -252,14 +257,18 @@ namespace DiplomaProrotype.ObjectsManipulation
         {
             var resourceTile = new ResourceTile();
 
+            SelectWindow.CreateResourceSelectWindow();
+            if (SelectWindow.currentText == "")
+                resourceTile.Text = "Задел";
+            else
+                resourceTile.Text = SelectWindow.currentText;
+
             CreateContextMenu(resourceTile);
             MainWindow.resourceTiles.Add(resourceTile);
-            MainWindow.matrixResourceMachine = (int[,]) ResizeArray(MainWindow.matrixResourceMachine, new int[] {machineTiles.Count, resourceTiles.Count});
-            
+
             Canvas.SetLeft(resourceTile, dropPosition.X - resourceTile.Width / 2 - 7.5);
             Canvas.SetTop(resourceTile, dropPosition.Y - resourceTile.Height / 2);
-            
-            resourceTile.Text = "Задел";
+                     
             resourceTile.Id = MainWindow.resourceTiles.Count;
             resourceTile.ResourceText.Margin = new Thickness(0, 0, 0, 15);
             resourceTile.ResourceId.Visibility = Visibility.Visible;
@@ -274,6 +283,10 @@ namespace DiplomaProrotype.ObjectsManipulation
             resourceTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
             MainWindow.chosenOneObject = resourceTile;
             MainWindow.lastTileType = "resource";
+            MainWindow.matrixResourceMachine = ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
+            MainWindow.matrixResourceStop = ResizeArray(MainWindow.matrixResourceStop, stopTiles.Count + 1, resourceTiles.Count + 1);
+            MainWindow.matrixResourceMachine[0, MainWindow.matrixResourceMachine.GetLength(1) - 1] = resourceTile.Text + " " + resourceTile.Id;
+            MainWindow.matrixResourceStop[0, MainWindow.matrixResourceStop.GetLength(1) - 1] = resourceTile.Text + " " + resourceTile.Id;
             mw.TargetCanvas.Children.Add(resourceTile);                 
         }
 
@@ -281,18 +294,17 @@ namespace DiplomaProrotype.ObjectsManipulation
         {
             var machineTile = new MachineTile();
 
-            CreateContextMenu(machineTile);
-            MainWindow.machineTiles.Add(machineTile);
-            MainWindow.matrixResourceMachine = (int[,]) ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
-            
-            Canvas.SetLeft(machineTile, dropPosition.X - machineTile.Width / 2 - 7.5);
-            Canvas.SetTop(machineTile, dropPosition.Y - machineData.MachineIndicator.Height - machineData.MachineImage.Height + 5);
-
             SelectWindow.CreateMachineSelectWindow();
+            machineTile.Processes = SelectWindow.currentNumber1;
 
-            machineTile.Processes = SelectWindow.currentNumber;
             if (machineTile.Processes > 0 && machineTile.Processes <= 5)
             {
+                CreateContextMenu(machineTile);
+                MainWindow.machineTiles.Add(machineTile);
+
+                Canvas.SetLeft(machineTile, dropPosition.X - machineTile.Width / 2 - 7.5);
+                Canvas.SetTop(machineTile, dropPosition.Y - machineData.MachineIndicator.Height - machineData.MachineImage.Height + 5);
+
                 machineTile.MachineProgress5.Margin = new Thickness(10, 0, 10, 35);
                 machineTile.MachineProgress5.Visibility = Visibility.Visible;
 
@@ -324,11 +336,14 @@ namespace DiplomaProrotype.ObjectsManipulation
                 machineTile.MachineText.Margin = new Thickness(0, 0, 0, 15);
                 machineTile.MachineIndicator.Visibility = Visibility.Visible;
                 machineTile.MachineId.Visibility = Visibility.Visible;
-                machineTile.Height = 110 + SelectWindow.currentNumber * 10;
+                machineTile.Height = 110 + SelectWindow.currentNumber1 * 10;
 
                 machineTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = machineTile;
-                MainWindow.lastTileType = "machine";              
+                MainWindow.lastTileType = "machine";
+                MainWindow.matrixResourceMachine = ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
+                MainWindow.matrixResourceMachine[MainWindow.matrixResourceMachine.GetLength(0) - 1, 0] = machineTile.Text + " " + machineTile.Id;                
+                MainWindow.operations.Add(machineTile.Text + " " + machineTile.Id);
                 mw.TargetCanvas.Children.Add(machineTile);
 
                 // Добавление пустого задела рядом
@@ -345,11 +360,13 @@ namespace DiplomaProrotype.ObjectsManipulation
         {            
             var movableTile = new MovableTile();
 
+            //Проверка на координаты главного стояночного места
+
             if (movableData.Amount == 0) // Создание из панели
             {
                 SelectWindow.CreateMovableSelectWindow();
-                movableTile.Amount = SelectWindow.currentNumber;
-                movableTile.Places = SelectWindow.currentPlaces;
+                movableTile.Amount = SelectWindow.currentNumber1;
+                movableTile.Places = SelectWindow.currentNumber2;
             }
             else // Перемещение одной из группы, где > 1
             {
@@ -365,23 +382,30 @@ namespace DiplomaProrotype.ObjectsManipulation
                 Canvas.SetLeft(movableTile, dropPosition.X - movableTile.Width / 2 - 10);
                 Canvas.SetTop(movableTile, dropPosition.Y - movableTile.Height / 2 - 22.5);
 
-                if (movableTile.Places > 0 && movableTile.Places <= 3)
+                SelectWindow.AddMovableToMatrixParticipation(movableTile.Places);
+                MainWindow.matrixParticipation = ResizeArray(MainWindow.matrixParticipation, MainWindow.vectorChain.Count, movableTiles.Count);
+
+                try
                 {
-                    movableTile.ResourceFigure1.Margin = new Thickness(0, -35, 10, 0);
-                    movableTile.ResourceFigure1.Visibility = Visibility.Visible;
-
-                    if (movableTile.Places > 1)
-                    {
-                        movableTile.ResourceFigure2.Margin = new Thickness(0, -35, -12, 0);
-                        movableTile.ResourceFigure2.Visibility = Visibility.Visible;
-                    }
-
-                    if (movableTile.Places > 2)
-                    {
-                        movableTile.ResourceFigure3.Margin = new Thickness(0, -35, -34, 0);
-                        movableTile.ResourceFigure3.Visibility = Visibility.Visible;
-                    }
+                    MainWindow.matrixParticipation[SelectWindow.currentNumber1 - 1, movableTiles.Count - 1] = 1;
+                    MainWindow.matrixParticipation[SelectWindow.currentNumber2 - 1, movableTiles.Count - 1] = 1;
+                    MainWindow.matrixParticipation[SelectWindow.currentNumber3 - 1, movableTiles.Count - 1] = 1;
                 }
+                catch { };
+
+                movableTile.ResourceFigure1.Margin = new Thickness(0, -35, 10, 0);
+                movableTile.ResourceFigure1.Visibility = Visibility.Visible;
+
+                if (movableTile.Places > 1)
+                {
+                    movableTile.ResourceFigure2.Margin = new Thickness(0, -35, -12, 0);
+                    movableTile.ResourceFigure2.Visibility = Visibility.Visible;
+                }
+                if (movableTile.Places > 2)
+                {
+                    movableTile.ResourceFigure3.Margin = new Thickness(0, -35, -34, 0);
+                    movableTile.ResourceFigure3.Visibility = Visibility.Visible;
+                }               
 
                 movableTile.Image = movableData.Image;
                 movableTile.Text = movableData.Text;
@@ -394,7 +418,8 @@ namespace DiplomaProrotype.ObjectsManipulation
                 movableTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = movableTile;
                 MainWindow.lastTileType = "movable";
-                mw.TargetCanvas.Children.Add(movableTile);
+                MainWindow.matrixResourceStop = ResizeArray(MainWindow.matrixResourceStop, stopTiles.Count + 1, resourceTiles.Count + 1);
+                mw.TargetCanvas.Children.Add(movableTile);             
             }         
         }
 
@@ -402,18 +427,33 @@ namespace DiplomaProrotype.ObjectsManipulation
         {
             var stopTile = new StopTile();
 
-            CreateContextMenu(stopTile);
-            MainWindow.stopTiles.Add(stopTile);
-
-            Canvas.SetLeft(stopTile, dropPosition.X - stopTile.Width / 2 - 10);
-            Canvas.SetTop(stopTile, dropPosition.Y - stopTile.Height / 2 - 5);
-
             SelectWindow.CreateStopSelectWindow();
-            if (SelectWindow.currentNumber > 0 && SelectWindow.currentWord != "")
+            stopTile.Chain = SelectWindow.currentNumber1;
+            stopTile.Text = SelectWindow.currentWord;
+
+            if (stopTile.Chain > 0 && stopTile.Text != "")
             {
-                stopTile.Chain = SelectWindow.currentNumber;
-                stopTile.Text = SelectWindow.currentWord;
-                stopTile.Id = MainWindow.stopTiles.Count;
+                CreateContextMenu(stopTile);
+                MainWindow.stopTiles.Add(stopTile);
+
+                Canvas.SetLeft(stopTile, dropPosition.X - stopTile.Width / 2 - 10);
+                Canvas.SetTop(stopTile, dropPosition.Y - stopTile.Height / 2 - 5);
+/*
+                if (stopTile.Text == "Погрузка") MainWindow.amountLoading++;
+                if (stopTile.Text == "Разгрузка") MainWindow.amountUnloading++;
+                stopTile.Id = MainWindow.stopTiles.Count;*/
+
+                if (stopTile.Text == "Погрузка")
+                {
+                    MainWindow.amountLoading++;
+                    stopTile.Id = MainWindow.amountLoading;
+                }
+                if (stopTile.Text == "Разгрузка")
+                {
+                    MainWindow.amountUnloading++;
+                    stopTile.Id = MainWindow.amountUnloading;
+                }
+
                 stopTile.StopText.Margin = new Thickness(0, 0, 0, 15);
                 stopTile.StopChain.Visibility = Visibility.Visible;
                 stopTile.StopId.Visibility = Visibility.Visible;
@@ -422,9 +462,42 @@ namespace DiplomaProrotype.ObjectsManipulation
                 stopTile.MouseLeftButtonUp += new MouseButtonEventHandler(ChooseOneObjectByClick);
                 MainWindow.chosenOneObject = stopTile;
                 MainWindow.lastTileType = "stop";
+                MainWindow.matrixResourceStop = ResizeArray(MainWindow.matrixResourceStop, stopTiles.Count + 1, resourceTiles.Count + 1);
+                MainWindow.matrixResourceStop[MainWindow.matrixResourceStop.GetLength(0) - 1, 0] = stopTile.Text + " " + stopTile.Id;
+                MainWindow.operations.Add(stopTile.Text + " " + stopTile.Id);
                 mw.TargetCanvas.Children.Add(stopTile);
+
+                // Переезды
+                int skipValue = 0;
+                int oldMatrixCrossingsRows = newMatrixCrossingsRows - 1;
+                newMatrixCrossingsRows += (stopTiles.Count - 1) * 2;       
+
+                Array.Resize(ref MainWindow.matrixCrossings, newMatrixCrossingsRows);
+
+                for (int i = 1; i < stopTiles.Count; i++)
+                {
+                    if (stopTiles[i - 1].Text == "Разгрузка" && stopTiles[stopTiles.Count - 1].Text == "Погрузка") { skipValue--; }
+                    else
+                    {
+                        MainWindow.matrixCrossings[i + oldMatrixCrossingsRows + skipValue] =
+                            string.Format("Переезд [{0} {1} - {2} {3}]", stopTiles[i - 1].Text, stopTiles[i - 1].Id,
+                            stopTiles[stopTiles.Count - 1].Text, stopTiles[stopTiles.Count - 1].Id);
+                    }
+
+                    if (stopTiles[stopTiles.Count - 1].Text == "Разгрузка" && stopTiles[i - 1].Text == "Погрузка") { skipValue--; }
+                    else
+                    {
+                        MainWindow.matrixCrossings[i + oldMatrixCrossingsRows + skipValue + 1] =
+                            string.Format("Переезд [{0} {1} - {2} {3}]", stopTiles[stopTiles.Count - 1].Text, stopTiles[stopTiles.Count - 1].Id,
+                            stopTiles[i - 1].Text, stopTiles[i - 1].Id);
+                    }
+
+                    skipValue++;
+                } // было i и stopTiles.Count
+
+                MainWindow.matrixCrossings = MainWindow.matrixCrossings.Where(x => x != null).ToArray();
             }
-        }
+        }   
 
 
         static private void CreateContextMenu(UserControl tile)
@@ -434,15 +507,15 @@ namespace DiplomaProrotype.ObjectsManipulation
             ObjectContextMenu.CreateDefaultContextMenu(contextMenu);
         }
 
-        public static Array ResizeArray(Array arr, int[] newSizes)
+        public static T[,] ResizeArray<T>(T[,] original, int rows, int cols)
         {
-            if (newSizes.Length != arr.Rank)
-                throw new ArgumentException("Arr must have the same number of dimensions as there are elements in newSizes", "newSizes");
-
-            var temp = Array.CreateInstance(arr.GetType().GetElementType(), newSizes);
-            int length = arr.Length <= temp.Length ? arr.Length : temp.Length;
-            Array.ConstrainedCopy(arr, 0, temp, 0, length);
-            return temp;
+            var newArray = new T[rows, cols];
+            int minRows = Math.Min(rows, original.GetLength(0));
+            int minCols = Math.Min(cols, original.GetLength(1));
+            for (int i = 0; i < minRows; i++)
+                for (int j = 0; j < minCols; j++)
+                    newArray[i, j] = original[i, j];
+            return newArray;
         }
     }
 }

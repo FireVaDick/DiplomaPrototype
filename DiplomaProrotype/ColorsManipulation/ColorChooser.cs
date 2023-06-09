@@ -15,7 +15,7 @@ namespace DiplomaProrotype.ColorsManipulation
         static private MainWindow mw = (MainWindow)Application.Current.MainWindow;
 
         static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
-        static private List<Link> linksResourceMachine = MainWindow.linksResourceMachine;
+        static private List<Link> linksResourceMachine = MainWindow.links;
 
 
         static public void DynamicChooseColorFromPalette()

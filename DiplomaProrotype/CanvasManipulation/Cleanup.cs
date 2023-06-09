@@ -21,7 +21,7 @@ namespace DiplomaProrotype.CanvasManipulation
         static private List<MachineTile> machineTiles = MainWindow.machineTiles;
         static private List<MovableTile> movableTiles = MainWindow.movableTiles;
         static private List<StopTile> stopTiles = MainWindow.stopTiles;
-        static private List<Link> linksResourceMachine = MainWindow.linksResourceMachine;
+        static private List<Link> linksResourceMachine = MainWindow.links;
 
 
         // Контекстное меню для очистки
@@ -97,7 +97,8 @@ namespace DiplomaProrotype.CanvasManipulation
                 linksResourceMachine.Remove(linksResourceMachine[i]);
             }
 
-            MainWindow.matrixResourceMachine = (int[,])ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
+            MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
+            MainWindow.matrixResourceStop = ObjectPlacement.ResizeArray(MainWindow.matrixResourceStop, stopTiles.Count + 1, resourceTiles.Count + 1);
 
             EnableObjectsOrNot.SetAllObjectsToEnabled();
         }
@@ -112,7 +113,8 @@ namespace DiplomaProrotype.CanvasManipulation
 
             mw.TargetCanvas.Children.Clear();
 
-            MainWindow.matrixResourceMachine = (int[,])ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, new int[] { machineTiles.Count, resourceTiles.Count });
+            MainWindow.matrixResourceMachine = ObjectPlacement.ResizeArray(MainWindow.matrixResourceMachine, machineTiles.Count + 1, resourceTiles.Count + 1);
+            MainWindow.matrixResourceStop = ObjectPlacement.ResizeArray(MainWindow.matrixResourceStop, stopTiles.Count + 1, resourceTiles.Count + 1);
 
             EnableObjectsOrNot.SetAllObjectsToEnabled();
         }
