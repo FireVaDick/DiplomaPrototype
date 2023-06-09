@@ -138,6 +138,7 @@ namespace DiplomaPrototype.Excel
 
                 bool isFounded = false;
 
+                // Заполнение по алгоритму
                 for (int k = 1; k < MainWindow.transportParameters.GetLength(0); k++)
                 {
                     MatchCollection rowTransport = rowRegex.Matches(MainWindow.transportParameters[k, 0]);
@@ -159,21 +160,51 @@ namespace DiplomaPrototype.Excel
                 }
             }
 
+            // Значения у начальной
+            int currentLoadingAmount = 1;
 
-
-
-
-
-/*            for (int i = 0; i < MainWindow.transportParameters.GetLength(0); i++)
+            for (int j = 1; j < MainWindow.transportParameters.GetLength(1); j++)
             {
-                for (int j = 0; j < MainWindow.transportParameters.GetLength(1); j++)
+                Regex startRegex = new Regex(@"Погрузка \d");
+                MatchCollection startCrossings = startRegex.Matches(MainWindow.transportParameters[0, j]);
+
+                if (startCrossings.Count == 1)
                 {
-                    
-
+                    MainWindow.transportParameters[MainWindow.stopTiles.Count + 2, j] = Convert.ToString(MainWindow.operations.Count - MainWindow.amountLoading + currentLoadingAmount);
+                    currentLoadingAmount++;
                 }
-            }*/
+            }
 
+            // Значения у промежуточных
+            for (int i = MainWindow.stopTiles.Count + 3; i < MainWindow.matrixCrossings.GetLength(0); i++)
+            {
+                for (int j = 1; j < MainWindow.transportParameters.GetLength(1); j++)
+                {
+                    Regex startRegex = new Regex(@"Погрузка \d");
+                    MatchCollection startCrossings = startRegex.Matches(MainWindow.transportParameters[0, j]);
 
+                    if (startCrossings.Count == 1)
+                    {
+                        MainWindow.transportParameters[i, j] = Convert.ToString(++transportOperationNumber);
+                    }
+                }
+            }
+
+            // Единицы у фиктивного столбца
+            Regex unloadingRegex = new Regex(@"\[Разгрузка \d");
+
+            for (int k = 1; k < MainWindow.transportParameters.GetLength(0); k++)
+            {
+                MatchCollection rowTransport = unloadingRegex.Matches(MainWindow.transportParameters[k, 0]);
+
+                if (rowTransport.Count == 1)
+                {
+                    for (int j = 1; j < MainWindow.transportParameters.GetLength(1); j++)
+                    {
+                        MainWindow.transportParameters[k, MainWindow.stopTiles.Count + 1] = "1";
+                    }
+                }
+            }
 
 
 
@@ -193,12 +224,12 @@ namespace DiplomaPrototype.Excel
             // Запись
             try
             {
-                if (File.Exists(@"..\\Result.xlsx"))
+                if (File.Exists(@"..\\..\\..\\..\\Result.xlsx"))
                 {
-                    File.Delete(@"..\\Result.xlsx");
+                    File.Delete(@"..\\..\\..\\..\\Result.xlsx");
                 }
 
-                workbook.SaveToFile(@"..\\Result.xlsx", ExcelVersion.Version2013);
+                workbook.SaveToFile(@"..\\..\\..\\..\\Result.xlsx", ExcelVersion.Version2013);
             }
             catch { };
 
