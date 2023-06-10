@@ -12,6 +12,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
     {
         private List<StopTile> stopTiles = MainWindow.stopTiles;
         private List<MovableTile> movableTiles = MainWindow.movableTiles;
+        private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
 
         private List<Point> coordinates = MainWindow.stopTilesCoordinates;
 
@@ -104,7 +105,10 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             AnimationClock resource1InputClock = null;
             AnimationClock resource1OutputClock = null;
 
-        Vector movableTile = VisualTreeHelper.GetOffset(movableTiles[0]);
+            AnimationClock resource2InputClock = null;
+            AnimationClock resource2OutputClock = null;
+
+            Vector movableTile = VisualTreeHelper.GetOffset(movableTiles[0]);
             Vector stopTile1 = VisualTreeHelper.GetOffset(stopTiles[0]);
             Vector stopTile2 = VisualTreeHelper.GetOffset(stopTiles[1]);
             Vector stopTile3 = VisualTreeHelper.GetOffset(stopTiles[2]);
@@ -482,36 +486,47 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
                     if (inputIndex == 1)
                     {
                         //Погрузка 1
-                        DoubleAnimation resource1Input = new DoubleAnimation();
-                        resource1Input.From = movableTiles[0].ResourceFigure1.Height;
-                        resource1Input.To = movableTiles[0].ResourceFigure1.Height / 2;
-                        resource1Input.Duration = new Duration(TimeSpan.FromSeconds(2));
-                        resource1Input.AutoReverse = false;
-                        resource1Input.RepeatBehavior = new RepeatBehavior(4);
+                        ColorAnimation resource1Input = new ColorAnimation();
+                        resource1Input.From = Colors.White;
+                        resource1Input.To = ((SolidColorBrush)resourceTiles[1].ResourceFigure.Fill).Color;
+                        resource1Input.Duration = TimeSpan.FromSeconds(2);
 
+                        resource1InputClock = resource1Input.CreateClock();
 
-                         resource1InputClock = resource1Input.CreateClock() as AnimationClock;
-
-                        animations.Add(resource1Input);
                     }
                     else if(inputIndex == 2)
                     {
+                        ColorAnimation resource2Input = new ColorAnimation();
+                        resource2Input.From = Colors.White;
+                        resource2Input.To = ((SolidColorBrush)resourceTiles[3].ResourceFigure.Fill).Color;
+                        resource2Input.Duration = TimeSpan.FromSeconds(2);
 
+                        resource2InputClock = resource2Input.CreateClock();
                     }
                 }
                 else if (operation.Contains("Разгрузка"))
                 {
+                    int outputIndex = int.Parse(operation[12].ToString());
                     //Разгрузка
-                    DoubleAnimation resource1Output = new DoubleAnimation();
-                    resource1Output.From = movableTiles[0].ResourceFigure1.Width;
-                    resource1Output.To = movableTiles[0].ResourceFigure1.Width * 2;
-                    resource1Output.Duration = new Duration(TimeSpan.FromSeconds(2));
-                    resource1Output.AutoReverse = false;
-                    resource1Output.RepeatBehavior = new RepeatBehavior(8);
+                    if(outputIndex == 1)
+                    {
+                        ColorAnimation resource1Output = new ColorAnimation();
+                        resource1Output.From = ((SolidColorBrush)resourceTiles[1].ResourceFigure.Fill).Color;
+                        resource1Output.To = Colors.White;
+                        resource1Output.Duration = new Duration(TimeSpan.FromSeconds(2));
 
-                     resource1OutputClock = resource1Output.CreateClock();
+                        resource1OutputClock = resource1Output.CreateClock();
+                    }
+                    else if(outputIndex == 2)
+                    {
+                        ColorAnimation resource2Output = new ColorAnimation();
+                        resource2Output.From = ((SolidColorBrush)resourceTiles[1].ResourceFigure.Fill).Color;
+                        resource2Output.To = Colors.White;
+                        resource2Output.Duration = new Duration(TimeSpan.FromSeconds(2));
 
-                    animations.Add(resource1Output);
+                        resource1OutputClock = resource2Output.CreateClock();
+                    }
+                  
                 }
               
             }
@@ -535,6 +550,8 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
             clocks.Add(MoveFrom6To3YClock);
             clocks.Add(resource1InputClock);
             clocks.Add(resource1OutputClock);
+            clocks.Add(resource2InputClock);
+            clocks.Add(resource2OutputClock);
         }
 
         #region метод-заглушка,создающий пути сейчас
@@ -1014,11 +1031,11 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
 
             if (outputOperationIndex == 1)
             {
-                complexesClocks[movableTileIndex].Add(clocks[18]);
+                complexesClocks[movableTileIndex].Add(clocks[19]);
             }
             else if (outputOperationIndex == 2)
             {
-                complexesClocks[movableTileIndex].Add(clocks[20]);
+                complexesClocks[movableTileIndex].Add(clocks[21]);
             }
         }
     }

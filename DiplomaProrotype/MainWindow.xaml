@@ -61,13 +61,13 @@
         <!-- Меню режимов слева -->
         <Border Name="ModeBorder" 
                 Width="100" 
-                Margin="10,195,0,115" 
+                Margin="10,169,0,115" 
                 HorizontalAlignment="Left" 
                 MouseWheel="ModeBorder_MouseWheel" 
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="ModePanel" 
                         Orientation="Vertical" 
-                        Background="Transparent" Cursor="Hand">
+                        Background="Transparent" Cursor="Hand" Margin="-1,13,1,-1">
                 <local:ModeTile x:Name="ModeMove" Text="Перемещение" Image="Icons/x128/Hand128.png" MouseLeftButtonDown="ModeTile_Move_MouseLeftButtonDown" Foreground="Crimson">
                     <UserControl.ToolTip>
                         <ToolTip>
@@ -105,7 +105,7 @@
                         </ToolTip>
                     </UserControl.ToolTip>
                 </local:ModeTile>
-                <local:ModeTile x:Name="ModeAnimation" Text="" Image="Icons/x128/Square128.png" MouseLeftButtonDown="ModeTile_Animation_MouseLeftButtonDown">
+                <local:ModeTile x:Name="ModeAnimation" Text="Анимировать" Image="Icons/x128/Square128.png" MouseLeftButtonDown="ModeTile_Animation_MouseLeftButtonDown" Height="65">
                     <UserControl.ToolTip>
                         <ToolTip>
                             Нажмите чтобы запустить анимацию.

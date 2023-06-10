@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
@@ -29,11 +30,12 @@ namespace DiplomaPrototype.Animations
             List<string> animationNames = new List<string>();
             animationNames.Add("Переезд");
             animationNames.Add("Переезд");
+            animationNames.Add("Погрузка");
             nclocks = clocks;
             //animationNames.Add("Погрузка");
 
             AnimateTile(movableTile, AnimationClocks[0], animationNames);
-            AnimateTile(MainWindow.movableTiles[1], AnimationClocks[1], animationNames);
+            //AnimateTile(MainWindow.movableTiles[1], AnimationClocks[1], animationNames);
             //StartNextStoryboard();
             //movableTile.ApplyAnimationClock(Canvas.LeftProperty, (AnimationClock)clocks[0]);
 
@@ -85,6 +87,15 @@ namespace DiplomaPrototype.Animations
             {
                 movableTile.ApplyAnimationClock(Canvas.TopProperty, (AnimationClock)animationClocks[1]);
             };
+            animationClocks[1].Completed += (s, e) =>
+            {
+                Brush resourceFigureCopy = movableTile.ResourceFigure1.Fill.Clone();
+                movableTile.ResourceFigure1.Fill = resourceFigureCopy;
+                movableTile.ResourceFigure1.Fill.ApplyAnimationClock(SolidColorBrush.ColorProperty, (AnimationClock)animationClocks[2]);
+                animationClocks[2].Controller.Begin();
+            };
+
+
             //animationClocks[1].Completed += (s, e) =>
             //{
             //    movableTile.ResourceFigure1.ApplyAnimationClock(Rectangle.HeightProperty, (AnimationClock)animationClocks[2]);
@@ -120,7 +131,7 @@ namespace DiplomaPrototype.Animations
             //            movableTile.ResourceFigure1.ApplyAnimationClock(Button.HeightProperty, animationClocks[i]); 
             //        };
             //    }
-              
+
             //}
         }
 
