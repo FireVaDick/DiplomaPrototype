@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiplomaPrototype", "DiplomaProrotype\DiplomaPrototype.csproj", "{F4441A7C-6822-4F47-A41A-77E2CF5D16DC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Charts", "Charts\Charts.csproj", "{067B526D-3A3D-4825-9DCB-FA587DBBD2A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataModeling", "DataModeling\DataModeling.csproj", "{1FCD381F-0CD6-4188-B00F-293A5353D214}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{F4441A7C-6822-4F47-A41A-77E2CF5D16DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4441A7C-6822-4F47-A41A-77E2CF5D16DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4441A7C-6822-4F47-A41A-77E2CF5D16DC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{067B526D-3A3D-4825-9DCB-FA587DBBD2A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{067B526D-3A3D-4825-9DCB-FA587DBBD2A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{067B526D-3A3D-4825-9DCB-FA587DBBD2A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{067B526D-3A3D-4825-9DCB-FA587DBBD2A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FCD381F-0CD6-4188-B00F-293A5353D214}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FCD381F-0CD6-4188-B00F-293A5353D214}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FCD381F-0CD6-4188-B00F-293A5353D214}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FCD381F-0CD6-4188-B00F-293A5353D214}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
