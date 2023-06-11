@@ -23,6 +23,30 @@
                 <Setter Property="BorderBrush" Value="{x:Null}"></Setter>
             </Style.Setters>
         </Style>
+        <Style x:Key="CentralizedHeader"
+               TargetType="{x:Type Control}">
+            <Style.Setters>
+                <Setter Property="FontSize" Value="13"></Setter>
+                <Setter Property="FontWeight" Value="SemiBold"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            </Style.Setters>
+        </Style>
+        <!--Images-->
+        <Image x:Key="NextOperation0" Source="..\Resources\img\btns\next-btn-0.png"/>
+        <Image x:Key="NextOperation1" Source="..\Resources\img\btns\next-btn-1.png"/>
+        <Image x:Key="PreviousOperation0" Source="..\Resources\img\btns\prev-btn-0.png"/>
+        <Image x:Key="PreviousOperation1" Source="..\Resources\img\btns\prev-btn-1.png"/>
+        <Image x:Key="DisableZoom0" Source="..\Resources\img\btns\disable-zoom-0.png"/>
+        <Image x:Key="DisableZoom1" Source="..\Resources\img\btns\disable-zoom-1.png"/>
+        <Image x:Key="ResetSection0" Source="..\Resources\img\btns\reset-section-0.png"/>
+        <Image x:Key="ShiftRangeBwd0" Source="..\Resources\img\btns\shift-bwd-0.png"/>
+        <Image x:Key="ShiftRangeBwd1" Source="..\Resources\img\btns\shift-bwd-1.png"/>
+        <Image x:Key="ShiftRangeBwd2" Source="..\Resources\img\btns\shift-bwd-2.png"/>
+        <Image x:Key="ShiftRangeFwd0" Source="..\Resources\img\btns\shift-fwd-0.png"/>
+        <Image x:Key="ShiftRangeFwd1" Source="..\Resources\img\btns\shift-fwd-1.png"/>
+        <Image x:Key="ShiftRangeFwd2" Source="..\Resources\img\btns\shift-fwd-2.png"/>
+        <Image x:Key="HideSection0" Source="..\Resources\img\btns\hide-section-0.png"/>
         <!--Status bar-->
         <Style x:Key="StatusBar"
                TargetType="{x:Type StatusBar}">
@@ -48,12 +72,56 @@
             </Style.Setters>
         </Style>
         <!--Buttons-->
+        <Style x:Key="NextOperationButton"
+               TargetType="{x:Type Button}">
+            <Style.Setters>
+                <Setter Property="ToolTip" Value="К следующей операции"></Setter>
+                <Setter Property="Command" Value="{Binding NextOperationCommand}"></Setter>
+                <Setter Property="Content" Value="{StaticResource NextOperation0}"></Setter>
+            </Style.Setters>
+        </Style>
+        <Style x:Key="PreviousOperationButton"
+               TargetType="{x:Type Button}">
+            <Style.Setters>
+                <Setter Property="ToolTip" Value="К предыдующей операции"></Setter>
+                <Setter Property="Command" Value="{Binding PreviousOperationCommand}"></Setter>
+                <Setter Property="Content" Value="{StaticResource PreviousOperation0}"></Setter>
+            </Style.Setters>
+        </Style>
+        <Style x:Key="ShiftRangeBwdButton"
+               TargetType="{x:Type Button}">
+            <Style.Setters>
+                <Setter Property="ToolTip" Value="Сдвинуть кадр назад"></Setter>
+                <Setter Property="Command" Value="{Binding ShiftRangeBackwardCommand}"></Setter>
+            </Style.Setters>
+        </Style>
+        <Style x:Key="ShiftRangeFwdButton"
+               TargetType="{x:Type Button}">
+            <Style.Setters>
+                <Setter Property="ToolTip" Value="Сдвинуть кадр вперёд"></Setter>
+                <Setter Property="Command" Value="{Binding ShiftRangeForwardCommand}"></Setter>
+            </Style.Setters>
+        </Style>
         <Style x:Key="NavigationButton" 
                TargetType="{x:Type Button}"
                BasedOn="{StaticResource ResourceKey=NoneBorderAndBackground}">
             <Setter Property="Cursor" Value="Hand"></Setter>
             <Setter Property="Height" Value="63"></Setter>
             <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+        </Style>
+        <Style x:Key="ChangeVisibilityButton"
+               TargetType="{x:Type Button}">
+            <Style.Setters>
+                <Setter Property="Command" Value="{Binding ChangeSectionVisibilityCommand}"></Setter>
+                <Setter Property="ToolTip" Value="Показать/спрятать диапазон сравнения"></Setter>
+            </Style.Setters>
+        </Style>
+        <Style x:Key="ResetSectionButton"
+               TargetType="{x:Type Button}">
+            <Style.Setters>
+                <Setter Property="Command" Value="{Binding ResetSectionCommand}"></Setter>
+                <Setter Property="ToolTip" Value="Сбросить границы секции"></Setter>
+            </Style.Setters>
         </Style>
         <Style x:Key="ArrowButton"   
                TargetType="{x:Type Button}"
@@ -63,6 +131,23 @@
                 <Setter Property="Margin" Value="16,0,16,0"></Setter>
                 <Setter Property="VerticalAlignment" Value="Center"></Setter>
                 <Setter Property="Width" Value="30" ></Setter>
+            </Style.Setters>
+        </Style>
+        <Style x:Key="BoxLabel"
+               TargetType="{x:Type Label}">
+            <Style.Setters>
+                <Setter Property="FontSize" Value="12"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+                <Setter Property="Margin" Value="10,0,0,0"></Setter>
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            </Style.Setters>
+        </Style>
+        <Style x:Key="LimitTextBox"
+               TargetType="{x:Type TextBox}">
+            <Style.Setters>
+                <Setter Property="Margin" Value="3,4,3,4"></Setter>
+                <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
             </Style.Setters>
         </Style>
     </Window.Resources>
@@ -83,31 +168,20 @@
                  Grid.Column="0"
                  Grid.ColumnSpan="3">
             <Button x:Name="ToolBarPrevOperation"
-                    Command="{Binding PreviousOperationCommand}"
-                    ToolTip="К предыдущей операции">
-                <Image Source="..\Resources\img\btns\prev-btn-0.png"/>
-            </Button>
+                    Style="{StaticResource PreviousOperationButton}"/>
             <Button x:Name="ToolBarNextOperation"
-                    Command="{Binding NextOperationCommand}"
-                    ToolTip="К следующей операции">
-                <Image Source="..\Resources\img\btns\next-btn-0.png"/>
-            </Button>
+                    Style="{StaticResource NextOperationButton}"/>
             <Separator></Separator>
             <Button x:Name="ToolBarDisableScaling"
                     ToolTip="Сброс масштабирования"
-                    Command="{Binding DisableScalingCommand}">
-                <Image Source="..\Resources\img\btns\disable-zoom-1.png"/>
-            </Button>
+                    Command="{Binding ResetScalingCommand}"
+                    Content="{StaticResource DisableZoom1}"/>
             <Button x:Name="ToolBarShiftRangeBack"
-                    ToolTip="Сдвинуть кадр назад"
-                    Command="{Binding ShiftRangeBackwardCommand}">
-                <Image Source="..\Resources\img\btns\shift-bwd-2.png"/>
-            </Button>
+                    Style="{StaticResource ShiftRangeBwdButton}"
+                    Content="{StaticResource ShiftRangeBwd2}"/>
             <Button x:Name="ToolBarShiftRangeForward"
-                    ToolTip="Сдвинуть кадр вперёд"
-                    Command="{Binding ShiftRangeForwardCommand}">
-                <Image Source="..\Resources\img\btns\shift-fwd-2.png"/>
-            </Button>
+                    Style="{StaticResource ShiftRangeFwdButton}"
+                    Content="{StaticResource ShiftRangeFwd2}"/>
             <Separator></Separator>
             <ComboBox x:Name="ToolBarOpeartions"
                       Width="250px"
@@ -116,23 +190,31 @@
                       SelectedValue="{Binding SelectedOperation, Mode=TwoWay}">
             </ComboBox>
             <Separator></Separator>
+            <Button x:Name="ToolBarResetSection"
+                    Style="{StaticResource ResetSectionButton}"
+                    Content="{StaticResource ResetSection0}"/>
             <Button x:Name="ToolBarChangeSectionVisibility"
-                    ToolTip="Показать/спрятать диапазон сравнения"
-                    Command="{Binding ChangeSectionVisibilityCommand}">
-                <Image Source="..\Resources\img\btns\hide-section-0.png"/>
-            </Button>
+                    Style="{StaticResource ChangeVisibilityButton}"
+                    Content="{StaticResource HideSection0}"/>
         </ToolBar>
         <!--Process navigation-->
-        <StackPanel x:Name="NavigationContainer"
-                    Grid.Column="0"
-                    Grid.Row="1"
-                    Orientation="Vertical">
+        <Grid x:Name="NavigationContainer0"
+              Grid.Column="0"
+              Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
             <Label Content="Производственные цепочки"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"/>
+                   Grid.Row="0"
+                   Style="{StaticResource CentralizedHeader}"/>
             <ComboBox x:Name="ChainsList"
-                     ItemsSource="{Binding Chains}"
-                     SelectedValue="{Binding SelectedChain, Mode=TwoWay}">
+                      Grid.Row="1"
+                      ItemsSource="{Binding Chains}"
+                      SelectedValue="{Binding SelectedChain, Mode=TwoWay}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding SelectСhainCommand}"
@@ -141,9 +223,10 @@
                 </i:Interaction.Triggers>
             </ComboBox>
             <Label Content="Производственные операции"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"/>
+                   Grid.Row="2"
+                   Style="{StaticResource CentralizedHeader}"/>
             <ListBox x:Name="OperationsList"
+                     Grid.Row="3"
                      ItemsSource="{Binding SelectedChain.Operations}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
@@ -156,7 +239,60 @@
                     </i:KeyTrigger>
                 </i:Interaction.Triggers>
             </ListBox>
-        </StackPanel>
+            <Grid Grid.Row="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Content="Диапазон сопоставления"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Style="{StaticResource CentralizedHeader}"/>
+                <Label Content="Нижняя граница:" 
+                       Grid.Column="0"
+                       Grid.Row="1"
+                       Style="{StaticResource BoxLabel}"/>
+                <TextBox x:Name="SectionLowerBox"
+                         Grid.Column="1"
+                         Grid.Row="1"
+                         Style="{StaticResource LimitTextBox}">
+                    <Binding Path="TimeSection.Xi" 
+                             UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox>
+                <Label Content="Верхняя граница:" 
+                       Grid.Column="0"
+                       Grid.Row="2"
+                       Style="{StaticResource BoxLabel}"/>
+                <TextBox x:Name="SectionUpperBox"
+                         Grid.Column="1"
+                         Grid.Row="2"
+                         Style="{StaticResource LimitTextBox}">
+                    <Binding Path="TimeSection.Xj" 
+                             UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox>
+                <Button Content="Изменить видимость"
+                        Background="White"
+                        BorderBrush="Black"
+                        Cursor="Hand"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="3"
+                        Padding="5,5,5,5"
+                        Margin="5,5,5,5"
+                        BorderThickness="2"
+                        Style="{StaticResource ChangeVisibilityButton}">
+                </Button>
+            </Grid>
+        </Grid>
         <!--Charts container-->
         <Grid x:Name="ChartsGrid"
               Grid.Column="1"
@@ -191,11 +327,10 @@
             </Grid.ColumnDefinitions>
             <Button x:Name="ShiftRangeBack"
                     Command="{Binding ShiftRangeBackwardCommand}"
+                    Content="{StaticResource ResourceKey=ShiftRangeBwd0}"
                     Grid.Column="0"
                     HorizontalAlignment="Right"
-                    Style="{StaticResource ResourceKey=ArrowButton}">
-                <Image Source="..\Resources\img\btns\shift-bwd-0.png"/>
-            </Button>
+                    Style="{StaticResource ResourceKey=ArrowButton}"/>
             <Slider x:Name="RangeSizeSlider"
                     Cursor="Hand"
                     Grid.Column="1" 
@@ -213,11 +348,10 @@
             </Slider>
             <Button x:Name="ShiftRangeForward"
                     Command="{Binding ShiftRangeForwardCommand}"
+                    Content="{StaticResource ResourceKey=ShiftRangeFwd0}"
                     Grid.Column="2"
                     HorizontalAlignment="Left"
-                    Style="{StaticResource ResourceKey=ArrowButton}">
-                <Image Source="..\Resources\img\btns\shift-fwd-0.png"/>
-            </Button>
+                    Style="{StaticResource ResourceKey=ArrowButton}"/>
         </Grid>
         <!--Operations navigation-->
         <Button x:Name="PreviousOperationButton"
@@ -268,7 +402,7 @@
                     </Grid>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
-            <!--- Имя цепочки -->
+            <!--- Chain name -->
             <StatusBarItem Grid.Column="0"
                            Content="Производственная цепочка:"
                            Style="{StaticResource ResourceKey=ItemName}"/>
@@ -276,7 +410,7 @@
                            Grid.Column="1"
                            Content="{Binding SelectedChain.Name}"/>
             <Separator Grid.Column="2" />
-            <!--- Имя операции -->
+            <!--- Operation name -->
             <StatusBarItem Grid.Column="3"
                            Content="Операция:"
                            Style="{StaticResource ResourceKey=ItemName}"/>
@@ -284,7 +418,7 @@
                            Grid.Column="4"
                            Content="{Binding SelectedOperation.Name}"/>
             <Separator Grid.Column="5" />
-            <!--- Диапазон кадра -->
+            <!--- Range size -->
             <Separator Grid.Column="7"/>
             <StatusBarItem Grid.Column="8"
                            Content="Диапазон кадра, мин:"
@@ -293,14 +427,14 @@
                            Grid.Column="9"
                            Content="{Binding ElementName=RangeSizeSlider, Path=Value}"/>
             <Separator Grid.Column="10"/>
-            <!--- Начальное время -->
+            <!--- Range min limit -->
             <StatusBarItem Grid.Column="11"
                            Content="Начало кадра, мин:"  
                            Style="{StaticResource ResourceKey=ItemName}"/>
             <StatusBarItem x:Name="StatusBarRangeStart"
                            Grid.Column="12"
                            Content="{Binding TimeAxis.MinLimit}"/>
-            <!--- Конечное время -->
+            <!--- Range max limit -->
             <StatusBarItem Grid.Column="13"
                            Content="Конец кадра, мин:"
                            Style="{StaticResource ResourceKey=ItemName}"/>

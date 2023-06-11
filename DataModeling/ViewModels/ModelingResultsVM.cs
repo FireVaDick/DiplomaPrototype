@@ -15,7 +15,6 @@ namespace DataModeling.ViewModels;
 
 public partial class ModelingResultsVM : ObservableObject
 {
-
     private const double TimeMinimum = 0.0;
     private const double TimeMaximum = 11.0;
     private const string MachinesLabel = "Выполнение работы";
@@ -76,8 +75,8 @@ public partial class ModelingResultsVM : ObservableObject
                 PathEffect = new DashEffect(new float[] { 8, 6 }),
                 StrokeThickness = 2,
             },
-            Xi = 3,
-            Xj = 7,
+            Xi = TimeMinimum,
+            Xj = TimeMaximum,
         };
         Sections = new RectangularSection[] { timeSection };
 
@@ -217,7 +216,7 @@ public partial class ModelingResultsVM : ObservableObject
     }
 
     [RelayCommand]
-    public void DisableScaling()
+    public void ResetScaling()
     {
         RangeSize = RangeMaximum;
         TimeAxis.MinLimit = TimeMinimum;
@@ -241,9 +240,10 @@ public partial class ModelingResultsVM : ObservableObject
     }    
 
     [RelayCommand]
-    public void SetSectionBounds()
+    public void ResetSection()
     {
-        throw new NotImplementedException();
+        TimeSection.Xi = TimeMinimum;
+        TimeSection.Xj = TimeMaximum;
     }
 
     #endregion
@@ -252,11 +252,6 @@ public partial class ModelingResultsVM : ObservableObject
     {
         axis.MinLimit = null;
         axis.MaxLimit = null;
-    }
-
-    private bool IsAxisBounds()
-    {
-        return TimeMinimum == TimeAxis.MinLimit && TimeMaximum == TimeAxis.MaxLimit;
     }
 
     private string FormatTime(double value)
