@@ -1,7 +1,6 @@
 ﻿using LiveChartsCore.Drawing;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
-using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using SkiaSharp;
 
 namespace Charts.Creators
@@ -21,6 +20,7 @@ namespace Charts.Creators
                 NamePaint = new SolidColorPaint(DefaultColor),
                 NameTextSize = DefaultTextSize,
                 NamePadding = new Padding(0, 15),
+                ShowSeparatorLines = false,
             };
         }
 
@@ -32,6 +32,7 @@ namespace Charts.Creators
                 Name = name,
                 NamePaint = new SolidColorPaint(DefaultColor),
                 NameTextSize = 15,
+                ShowSeparatorLines = false,
             };
         }
     }
