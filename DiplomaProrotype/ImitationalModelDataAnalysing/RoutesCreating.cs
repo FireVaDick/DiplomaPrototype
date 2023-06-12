@@ -199,7 +199,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
                         MoveFrom2To3X.To = stopTile3.X - XMargin;
                         MoveFrom2To3X.Duration = new Duration(TimeSpan.FromSeconds(durationTime/2));
                         MoveFrom2To3X.AutoReverse = false;
-                        MoveFrom2To3X.RepeatBehavior = new RepeatBehavior(4);
+                        MoveFrom2To3X.RepeatBehavior = new RepeatBehavior(1);
 
                         Storyboard.SetTarget(MoveFrom2To3X, movableTiles[0]);
                         Storyboard.SetTargetProperty(MoveFrom2To3X, new PropertyPath(Canvas.LeftProperty));
@@ -213,7 +213,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
                         MoveFrom2To3Y.To = stopTile3.Y - YMargin;
                         MoveFrom2To3Y.Duration = new Duration(TimeSpan.FromSeconds(durationTime/2));
                         MoveFrom2To3Y.AutoReverse = false;
-                        MoveFrom2To3Y.RepeatBehavior = new RepeatBehavior(5);
+                        MoveFrom2To3Y.RepeatBehavior = new RepeatBehavior(1);
 
                         Storyboard.SetTarget(MoveFrom2To3Y, movableTiles[0]);
                         Storyboard.SetTargetProperty(MoveFrom2To3Y, new PropertyPath(Canvas.TopProperty));
@@ -228,7 +228,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
                         MoveFrom3To4X.To = stopTile4.X - XMargin;
                         MoveFrom3To4X.Duration = new Duration(TimeSpan.FromSeconds(durationTime / 2));
                         MoveFrom3To4X.AutoReverse = false;
-                        MoveFrom3To4X.RepeatBehavior = new RepeatBehavior(6);
+                        MoveFrom3To4X.RepeatBehavior = new RepeatBehavior(1);
 
                         Storyboard.SetTarget(MoveFrom3To4X, movableTiles[0]);
                         Storyboard.SetTargetProperty(MoveFrom3To4X, new PropertyPath(Canvas.LeftProperty));
@@ -242,7 +242,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
                         MoveFrom3To4Y.To = stopTile4.Y - YMargin;
                         MoveFrom3To4Y.Duration = new Duration(TimeSpan.FromSeconds(durationTime / 2));
                         MoveFrom3To4Y.AutoReverse = false;
-                        MoveFrom3To4Y.RepeatBehavior = new RepeatBehavior(7);
+                        MoveFrom3To4Y.RepeatBehavior = new RepeatBehavior(1);
 
                         Storyboard.SetTarget(MoveFrom3To4Y, movableTiles[0]);
                         Storyboard.SetTargetProperty(MoveFrom3To4Y, new PropertyPath(Canvas.TopProperty));
@@ -968,43 +968,7 @@ namespace DiplomaPrototype.ImitationalModelDataAnalysing
                     complexesClocks[movableTileIndex].Add(clocks[17]);
                 }
             }
-
-            //Vector start = VisualTreeHelper.GetOffset(stopTiles[(startStopTileIndex)]);
-            //Vector end = VisualTreeHelper.GetOffset(stopTiles[(endStopTileIndex)]);
-            //Vector lastInputTargetMargin = VisualTreeHelper.GetOffset(stopTiles[2]);
-
-
-            //Point startPoint = new Point(start.X, start.Y);
-            //Point endPoint = new Point(end.X, end.Y);
-
-            //DoubleAnimation MoveFromToX = new DoubleAnimation();
-            //MoveFromToX.From = startPoint.X - XMargin;
-            //MoveFromToX.To = endPoint.X - XMargin;
-            //MoveFromToX.Duration = new Duration(TimeSpan.FromSeconds(2));
-            //MoveFromToX.AutoReverse = false;
-            //MoveFromToX.RepeatBehavior = new RepeatBehavior(4);
-
-            //Storyboard.SetTarget(MoveFromToX, movableTiles[0]);
-            //Storyboard.SetTargetProperty(MoveFromToX, new PropertyPath(Canvas.LeftProperty));
-
-            //AnimationClock MoveFromToXClock = MoveFromToX.CreateClock() as AnimationClock;
-
-
-
-            //DoubleAnimation MoveFromToY = new DoubleAnimation();
-            //MoveFromToY.From = startPoint.Y - YMargin;
-            //MoveFromToY.To = endPoint.Y - YMargin;
-            //MoveFromToY.Duration = new Duration(TimeSpan.FromSeconds(2));
-            //MoveFromToY.AutoReverse = false;
-            //MoveFromToY.RepeatBehavior = new RepeatBehavior(5);
-
-            //Storyboard.SetTarget(MoveFromToY, movableTiles[0]);
-            //Storyboard.SetTargetProperty(MoveFromToY, new PropertyPath(Canvas.TopProperty));
-
-            //AnimationClock MoveFromToYClock = MoveFromToY.CreateClock() as AnimationClock;
-
-            //clocks.Add(MoveFromToXClock);
-            //clocks.Add(MoveFromToYClock);
+      
 
         }
 

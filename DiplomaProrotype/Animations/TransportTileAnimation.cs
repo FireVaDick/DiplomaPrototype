@@ -3,6 +3,7 @@ using DiplomaPrototype.ImitationalModelDataAnalysing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -80,20 +81,68 @@ namespace DiplomaPrototype.Animations
 
         public void AnimateTile(MovableTile movableTile,List<AnimationClock> animationClocks, List<string> operations)
         {
+            bool after2 = false;
+            bool after3 = false;
+            bool after4 = false;
+            bool after5 = false;
 
             movableTile.ApplyAnimationClock(Canvas.LeftProperty, (AnimationClock)animationClocks[0]);
 
             animationClocks[0].Completed += (s, e) =>
             {
                 movableTile.ApplyAnimationClock(Canvas.TopProperty, (AnimationClock)animationClocks[1]);
-            };
+            };          
             animationClocks[1].Completed += (s, e) =>
             {
                 Brush resourceFigureCopy = movableTile.ResourceFigure1.Fill.Clone();
                 movableTile.ResourceFigure1.Fill = resourceFigureCopy;
                 movableTile.ResourceFigure1.Fill.ApplyAnimationClock(SolidColorBrush.ColorProperty, (AnimationClock)animationClocks[2]);
+
                 animationClocks[2].Controller.Begin();
+                after2 = true;
             };
+            animationClocks[2].Completed += (s, e) =>
+            {
+                if (after2)
+                {
+                    movableTile.ApplyAnimationClock(Canvas.LeftProperty, (AnimationClock)animationClocks[3]);
+                    animationClocks[3].Controller.Begin();
+                    after3 = true;
+                }
+            };
+            animationClocks[3].Completed += (s, e) =>
+            {
+                if (after3)
+                {
+                    movableTile.ApplyAnimationClock(Canvas.TopProperty, (AnimationClock)animationClocks[4]);
+                    animationClocks[4].Controller.Begin();
+                    after4 = true;
+                }
+            };
+            animationClocks[4].Completed += (s, e) =>
+            {
+                if (after4)
+                {
+                    movableTile.ApplyAnimationClock(Canvas.LeftProperty, (AnimationClock)animationClocks[5]);
+                    animationClocks[5].Controller.Begin();
+                    after5 = true;
+                }
+            };
+            animationClocks[5].Completed += (s, e) =>
+            {
+                if (after5)
+                {
+                    movableTile.ApplyAnimationClock(Canvas.TopProperty, (AnimationClock)animationClocks[6]);
+                    animationClocks[6].Controller.Begin();
+                    after5 = true;
+                }
+            };
+
+
+
+
+
+
 
 
             //animationClocks[1].Completed += (s, e) =>
