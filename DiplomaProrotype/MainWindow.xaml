@@ -50,11 +50,11 @@
                 MouseLeftButtonUp="TargetCanvas_MouseLeftButtonUp"
                 MouseRightButtonDown="TargetCanvas_MouseRightButtonUp"
                 Background="Transparent" >
-                <!-- <Canvas.RenderTransform>
+                <Canvas.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="{Binding ElementName=SliderAllInterface, Path=Value}" ScaleY="{Binding ElementName=SliderAllInterface, Path=Value}"/>
                     </TransformGroup>
-                </Canvas.RenderTransform> -->
+                </Canvas.RenderTransform>
             </Canvas>
         </Border>
         
@@ -216,7 +216,7 @@
         </Border>
 
         <Slider Name="SliderAllInterface" Width="400" Margin="0,0,0,15" Minimum="0.5" Maximum="1.5" Value="1" 
-                VerticalAlignment="Bottom" HorizontalAlignment="Center" LargeChange="0.1" Cursor="Hand" Focusable="False" ValueChanged="SliderAllInterface_ValueChanged"/>
-
+                VerticalAlignment="Bottom" HorizontalAlignment="Center" LargeChange="0.1" Cursor="Hand" Focusable="False" />
+        <!-- ValueChanged="SliderAllInterface_ValueChanged" -->
     </Grid>
 </Window>
