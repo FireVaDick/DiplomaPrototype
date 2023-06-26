@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -16,6 +17,7 @@ namespace DiplomaPrototype.Animations
     internal class TransportTileAnimation
     {
         private Storyboard storyboard; // список Storyboard
+        private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
 
         private static MovableTile movableTile;
 
@@ -85,6 +87,8 @@ namespace DiplomaPrototype.Animations
             bool after3 = false;
             bool after4 = false;
             bool after5 = false;
+            bool after6 = false;
+            bool after7 = false;
 
             movableTile.ApplyAnimationClock(Canvas.LeftProperty, (AnimationClock)animationClocks[0]);
 
@@ -93,11 +97,11 @@ namespace DiplomaPrototype.Animations
                 movableTile.ApplyAnimationClock(Canvas.TopProperty, (AnimationClock)animationClocks[1]);
             };          
             animationClocks[1].Completed += (s, e) =>
-            {
+            {           
                 Brush resourceFigureCopy = movableTile.ResourceFigure1.Fill.Clone();
                 movableTile.ResourceFigure1.Fill = resourceFigureCopy;
                 movableTile.ResourceFigure1.Fill.ApplyAnimationClock(SolidColorBrush.ColorProperty, (AnimationClock)animationClocks[2]);
-
+ 
                 animationClocks[2].Controller.Begin();
                 after2 = true;
             };
@@ -134,7 +138,26 @@ namespace DiplomaPrototype.Animations
                 {
                     movableTile.ApplyAnimationClock(Canvas.TopProperty, (AnimationClock)animationClocks[6]);
                     animationClocks[6].Controller.Begin();
-                    after5 = true;
+                    after6 = true;
+                }
+            };
+            animationClocks[6].Completed += (s, e) =>
+            {
+                if (after6)
+                {
+                    ColorAnimation resource1Output = new ColorAnimation();
+                    resource1Output.From = ((SolidColorBrush)resourceTiles[1].ResourceFigure.Fill).Color;
+                    resource1Output.To = Colors.White;
+                    resource1Output.Duration = new Duration(TimeSpan.FromSeconds(2));
+                    AnimationClock animationClock = resource1Output.CreateClock();
+
+                    Brush resourceFigureCopy = movableTile.ResourceFigure1.Fill.Clone();
+                    movableTile.ResourceFigure1.Fill = resourceFigureCopy;
+                    movableTile.ResourceFigure1.Fill.ApplyAnimationClock(SolidColorBrush.ColorProperty, animationClock);
+
+                    animationClock.Controller.Begin();
+
+                    after7 = true;
                 }
             };
 

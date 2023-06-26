@@ -160,11 +160,11 @@ namespace DiplomaProrotype.ObjectsManipulation
             {
                 if (resourceTileFromContextMenu.ResourceFigure.Height == 45)
                 {
-                    ResourceAnimation.ResourceHeightAnimation(45, 10, 3, new(0, 5, 0, 0), new(0, 40, 0, 0));
+                    ResourceAnimation.ResourceHeightAnimation(45, 10, 2, new(0, 5, 0, 0), new(0, 40, 0, 0));
                 }
                 else
                 {
-                    ResourceAnimation.ResourceHeightAnimation(10, 45, 3, new(0, 40, 0, 0), new(0, 5, 0, 0));
+                    ResourceAnimation.ResourceHeightAnimation(10, 45, 2, new(0, 40, 0, 0), new(0, 5, 0, 0));
                 }
             }
 
