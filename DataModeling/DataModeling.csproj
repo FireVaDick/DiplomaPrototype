@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\img\btns\disable-zoom-0.png" />
+    <None Remove="Resources\img\btns\disable-zoom-1.png" />
+    <None Remove="Resources\img\btns\hide-section-0.png" />
+    <None Remove="Resources\img\btns\next-btn-0.png" />
+    <None Remove="Resources\img\btns\prev-btn-0.png" />
+    <None Remove="Resources\img\btns\reset-section-0.png" />
+    <None Remove="Resources\img\btns\shift-bwd-0.png" />
+    <None Remove="Resources\img\btns\shift-bwd-1.png" />
+    <None Remove="Resources\img\btns\shift-bwd-2.png" />
+    <None Remove="Resources\img\btns\shift-fwd-0.png" />
+    <None Remove="Resources\img\btns\shift-fwd-1.png" />
+    <None Remove="Resources\img\btns\shift-fwd-2.png" />
+    <None Remove="Resources\img\menu\help-0.png" />
+    <None Remove="Resources\img\menu\next-op-0.png" />
+    <None Remove="Resources\img\menu\prev-op-0.png" />
+    <None Remove="Resources\img\modeling-results-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bytescout.Spreadsheet" Version="4.7.0.2045" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.710" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\img\btns\disable-zoom-0.png" />
+    <Resource Include="Resources\img\btns\disable-zoom-1.png" />
+    <Resource Include="Resources\img\btns\hide-section-0.png" />
+    <Resource Include="Resources\img\btns\next-btn-0.png" />
+    <Resource Include="Resources\img\btns\prev-btn-0.png" />
+    <Resource Include="Resources\img\btns\reset-section-0.png" />
+    <Resource Include="Resources\img\btns\shift-bwd-0.png" />
+    <Resource Include="Resources\img\btns\shift-bwd-1.png" />
+    <Resource Include="Resources\img\btns\shift-bwd-2.png" />
+    <Resource Include="Resources\img\btns\shift-fwd-0.png" />
+    <Resource Include="Resources\img\btns\shift-fwd-1.png" />
+    <Resource Include="Resources\img\btns\shift-fwd-2.png" />
+    <Resource Include="Resources\img\menu\help-0.png" />
+    <Resource Include="Resources\img\menu\next-op-0.png" />
+    <Resource Include="Resources\img\menu\prev-op-0.png" />
+    <Resource Include="Resources\img\modeling-results-icon.png" />
+  </ItemGroup>
+
+</Project>

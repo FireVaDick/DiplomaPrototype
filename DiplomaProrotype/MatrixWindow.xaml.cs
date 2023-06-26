@@ -1,7 +1,9 @@
 ﻿using DiplomaProrotype.Animations;
 using DiplomaProrotype.CanvasManipulation;
+using Haley.Utils;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,89 +23,135 @@ namespace DiplomaProrotype
     /// </summary>
     public partial class MatrixWindow : Window
     {
-        static private List<ResourceTile> resourceTiles = MainWindow.resourceTiles;
-        static private List<MachineTile> machineTiles = MainWindow.machineTiles;
-
-
         public MatrixWindow()
         {
             InitializeComponent();
 
-            if (resourceTiles.Count != 0 && machineTiles.Count != 0)
-            {
-                CreateMatrixTable();
-            }
-     
-            double screenWidth = SystemParameters.FullPrimaryScreenWidth;
-            double screenHeight = SystemParameters.FullPrimaryScreenHeight;
-            this.Left = (screenWidth - this.Width) - 15;
-            this.Top = (screenHeight - this.Height) / 2 - 30;
-        }
-
-        private void CreateMatrixTable()
-        {
             FlowDoc = new FlowDocument();
 
-            MatrixTable = new Table();
-            MatrixTable.CellSpacing = 10;
-            MatrixTable.FontFamily = new FontFamily("Cambria");
-
-            FlowDoc.Blocks.Add(MatrixTable);
-
-            // Визуальное оформление колонок
-            for (int x = 0; x < resourceTiles.Count + 1; x++)
-            {
-                MatrixTable.Columns.Add(new TableColumn());
-                
-                if (x % 2 == 0)
-                    MatrixTable.Columns[x].Background = new SolidColorBrush(Color.FromArgb(255, (byte)229, (byte)233, (byte)236));
-                else
-                    MatrixTable.Columns[x].Background = new SolidColorBrush(Color.FromArgb(255, (byte)132, (byte)169, (byte)140));
-            }
-
-            MatrixTable.RowGroups.Add(new TableRowGroup());
-            MatrixTable.RowGroups[0].Rows.Add(new TableRow());
-
-            TableRow currentRow = MatrixTable.RowGroups[0].Rows[0];
-
-            currentRow.Cells.Add(new TableCell(new Paragraph(new Run(""))));
-
-            currentRow.FontSize = 16;
-            currentRow.FontWeight = FontWeights.Bold;
-
-            // Оформление заголовков
-            for (int j = 0; j < resourceTiles.Count; j++)
-            {
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(j + 1)))));
-            }
-
-            for (int i = 0; i < machineTiles.Count; i++)
-            {
-
-                MatrixTable.RowGroups[0].Rows.Add(new TableRow());
-                currentRow = MatrixTable.RowGroups[0].Rows[i + 1];
-                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(i + 1)))));
-
-                currentRow.Cells[0].FontSize = 16;
-                currentRow.Cells[0].FontWeight = FontWeights.Bold;
-            }
-
-            // Данные самой матрицы
-            for (int i = 0; i < machineTiles.Count; i++)
-            {                           
-                currentRow = MatrixTable.RowGroups[0].Rows[i + 1];
-
-                for (int j = 0; j < resourceTiles.Count; j++)
-                {
-                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(MainWindow.matrixResourceMachine[i, j])))));
-                }
-            }
-
+            CreateMatrix();
 
             FlowDocumentReader myFlowDocumentReader = new FlowDocumentReader();
             myFlowDocumentReader.Document = FlowDoc;
+            myFlowDocumentReader.ViewingMode = FlowDocumentReaderViewingMode.Scroll;
 
             this.Content = myFlowDocumentReader;
+
+            double screenWidth = SystemParameters.FullPrimaryScreenWidth;
+            double screenHeight = SystemParameters.FullPrimaryScreenHeight;
+            this.Left = (screenWidth - this.Width) - 65;
+            this.Top = (screenHeight - this.Height) / 2 - 25;
+        }
+
+
+        private void CreateMatrix()
+        {
+            Matrix = new Table();
+            Matrix.CellSpacing = 10;
+            Matrix.FontFamily = new FontFamily("Cambria");
+
+            FlowDoc.Blocks.Add(Matrix);
+
+            Matrix.RowGroups.Add(new TableRowGroup());
+            TableRow currentRow;
+
+            // Инициализация строк
+            for (int i = 0; i < MainWindow.matrixResourceMachine.GetLength(0) + MainWindow.matrixResourceStop.GetLength(0) + MainWindow.matrixCrossings.GetLength(0) - 2; i++)
+            {
+                Matrix.RowGroups[0].Rows.Add(new TableRow());
+            }
+
+            currentRow = Matrix.RowGroups[0].Rows[0];
+            currentRow.Cells.Add(new TableCell(new Paragraph(new Run(""))));
+
+            // Визуальное оформление колонок
+            for (int x = 0; x < MainWindow.resourceTiles.Count + MainWindow.vectorChain.Count + 2; x++)
+            {
+                Matrix.Columns.Add(new TableColumn());
+
+                if (x % 2 == 0)
+                    Matrix.Columns[x].Background = new SolidColorBrush(Color.FromArgb(255, (byte)229, (byte)233, (byte)236));
+                else
+                    Matrix.Columns[x].Background = new SolidColorBrush(Color.FromArgb(255, (byte)132, (byte)169, (byte)140));
+            }
+            GridLengthConverter glc = new GridLengthConverter();
+            Matrix.Columns[0].Width = (GridLength)glc.ConvertFromString("20");
+            Matrix.Columns[1].Width = (GridLength)glc.ConvertFromString("280");
+
+            // Самая первая общая строчка
+            for (int j = 0; j < MainWindow.resourceTiles.Count + 1; j++)
+            {               
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourceMachine[0, j]))));
+
+                currentRow.FontSize = 16;
+                currentRow.FontWeight = FontWeights.Bold;
+                currentRow.Cells[0].FontSize = 16;
+                currentRow.Cells[0].FontWeight = FontWeights.Bold;
+            }
+            for (int j = 0; j < MainWindow.vectorChain.Count; j++)
+            {
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixChainStop[0, j]))));
+            }
+
+            // Номера операций
+            for (int i = 1; i < MainWindow.matrixResourceMachine.GetLength(0) + MainWindow.matrixResourceStop.GetLength(0) + MainWindow.matrixCrossings.GetLength(0) - 2; i++)
+            {
+                currentRow = Matrix.RowGroups[0].Rows[i];
+
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(Convert.ToString(i)))));
+
+                currentRow.Cells[0].FontSize = 16;
+                currentRow.Cells[0].FontWeight = FontWeights.Bold;
+                currentRow.Cells[0].TextAlignment = TextAlignment.Right;
+            }
+
+            // Станки
+            for (int i = 1; i < MainWindow.machineTiles.Count + 1; i++)
+            {
+                currentRow = Matrix.RowGroups[0].Rows[i];
+
+                for (int j = 0; j < MainWindow.resourceTiles.Count + 1; j++)
+                {
+                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourceMachine[i, j]))));
+
+                    currentRow.Cells[1].FontSize = 16;
+                    currentRow.Cells[1].FontWeight = FontWeights.Bold;
+                }
+            }
+
+            // Стоянки
+            for (int i = 1; i < MainWindow.stopTiles.Count + 1; i++)
+            {
+                currentRow = Matrix.RowGroups[0].Rows[i + MainWindow.matrixResourceMachine.GetLength(0) - 1];
+
+                for (int j = 0; j < MainWindow.resourceTiles.Count + 1; j++)
+                {
+                    currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixResourceStop[i, j]))));
+
+                    currentRow.Cells[1].FontSize = 16;
+                    currentRow.Cells[1].FontWeight = FontWeights.Bold;
+                }
+
+                for (int j = 0; j < MainWindow.vectorChain.Count; j++)
+                {
+                    try { currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixChainStop[i, j])))); }
+                    catch { }
+                    
+                    currentRow.Cells[1].FontSize = 16;
+                    currentRow.Cells[1].FontWeight = FontWeights.Bold;
+                }
+            }
+
+            // Переезды
+            for (int i = 1; i < MainWindow.matrixCrossings.GetLength(0); i++)
+            {
+                currentRow = Matrix.RowGroups[0].Rows[i + MainWindow.matrixResourceMachine.GetLength(0) + MainWindow.matrixResourceStop.GetLength(0) - 2];
+
+                currentRow.Cells.Add(new TableCell(new Paragraph(new Run(MainWindow.matrixCrossings[i]))));
+
+                currentRow.Cells[1].FontSize = 16;
+                currentRow.Cells[1].FontWeight = FontWeights.Bold;
+            }
         }
 
         static public void CreateMatrixWindow()

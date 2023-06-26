@@ -1,4 +1,6 @@
-﻿using DiplomaProrotype.Animations;
+﻿using Bytescout.Spreadsheet;
+using Bytescout.Spreadsheet.Constants;
+using DiplomaProrotype.Animations;
 using DiplomaProrotype.CanvasManipulation;
 using DiplomaProrotype.ColorsManipulation;
 using DiplomaProrotype.Models;
@@ -7,28 +9,34 @@ using DiplomaPrototype;
 using DiplomaPrototype.Animations;
 using DiplomaPrototype.ImitationalModelDataAnalysing;
 using Haley.Utils;
+using DiplomaPrototype.Excel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace DiplomaProrotype
 {
     public partial class MainWindow : Window
     {
         static public MatrixWindow matrixWindow;
-        static public SelectWindow selectWindow;
-        static public int[,] matrixResourceMachine = new int[0, 0];
+        static public SelectWindow selectWindow;       
 
         static public List<ResourceTile> resourceTiles = new List<ResourceTile>();
         static public List<MachineTile> machineTiles = new List<MachineTile>();
         static public List<MovableTile> movableTiles = new List<MovableTile>();
         static public List<StopTile> stopTiles = new List<StopTile>();
-        static public List<Link> linksResourceMachine = new List<Link>();
-        static public List<Link> linksResourceStop = new List<Link>();
+        static public List<Rectangle> mainStopPlaces = new List<Rectangle>();
+        static public List<Link> links = new List<Link>();
+        static public List<string> operations = new List<string>();      
 
         static public List<Point> stopTilesCoordinates = new List<Point>();
 
@@ -37,11 +45,24 @@ namespace DiplomaProrotype
         static public MovableTile movableTileFromContextMenu;
         static public StopTile stopTileFromContextMenu;
 
+        static public string[,] matrixResourceMachine = new string[1, 1];
+        static public string[,] matrixResourceStop = new string[1, 1];
+        static public string[,] matrixChainStop = new string[0, 0];
+        static public string[] matrixCrossings = new string[1] { " " };
+        static public int[,] matrixParticipation = new int[0, 0];
+        static public string[,] transportParameters = new string[1, 1];
+        static public List<int> vectorChain = new List<int>();
+        static public List<int> vectorSignal = new List<int>();
+        static public List<int> vectorUnoccupation = new List<int>();
+
         static public UserControl chosenOneObject;
         static public string lastTileType = "";
         static public string currentMode = "move";
         static public string currentPathType = "solid";
         static public bool resourceNearMachineIsEmpty = false;
+
+        static public int amountLoading = 0;
+        static public int amountUnloading = 0;
 
         Vector targetMargin;
 
@@ -206,10 +227,39 @@ namespace DiplomaProrotype
         #endregion
 
 
+        #region Запись в Excel
+        private void WriteToExcelButton_Click(object sender, RoutedEventArgs e)
+        {
+            ExcelOutput.CreateExcelOutput();
+        }
+        #endregion
+
+
         #region Очистка холста
         private void ModeTile_Erase_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Cleanup.CreateCleanupContextMenu();
+        }
+        #endregion
+
+
+        #region Масштабирование
+        private void SliderAllInterface_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            foreach (var c in TargetCanvas.Children.OfType<UserControl>())
+            {
+                c.RenderTransform = new ScaleTransform(SliderAllInterface.Value, SliderAllInterface.Value);
+            }
+
+            foreach (var c in TargetCanvas.Children.OfType<Line>())
+            {
+                c.RenderTransform = new ScaleTransform(SliderAllInterface.Value, SliderAllInterface.Value);
+            }
+
+            foreach (var c in TargetCanvas.Children.OfType<Ellipse>())
+            {
+                c.RenderTransform = new ScaleTransform(SliderAllInterface.Value, SliderAllInterface.Value);
+            }
         }
         #endregion
 
@@ -300,9 +350,8 @@ namespace DiplomaProrotype
             }
         }
 
+
         #endregion
-
-
     }
 }
 
