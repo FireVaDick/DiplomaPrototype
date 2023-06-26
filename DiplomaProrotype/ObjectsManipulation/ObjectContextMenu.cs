@@ -152,7 +152,7 @@ namespace DiplomaProrotype.ObjectsManipulation
             }*/
         }
 
-        static private void CMAnimate_Click(object sender, RoutedEventArgs e)
+        static public void CMAnimate_Click(object sender, RoutedEventArgs e)
         {
             GetTileFromContextMenu(sender, e);
 
@@ -160,11 +160,11 @@ namespace DiplomaProrotype.ObjectsManipulation
             {
                 if (resourceTileFromContextMenu.ResourceFigure.Height == 45)
                 {
-                    ResourceAnimation.ResourceHeightAnimation(45, 10, 3, new(0, 5, 0, 0), new(0, 40, 0, 0));
+                    ResourceAnimation.ResourceHeightAnimation(45, 10, 2, new(0, 5, 0, 0), new(0, 40, 0, 0));
                 }
                 else
                 {
-                    ResourceAnimation.ResourceHeightAnimation(10, 45, 3, new(0, 40, 0, 0), new(0, 5, 0, 0));
+                    ResourceAnimation.ResourceHeightAnimation(10, 45, 2, new(0, 40, 0, 0), new(0, 5, 0, 0));
                 }
             }
 
@@ -180,6 +180,24 @@ namespace DiplomaProrotype.ObjectsManipulation
 
                 worker.RunWorkerAsync();
             }
+
+            if (!(movableTileFromContextMenu is null))
+            {
+                if (movableTileFromContextMenu.ResourceFigure1.Height == 25)
+                {
+                    ResourceAnimation.ResourceOnMovableHeightAnimation(25, 6, 3, -35, -15);
+                }
+                else
+                {
+                    ResourceAnimation.ResourceOnMovableHeightAnimation(6, 25, 3, -15, -35);
+                }
+            }
+        }
+
+
+        static public void CMStoryboardAnimate_Click()
+        {
+           
 
             if (!(movableTileFromContextMenu is null))
             {

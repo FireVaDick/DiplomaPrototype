@@ -9,7 +9,7 @@
         xmlns:canvas="using:clr-namespace:DiplomaProrotype.CanvasManipulation"
         mc:Ignorable="d"
         KeyDown="MainWindow_KeyDown"
-        Title="Основа" Height="735" Width="1100" MinHeight="600" MinWidth="860"> 
+        Title="Основа" Height="735" Width="1100" MinHeight="600" MinWidth="860">
     <Window.Resources>
         <Style TargetType="Border" x:Key="PaleBorder">
             <Setter Property="Background" Value="#FFFBFDFF" />
@@ -61,15 +61,14 @@
         <!-- Меню режимов слева -->
         <Border Name="ModeBorder" 
                 Width="100" 
-                Height="330" 
-                Margin="10" 
+                Margin="10,169,0,115" 
                 HorizontalAlignment="Left" 
                 MouseWheel="ModeBorder_MouseWheel" 
                 Cursor="Hand"
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="ModePanel" 
                         Orientation="Vertical" 
-                        Background="Transparent" Cursor="Hand">
+                        Background="Transparent" Cursor="Hand" Margin="-1,13,1,-1">
                 <local:ModeTile x:Name="ModeMove" Text="Перемещение" Image="Icons/x128/Hand128.png" MouseLeftButtonDown="ModeTile_Move_MouseLeftButtonDown" Foreground="Crimson">
                     <UserControl.ToolTip>
                         <ToolTip>
@@ -89,7 +88,7 @@
                     <UserControl.ToolTip>
                         <ToolTip>
                             Режим, позволяющий рисовать маршруты транспортных средств. Для этого нужно зажать ЛКМ на холсте, переместить мышь и отпустить, появится 
-                            линия. В следующий раз будет создана линия из той точки, где закончилась предыдущая. Для завершения маршрута нажмите ПКМ.                         
+                            линия. В следующий раз будет создана линия из той точки, где закончилась предыдущая. Для завершения маршрута нажмите ПКМ.
                         </ToolTip>
                     </UserControl.ToolTip>
                 </local:ModeTile>
@@ -107,10 +106,17 @@
                         </ToolTip>
                     </UserControl.ToolTip>
                 </local:ModeTile>
+                <local:ModeTile x:Name="ModeAnimation" Text="Анимировать" Image="Icons/x128/Square128.png" MouseLeftButtonDown="ModeTile_Animation_MouseLeftButtonDown" Height="65">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Нажмите чтобы запустить анимацию.
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
             </StackPanel>
         </Border>
 
-        <!-- Меню объектов сверху -->
+        <!-- Меню объектов сверху --> 
         <Border Name="ObjectBorder" 
                 Width="500" 
                 Height="100" 
@@ -129,7 +135,7 @@
                 <local:MachineTile Text="Сварочный" Image="Icons/x128/Welding128.png"/>
                 <local:MachineTile Text="Фрезерный" Image="Icons/x128/Milling128.png"/>
                 <local:MovableTile Text="Тележка" Image="Icons/x128/Trolley128.png"/>
-                <!-- <local:MovableTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/> -->               
+                <!-- <local:MovableTile Text="Погрузчик" Image="Icons/x128/Forklift128.png"/> -->
             </StackPanel>
         </Border>
 

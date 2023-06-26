@@ -6,6 +6,9 @@ using DiplomaProrotype.ColorsManipulation;
 using DiplomaProrotype.Models;
 using DiplomaProrotype.ObjectsManipulation;
 using DiplomaPrototype;
+using DiplomaPrototype.Animations;
+using DiplomaPrototype.ImitationalModelDataAnalysing;
+using Haley.Utils;
 using DiplomaPrototype.Excel;
 using System;
 using System.Collections.Generic;
@@ -34,6 +37,8 @@ namespace DiplomaProrotype
         static public List<Rectangle> mainStopPlaces = new List<Rectangle>();
         static public List<Link> links = new List<Link>();
         static public List<string> operations = new List<string>();      
+
+        static public List<Point> stopTilesCoordinates = new List<Point>();
 
         static public ResourceTile resourceTileFromContextMenu;
         static public MachineTile machineTileFromContextMenu;
@@ -73,7 +78,8 @@ namespace DiplomaProrotype
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            AdornerLayer.GetAdornerLayer(MyGrid).Add(new ResizableCanvas(TargetBorder));          
+            AdornerLayer.GetAdornerLayer(MyGrid).Add(new ResizableCanvas(TargetBorder));  
+            DataReading.Read();
         }
 
 
@@ -93,6 +99,12 @@ namespace DiplomaProrotype
         private void ModeTile_Path_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ModeChooser.ChoosePathMode();
+        }
+        private void ModeTile_Animation_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            RoutesCreating routesCreating = new RoutesCreating();
+            movableTileFromContextMenu = movableTiles[0];
+            TransportTileAnimation transportTileAnimation = new TransportTileAnimation(routesCreating.CreateStory(), movableTiles[0], routesCreating.clocks2,routesCreating.animations, routesCreating.complexesClocks);
         }
 
         private void CMChooseSolidPath_Click(object sender, RoutedEventArgs e)
@@ -142,6 +154,7 @@ namespace DiplomaProrotype
             if (!(stopData is null) && stopData.Parent is StackPanel == false)
             {
                 ((Canvas)(stopData.Parent)).Children.Remove(stopData);
+                stopTilesCoordinates.Add(new Point(e.GetPosition(TargetCanvas).X, e.GetPosition(TargetCanvas).Y));
             }
         }
         #endregion
