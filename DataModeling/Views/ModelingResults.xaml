@@ -155,7 +155,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200px"/>
             <ColumnDefinition Width="4*"/>
-            <ColumnDefinition MaxWidth="200px"/>
+            <ColumnDefinition Width="200px"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30px"></RowDefinition>
@@ -198,7 +198,7 @@
                     Content="{StaticResource HideSection0}"/>
         </ToolBar>
         <!--Process navigation-->
-        <Grid x:Name="NavigationContainer0"
+        <Grid x:Name="NavigationContainer"
               Grid.Column="0"
               Grid.Row="1">
             <Grid.RowDefinitions>
@@ -208,7 +208,7 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Content="Производственные цепочки"
+            <Label Content="Технологические цепочки"
                    Grid.Row="0"
                    Style="{StaticResource CentralizedHeader}"/>
             <ComboBox x:Name="ChainsList"
@@ -368,6 +368,32 @@
                 Style="{StaticResource ResourceKey=NavigationButton}">
             <Image Source="..\Resources\img\btns\next-btn-0.png"/>
         </Button>
+        <!--Statistics-->
+        <Grid x:Name="StatisticsContainer"
+              Visibility="Hidden"
+              Grid.Row="1"
+              Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Content="Характиристики процесса"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="0"
+                   Style="{StaticResource CentralizedHeader}"/>
+            <Label Content="Характиристики операции"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="2"
+                   Style="{StaticResource CentralizedHeader}"/>
+        </Grid>
         <!--Status bar-->
         <StatusBar Grid.Column="0" 
                    Grid.Row="4"
@@ -404,7 +430,7 @@
             </StatusBar.ItemsPanel>
             <!--- Chain name -->
             <StatusBarItem Grid.Column="0"
-                           Content="Производственная цепочка:"
+                           Content="Технологическая цепочка:"
                            Style="{StaticResource ResourceKey=ItemName}"/>
             <StatusBarItem x:Name="StatusBarChain"
                            Grid.Column="1"

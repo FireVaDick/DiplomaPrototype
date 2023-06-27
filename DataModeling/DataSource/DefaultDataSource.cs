@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace DataModeling.DataSource
 {
-    public class MockDataSource : IDataSource
+    public class DefaultDataSource : IDataSource
     {
         private const int DefaultWidth = 2;
 
@@ -126,15 +126,16 @@ namespace DataModeling.DataSource
 
             return new ObservableCollection<IndustrialChain>()
             {
-                new IndustrialChain(1, "Тестовая цепочка 1", new ObservableCollection<IndustrialOperation>()
+                new IndustrialChain(1, "Изготовление пружины", new ObservableCollection<IndustrialOperation>()
                 {
-                    new IndustrialOperation(1, 1, "Операция 1.1", inputSeries, machineSeries, outputSeries),
-                    new IndustrialOperation(1, 2, "Операция 1.2", outputSeries, machineSeries, inputSeries),
+                    new IndustrialOperation(1, 1, "Навивка", inputSeries, machineSeries, outputSeries),
+                    new IndustrialOperation(1, 2, "Термообработка", outputSeries, machineSeries, inputSeries),
+                    new IndustrialOperation(1, 3, "Шлифовка", outputSeries1, machineSeries1, inputSeries1),
                 }),
-                new IndustrialChain(2, "Тестовая цепочка 2", new ObservableCollection<IndustrialOperation>()
+                new IndustrialChain(2, "Изготовление кронштейна", new ObservableCollection<IndustrialOperation>()
                 {
-                    new IndustrialOperation(2, 1, "Операция 2.1", outputSeries1, machineSeries1, inputSeries1),
-                    new IndustrialOperation(2, 2, "Операция 2.2", inputSeries1, machineSeries1, outputSeries1),
+                    new IndustrialOperation(2, 1, "Термообработка", outputSeries1, machineSeries1, inputSeries1),
+                    new IndustrialOperation(2, 2, "Гальваническая обработка ", inputSeries1, machineSeries1, outputSeries1),
                 })
             };
         }
