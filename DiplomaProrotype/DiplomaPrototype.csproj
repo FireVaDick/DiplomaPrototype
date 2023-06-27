@@ -19,6 +19,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Icons\btns\disable-zoom-0.png" />
+    <None Remove="Icons\btns\disable-zoom-1.png" />
+    <None Remove="Icons\btns\hide-section-0.png" />
+    <None Remove="Icons\btns\next-btn-0.png" />
+    <None Remove="Icons\btns\next-btn-1.png" />
+    <None Remove="Icons\btns\prev-btn-0.png" />
+    <None Remove="Icons\btns\prev-btn-1.png" />
+    <None Remove="Icons\btns\reset-section-0.png" />
+    <None Remove="Icons\btns\results-spotify-premium.png" />
+    <None Remove="Icons\btns\shift-bwd-0.png" />
+    <None Remove="Icons\btns\shift-bwd-1.png" />
+    <None Remove="Icons\btns\shift-bwd-2.png" />
+    <None Remove="Icons\btns\shift-fwd-0.png" />
+    <None Remove="Icons\btns\shift-fwd-1.png" />
+    <None Remove="Icons\btns\shift-fwd-2.png" />
+    <None Remove="Icons\menu\help-0.png" />
+    <None Remove="Icons\menu\next-op-0.png" />
+    <None Remove="Icons\menu\prev-op-0.png" />
     <None Remove="Icons\x128\Animate128.png" />
     <None Remove="Icons\x128\Animate32.png" />
     <None Remove="Icons\x128\Arrow128.png" />
@@ -80,16 +98,42 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bytescout.Spreadsheet" Version="4.7.0.2038" />
+    <PackageReference Include="Bytescout.Spreadsheet" Version="4.7.0.2045" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
     <PackageReference Include="FreeSpire.XLS" Version="12.7.0" />
-    <PackageReference Include="Haley.Extensions" Version="2.1.15.2" />
-    <PackageReference Include="Haley.Helpers" Version="2.1.9" />
-    <PackageReference Include="Haley.IOC" Version="3.0.13" />
-    <PackageReference Include="Haley.MVVM" Version="6.3.3" />
-    <PackageReference Include="Haley.WPF" Version="5.3.2" />
+    <PackageReference Include="Haley.Extensions" Version="2.1.17.4" />
+    <PackageReference Include="Haley.Helpers" Version="2.1.11" />
+    <PackageReference Include="Haley.IOC" Version="3.0.14" />
+    <PackageReference Include="Haley.MVVM" Version="6.3.4" />
+    <PackageReference Include="Haley.WPF" Version="5.3.3" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.801" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DataModeling\DataModeling.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icons\btns\disable-zoom-0.png" />
+    <Resource Include="Icons\btns\disable-zoom-1.png" />
+    <Resource Include="Icons\btns\hide-section-0.png" />
+    <Resource Include="Icons\btns\next-btn-0.png" />
+    <Resource Include="Icons\btns\next-btn-1.png" />
+    <Resource Include="Icons\btns\prev-btn-0.png" />
+    <Resource Include="Icons\btns\prev-btn-1.png" />
+    <Resource Include="Icons\btns\reset-section-0.png" />
+    <Resource Include="Icons\btns\results-spotify-premium.png" />
+    <Resource Include="Icons\btns\shift-bwd-0.png" />
+    <Resource Include="Icons\btns\shift-bwd-1.png" />
+    <Resource Include="Icons\btns\shift-bwd-2.png" />
+    <Resource Include="Icons\btns\shift-fwd-0.png" />
+    <Resource Include="Icons\btns\shift-fwd-1.png" />
+    <Resource Include="Icons\btns\shift-fwd-2.png" />
+    <Resource Include="Icons\menu\help-0.png" />
+    <Resource Include="Icons\menu\next-op-0.png" />
+    <Resource Include="Icons\menu\prev-op-0.png" />
+    <Resource Include="Icons\modeling-results-icon.png" />
     <Resource Include="Icons\x128\Animate128.png" />
     <Resource Include="Icons\x128\Animate32.png" />
     <Resource Include="Icons\x128\Arrow128.png" />

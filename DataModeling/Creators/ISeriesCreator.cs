@@ -3,7 +3,7 @@ using LiveChartsCore.Defaults;
 using SkiaSharp;
 using System.Collections.Generic;
 
-namespace ModelingResults.Creators
+namespace DataModeling.Creators
 {
     public interface ISeriesCreator
     {

@@ -1,21 +1,16 @@
-﻿using Bytescout.Spreadsheet;
-using Bytescout.Spreadsheet.Constants;
-using DiplomaProrotype.Animations;
+﻿using DiplomaProrotype.Animations;
 using DiplomaProrotype.CanvasManipulation;
 using DiplomaProrotype.ColorsManipulation;
 using DiplomaProrotype.Models;
 using DiplomaProrotype.ObjectsManipulation;
 using DiplomaPrototype;
 using DiplomaPrototype.Animations;
-using DiplomaPrototype.ImitationalModelDataAnalysing;
-using Haley.Utils;
 using DiplomaPrototype.Excel;
+using DiplomaPrototype.ImitationalModelDataAnalysing;
+using DiplomaPrototype.Views;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -27,8 +22,9 @@ namespace DiplomaProrotype
 {
     public partial class MainWindow : Window
     {
+        private readonly ModelingResults ModelingResultsView;
         static public MatrixWindow matrixWindow;
-        static public SelectWindow selectWindow;       
+        static public SelectWindow selectWindow;
 
         static public List<ResourceTile> resourceTiles = new List<ResourceTile>();
         static public List<MachineTile> machineTiles = new List<MachineTile>();
@@ -36,7 +32,7 @@ namespace DiplomaProrotype
         static public List<StopTile> stopTiles = new List<StopTile>();
         static public List<Rectangle> mainStopPlaces = new List<Rectangle>();
         static public List<Link> links = new List<Link>();
-        static public List<string> operations = new List<string>();      
+        static public List<string> operations = new List<string>();
 
         static public List<Point> stopTilesCoordinates = new List<Point>();
 
@@ -75,10 +71,12 @@ namespace DiplomaProrotype
             this.Top = 0;
 
             Loaded += Window_Loaded;
+
+            ModelingResultsView = new ModelingResults();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            AdornerLayer.GetAdornerLayer(MyGrid).Add(new ResizableCanvas(TargetBorder));  
+            AdornerLayer.GetAdornerLayer(MyGrid).Add(new ResizableCanvas(TargetBorder));
             DataReading.Read();
         }
 
@@ -104,7 +102,7 @@ namespace DiplomaProrotype
         {
             RoutesCreating routesCreating = new RoutesCreating();
             movableTileFromContextMenu = movableTiles[0];
-            TransportTileAnimation transportTileAnimation = new TransportTileAnimation(routesCreating.CreateStory(), movableTiles[0], routesCreating.clocks2,routesCreating.animations, routesCreating.complexesClocks);
+            TransportTileAnimation transportTileAnimation = new TransportTileAnimation(routesCreating.CreateStory(), movableTiles[0], routesCreating.clocks2, routesCreating.animations, routesCreating.complexesClocks);
         }
 
         private void CMChooseSolidPath_Click(object sender, RoutedEventArgs e)
@@ -127,7 +125,7 @@ namespace DiplomaProrotype
         }
 
         private void TargetCanvas_DragOver(object sender, DragEventArgs e)
-        {}
+        { }
 
         private void ObjectPanel_Drop(object sender, DragEventArgs e)
         {
@@ -179,7 +177,7 @@ namespace DiplomaProrotype
         private void TargetCanvas_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             DrawLinkRoutePath.DrawEndMouseRight();
-        }     
+        }
         #endregion
 
 
@@ -222,7 +220,7 @@ namespace DiplomaProrotype
         #region Просмотр всех связей
         private void ModeTile_CheckAllLinks_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MatrixWindow.CreateMatrixWindow(); 
+            MatrixWindow.CreateMatrixWindow();
         }
         #endregion
 
@@ -281,7 +279,7 @@ namespace DiplomaProrotype
                         PanelAnimation.HideAllBordersAnimation(); break;
                 }
             }
-            else 
+            else
                 switch (e.Key)
                 {
                     case Key.Escape:
@@ -314,7 +312,7 @@ namespace DiplomaProrotype
 
                     case Key.Left:
                         targetMargin = VisualTreeHelper.GetOffset(chosenOneObject);
-                        Canvas.SetLeft(chosenOneObject, --targetMargin.X - 10); 
+                        Canvas.SetLeft(chosenOneObject, --targetMargin.X - 10);
                         CheckLinkPlacement(); break;
 
                     case Key.Right:
@@ -352,6 +350,11 @@ namespace DiplomaProrotype
 
 
         #endregion
+
+        private void ModeTile_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ModelingResultsView.ShowDialog();
+        }
     }
 }
 

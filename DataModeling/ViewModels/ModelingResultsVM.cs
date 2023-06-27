@@ -1,6 +1,6 @@
-﻿using Charts.Creators;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DataModeling.Creators;
 using DataModeling.DataSource;
 using DataModeling.Models;
 using LiveChartsCore.Measure;
