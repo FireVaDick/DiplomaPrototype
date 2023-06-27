@@ -106,7 +106,10 @@
                         </ToolTip>
                     </UserControl.ToolTip>
                 </local:ModeTile>
-                <local:ModeTile x:Name="ModeAnimation" Text="Анимировать" Image="Icons/x128/Square128.png" MouseLeftButtonDown="ModeTile_Animation_MouseLeftButtonDown" Height="65">
+                <local:ModeTile x:Name="ModeAnimation" Text="Анимировать" 
+                                Height="65"
+                                Image="Icons/x128/Clock128.png" 
+                                MouseLeftButtonDown="ModeTile_Animation_MouseLeftButtonDown">
                     <UserControl.ToolTip>
                         <ToolTip>
                             Нажмите чтобы запустить анимацию.
@@ -150,7 +153,10 @@
                 Cursor="Hand"
                 Style="{StaticResource ResourceKey=PaleBorder}" >
             <StackPanel Name="MatrixPanel" Style="{StaticResource ResourceKey=SquarePanel}">
-                <local:ModeTile Margin="0,0,0,0" Text="Матрица" Image="Icons/x128/CheckLinks128.png" MouseLeftButtonDown="ModeTile_CheckAllLinks_MouseLeftButtonDown">
+                <local:ModeTile Margin="0,0,0,0" 
+                                Text="Матрица" 
+                                Image="Icons/x128/CheckLinks128.png" 
+                                MouseLeftButtonDown="ModeTile_CheckAllLinks_MouseLeftButtonDown">
                     <UserControl.ToolTip>
                         <ToolTip>
                             Позволяет просмотреть матрицу связей.
@@ -160,6 +166,30 @@
             </StackPanel>
         </Border>
 
+        <Border Name="ModelingResultsMenu" 
+                Width="100" 
+                Height="100" 
+                Margin="10" 
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Left"
+                MouseWheel="MatrixBorder_MouseWheel" 
+                Cursor="Hand"
+                Style="{StaticResource ResourceKey=PaleBorder}" >
+            <StackPanel Name="ModelingResultsPanel" 
+                        Style="{StaticResource ResourceKey=SquarePanel}">
+                <local:ModeTile Margin="0,0,0,0" 
+                                Text="Результаты" 
+                                Image="Icons/btns/results-spotify-premium.png"
+                                MouseLeftButtonDown="ModeTile_MouseLeftButtonDown">
+                    <UserControl.ToolTip>
+                        <ToolTip>
+                            Открывает окно "Результаты моделирования".
+                        </ToolTip>
+                    </UserControl.ToolTip>
+                </local:ModeTile>
+            </StackPanel>
+        </Border>
+        
         <Button Name="WriteToExcelButton"                 
                 Width="100" 
                 Height="30" 

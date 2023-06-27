@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace DataModeling.Views
+namespace DiplomaPrototype.Views
 {
     /// <summary>
     /// Interaction logic for ModelingResults.xaml

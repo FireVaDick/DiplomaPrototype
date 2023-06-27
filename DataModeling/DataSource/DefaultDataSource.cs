@@ -2,7 +2,6 @@
 using DataModeling.Models;
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
-using ModelingResults.Creators;
 using SkiaSharp;
 using System.Collections.ObjectModel;
 

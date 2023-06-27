@@ -2,7 +2,6 @@
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
-using ModelingResults.Creators;
 using SkiaSharp;
 using System.Collections.Generic;
 
