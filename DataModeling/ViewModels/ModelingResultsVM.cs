@@ -16,7 +16,7 @@ namespace DataModeling.ViewModels;
 public partial class ModelingResultsVM : ObservableObject
 {
     private const double TimeMinimum = 0.0;
-    private const double TimeMaximum = 11.0;
+    private const double TimeMaximum = 480.0;
     private const string MachinesLabel = "Выполнение работы";
     private const string OutputResourceLabel = "Наполнение задела";
     private const string InputResourcesLabel = "Истощение заделов";
@@ -58,7 +58,7 @@ public partial class ModelingResultsVM : ObservableObject
 
     public ModelingResultsVM()
     {
-        var dataSource = new MockDataSource();
+        var dataSource = new DefaultDataSource();
         chains = dataSource.GetData();
         selectedChain = chains[0];
         selectedOperation = selectedChain.Operations[0];
@@ -237,7 +237,7 @@ public partial class ModelingResultsVM : ObservableObject
     public void SelectOperation(IndustrialOperation operation)
     {
         SelectedOperation = operation;
-    }    
+    }
 
     [RelayCommand]
     public void ResetSection()
